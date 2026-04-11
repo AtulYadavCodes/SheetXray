@@ -8,4 +8,5 @@ const router=Router();
 router.route('/createfolder').post(verifyJWT,upload.none(),createfolder);
 router.route('/getalluserfolders').get(verifyJWT,getalluserfolders);
 router.route('/deletefolder/:folderid').delete(verifyJWT,deletefolder);
+router.route('/getallsheetsinfolder/:folderid').get(verifyJWT,allsheetsinfolder);
 export default router;

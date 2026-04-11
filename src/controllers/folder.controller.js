@@ -38,4 +38,14 @@ const deletefolder=asyncHandler(async(req,res)=>{
     return res.status(200).json(new responseHandler(200,"folder deleted successfully",deletedfolder._id));
         
 })
+
+const allsheetsinfolder=asyncHandler(async(req,res)=>{
+    const folderid=new mongoose.Types.ObjectId(req.params.folderid);
+    const folder=await Folder.findOne({_id:folderid}).populate("sheets");
+    if(!folder){
+        throw new errorhandler(404,"folder not found",[]);
+    }
+    return res.status(200).json(new responseHandler(200,"sheets in folder fetched successfully",folder.sheets));
+});
+
 export {createfolder,getalluserfolders,deletefolder};
