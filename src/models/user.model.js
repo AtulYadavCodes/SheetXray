@@ -42,7 +42,12 @@ const userSchema=new Schema({
     folders:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:"Folder"
-    }]
+    }],
+    usertype:{
+        type:String,
+        enum:["free","premium"],
+        default:"free"
+    }
 },
 {
     timestamps:true
