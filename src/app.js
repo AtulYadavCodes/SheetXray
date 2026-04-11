@@ -13,9 +13,11 @@ app.use(express.static('public'));
 
 //routes
 import Userrouter from './routes/user.routes.js';
-import imagerouter from './routes/image.routes.js';
+import Sheetrouter from './routes/sheet.routes.js';
+import Folderrouter from './routes/folder.routes.js';
 app.use('/api/v1/users',Userrouter)
-app.use('/api/v1/images',imagerouter)
+app.use('/api/v1/sheets',Sheetrouter)
+app.use('/api/v1/folders',Folderrouter)
 
 const errormiddleware=(err,req,res,next)=>{
     const statusCode=err.statusCode||500;
