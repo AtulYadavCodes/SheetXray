@@ -66,7 +66,6 @@ const loginuser=asyncHandler(async(req,res,next)=>{
     if(!isvalidpassword)
     {
         await redis.incr(key);
-        console.log("Login attempts:",await redis.get(key));
         await redis.expire(key,60);
         throw new errorhandler(400,"Invalid credentials"); 
     }
