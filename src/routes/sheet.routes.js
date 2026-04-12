@@ -4,6 +4,6 @@ import { /*getallusersheets,*/uploadsheet } from '../controllers/sheet.controlle
 import { upload } from '../middlewares/multer.middleware.js';
 
 const router=Router();
-router.route('/uploadsheet/:folderid').post(verifyJWT,upload.single('file'),uploadsheet);
+router.route('/uploadsheet/:folderid?').post(verifyJWT,upload.single('file'),uploadsheet);
 //router.route('/getallusersheets').get(verifyJWT,getallusersheets);
 export default router;
