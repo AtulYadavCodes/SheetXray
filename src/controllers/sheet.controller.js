@@ -43,7 +43,8 @@ const uploadsheet=asyncHandler(async(req,res)=>{
         sheetname:req.file.originalname,
         owner:req.user._id,
         filesize:cloudinaryresponse.bytes,
-       folder:req.params.folderid||null,
+         folder:req.params.folderid
+       //folder:req.params.folderid||null,
        // filepreviewsheets:`https://res.cloudinary.com/${process.env.cloudinary_name}/sheet/upload/pg_1,w_300,h_400,c_fill,q_auto,f_auto/pdfs/${cloudinaryresponse.public_id}.png`||"https://res.cloudinary.com/dzcmadjlq/sheet/upload/v1696543783/ClauseValidator/default_pdf_oyh3v0.png"
     });
     const savedsheet=await Sheet.findById(newsheet._id);
