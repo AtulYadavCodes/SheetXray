@@ -9,16 +9,16 @@ const userSchema=new Schema({
         minlength:3,
         maxlength:50
     },
-    username:{
-        type:String,
-        required:true,
-        unique:true,
-        lowercase:true,
-        trim:true,
-        minlength:3,
-        maxlength:30,
-        index:true
-    },
+    // username:{
+    //     type:String,
+    //     required:true,
+    //     unique:true,
+    //     lowercase:true,
+    //     trim:true,
+    //     minlength:3,
+    //     maxlength:30,
+    //     index:true
+    // },
     email:{
         type:String,
         required:true,
@@ -65,7 +65,7 @@ userSchema.methods.generateAccessToken=function(){
     return jwt.sign(
         {
             userId:this._id,
-            username:this.username,
+//            username:this.username,
             email:this.email,
         },
         process.env.JWT_SECRET,

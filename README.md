@@ -16,6 +16,7 @@ SheetXray is the backend for a spreadsheet assistant that lets users register, l
 - OTP-based registration flow
 - OTP generation using Node.js crypto module
 - OTP email delivery via Nodemailer SMTP
+- Welcome email delivery after successful registration
 - Redis-backed rate limiting for login and OTP requests
 - Folder management for organizing uploaded sheets
 - File upload support through Multer and Cloudinary

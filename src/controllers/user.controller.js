@@ -5,6 +5,27 @@ import uploadoncloudinary from "../utils/uploadoncloudinary.js";
 import responseHandler from "../utils/responseHandler.js"
 import jwt from "jsonwebtoken";
 import redis from "../db/redis.js";
+import transporter from "../utils/mailtransport.js";
+import { welcomemailtemplate } from "../utils/emailtemplate.js";
+
+//welcome mail normal function
+
+const welcomemail = async (email) => {
+  try {
+    const info = await transporter.sendMail({
+      from: '"sheetxray" <academics.atul@gmail.com>', // sender address
+      to: `${email}`, // list of recipients
+      subject: " Welcome to SheetXray",
+      text: `Welcome to SheetXray`,
+      html: welcomemailtemplate,
+    });
+
+    return;
+  } catch (err) {
+    throw new errorhandler(500, "Error while sending mail:", err);
+  }
+};
+
 const generateAccessTokenandRefreshToken=async(userId)=>{
     try {
         const user=await User.findById(userId);
@@ -19,7 +40,8 @@ const generateAccessTokenandRefreshToken=async(userId)=>{
     }
 }
 const registerUser=asyncHandler(async(req,res,next)=>{
-    const {fullname,username,email,password}=req.body;
+    //const {fullname,username,email,password}=req.body;
+    const {fullname,email,password}=req.body;
     console.log(fullname,email,password);
     if(fullname==""||email==""||password=="")
     {
@@ -37,7 +59,7 @@ const registerUser=asyncHandler(async(req,res,next)=>{
         throw new errorhandler(500,"Image not uploaded");
    const user=await User.create({
         fullname,
-        username,
+       // username,
         email,
         password,
         avatar: cloudinaryresponse.secure_url
@@ -47,6 +69,7 @@ const registerUser=asyncHandler(async(req,res,next)=>{
     {
         throw new errorhandler(500,"User not created");        
     }
+    welcomemail(email);
     return res.status(200).json(
         new responseHandler(200,"User created successfully",createduser)
     )

@@ -2,14 +2,14 @@ import crypto from "crypto";
 import redis from "../db/redis.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import responseHandler from "../utils/responseHandler.js";
-import nodemailer from "nodemailer";
+import transporter from "../utils/mailtransport.js";
 import errorhandler from "../utils/errorhandler.js";
 import { emailtemplate } from "../utils/emailtemplate.js";
 
 const createotpandmail = asyncHandler(async (req, res) => {
   const { email } = req.body;
   const otp = crypto.randomInt(100000, 999999);
-  await redis.set(`otp${email}`, otp, "NX", "EX", 240);
+  await redis.set(`otp${email}`, otp, "EX", 240);
 
   await nodemailermethod(email, otp);
   //ratelimiter
@@ -21,15 +21,7 @@ const createotpandmail = asyncHandler(async (req, res) => {
     .json(new responseHandler(200, "OTP sent to email", null));
 });
 
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 587,
-  secure: false,
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
+
 
 const nodemailermethod = async (email, otp) => {
   try {
