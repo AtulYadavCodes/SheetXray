@@ -15,7 +15,7 @@ SheetXray is the backend for a spreadsheet assistant that lets users register, l
 - User auth with JWT access and refresh tokens
 - OTP-based registration flow
 - OTP generation using Node.js crypto module
-- OTP email delivery via Nodemailer
+- OTP email delivery via Nodemailer SMTP
 - Redis-backed rate limiting for login and OTP requests
 - Folder management for organizing uploaded sheets
 - File upload support through Multer and Cloudinary
@@ -64,7 +64,7 @@ Example:
 
 | Method | Endpoint                            | Auth   | Purpose                                                    |
 | ------ | ----------------------------------- | ------ | ---------------------------------------------------------- |
-| POST   | `/api/v1/users/otpsender`           | Public | Send OTP to the provided email and apply OTP rate limiting |
+| POST   | `/api/v1/users/otpsender`           | Public | Send OTP to the provided email via Nodemailer and apply OTP rate limiting |
 | POST   | `/api/v1/users/register`            | Public | Register a user after OTP verification                     |
 | POST   | `/api/v1/users/login`               | Public | Log in and issue tokens with login rate limiting           |
 | POST   | `/api/v1/users/refreshAccessToken`  | Public | Refresh the access token                                   |
