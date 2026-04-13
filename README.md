@@ -62,17 +62,17 @@ Example:
 
 ### User Routes
 
-| Method | Endpoint                            | Auth   | Purpose                                                    |
-| ------ | ----------------------------------- | ------ | ---------------------------------------------------------- |
+| Method | Endpoint                            | Auth   | Purpose                                                                   |
+| ------ | ----------------------------------- | ------ | ------------------------------------------------------------------------- |
 | POST   | `/api/v1/users/otpsender`           | Public | Send OTP to the provided email via Nodemailer and apply OTP rate limiting |
-| POST   | `/api/v1/users/register`            | Public | Register a user after OTP verification                     |
-| POST   | `/api/v1/users/login`               | Public | Log in and issue tokens with login rate limiting           |
-| POST   | `/api/v1/users/refreshAccessToken`  | Public | Refresh the access token                                   |
-| POST   | `/api/v1/users/logout`              | JWT    | Log out the current user                                   |
-| GET    | `/api/v1/users/profile`             | JWT    | Get the logged-in user profile                             |
-| PATCH  | `/api/v1/users/updateprofileavatar` | JWT    | Update the user avatar                                     |
-| POST   | `/api/v1/users/updatepassword`      | JWT    | Update the user password                                   |
-| PATCH  | `/api/v1/users/updateemail`         | JWT    | Update the user email                                      |
+| POST   | `/api/v1/users/register`            | Public | Register a user after OTP verification                                    |
+| POST   | `/api/v1/users/login`               | Public | Log in and issue tokens with login rate limiting                          |
+| POST   | `/api/v1/users/refreshAccessToken`  | Public | Refresh the access token                                                  |
+| POST   | `/api/v1/users/logout`              | JWT    | Log out the current user                                                  |
+| GET    | `/api/v1/users/profile`             | JWT    | Get the logged-in user profile                                            |
+| PATCH  | `/api/v1/users/updateprofileavatar` | JWT    | Update the user avatar                                                    |
+| POST   | `/api/v1/users/updatepassword`      | JWT    | Update the user password                                                  |
+| PATCH  | `/api/v1/users/updateemail`         | JWT    | Update the user email                                                     |
 
 ### Folder Routes
 
