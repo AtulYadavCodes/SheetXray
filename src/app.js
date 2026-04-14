@@ -1,6 +1,7 @@
 import express from 'express'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
+import "./utils/cron.js"
 let app=express();
 app.use(cookieParser());
 app.use(cors({
