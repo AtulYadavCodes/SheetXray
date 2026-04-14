@@ -24,7 +24,7 @@ const createotpandmail = asyncHandler(async (req, res) => {
 const nodemailermethod = async (email, otp) => {
   try {
     const info = await transporter.sendMail({
-      from: '"sheetxray" <academics.atul@gmail.com>', // sender address
+      from: '"Team SheetXray" <academics.atul@gmail.com>', // sender address
       to: `${email}`, // list of recipients
       subject: "SheetXray verification code",
       text: `${otp}`,
