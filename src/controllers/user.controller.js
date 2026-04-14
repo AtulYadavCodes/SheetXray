@@ -13,7 +13,7 @@ import { welcomemailtemplate } from "../utils/emailtemplate.js";
 const welcomemail = async (email) => {
   try {
     const info = await transporter.sendMail({
-      from: '"Support@SheetXray" <academics.atul@gmail.com>', // sender address
+      from: '"sheetxray" <academics.atul@gmail.com>', // sender address
       to: `${email}`, // list of recipients
       subject: " Welcome to SheetXray",
       text: `Welcome to SheetXray`,
