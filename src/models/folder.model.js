@@ -2,6 +2,7 @@ import mongoose, { Schema } from "mongoose";
 const folderschema=new Schema({
     foldername:{
         type:String,
+        unique:true,
         required:true
     },
     owner:{

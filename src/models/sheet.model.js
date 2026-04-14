@@ -25,6 +25,31 @@ const sheetschema=new Schema({
     filepreviewsheets:{
         type: String , //url cloudinary
         default:"https://res.cloudinary.com/dzcmadjlq/sheet/upload/v1696543783/ClauseValidator/default_pdf_oyh3v0.png"
+    },
+    parquetPath: {
+        type: String
+    },
+    processingStatus: {
+        type: String,
+        enum: ["pending", "processing", "completed", "failed"],
+        default: "pending"
+    },
+    schema: {
+        columns: [String],
+
+        dtypes: {
+            type: Map,
+            of: String
+        },
+
+        descriptions: {
+            type: Map,
+            of: String
+        },
+
+        sampleRows: {
+            type: [Schema.Types.Mixed]
+        }
     }
 },{
     timestamps:true
