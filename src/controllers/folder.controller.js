@@ -50,8 +50,6 @@ const getalluserfolders=asyncHandler(async(req,res)=>{
     if(!userfolders||userfolders.length===0){
         throw new errorhandler(404,"folders not found",[]);
     }
-
-    
     res.status(200).json(new responseHandler(200,"User folders fetched successfully",userfolders));
 })
 
