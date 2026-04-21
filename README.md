@@ -20,6 +20,7 @@ SheetXray is the backend for a spreadsheet assistant that lets users register, l
 - Redis-backed rate limiting for login and OTP requests
 - Folder management for organizing uploaded sheets
 - File upload support through Multer and Cloudinary
+- Razorpay order creation and payment verification endpoints
 - Protected routes for user, folder, and sheet operations
 
 > Login and OTP endpoints are rate-limited through Redis to reduce abuse and repeated attempts.
@@ -35,6 +36,10 @@ flowchart LR
 		E --> F[JWT Protected Routes]
 		E --> G[Rate Limited by Redis]
 		B --> H[Rate Limited by Redis]
+		F --> I[Create Payment Order]
+		I --> J[Razorpay Checkout]
+		J --> K[Verify Payment Signature]
+		K --> L[Update Subscription]
 ```
 
 ## Tech Stack
@@ -48,6 +53,7 @@ flowchart LR
 - Cloudinary for file storage
 - Nodemailer for OTP email sending
 - JWT and cookie-parser for authentication
+- Razorpay for payment processing
 
 ## API Base
 
@@ -91,6 +97,22 @@ Example:
 | ------ | -------------------------------------- | ---- | ------------------------------- |
 | POST   | `/api/v1/sheets/uploadsheet/:folderid` | JWT  | Upload a sheet file to a folder |
 
+### Payment Routes
+
+| Method | Endpoint                         | Auth | Purpose                                                     |
+| ------ | -------------------------------- | ---- | ----------------------------------------------------------- |
+| POST   | `/api/v1/payments/createorder`   | JWT  | Create a Razorpay order for selected subscription type      |
+| POST   | `/api/v1/payments/verifypayment` | JWT  | Verify Razorpay signature and update user subscription data |
+
+### Payment Flow
+
+1. Client sends `POST /api/v1/payments/createorder` with body `{ "type": "lifetime" }` or `{ "type": "monthly" }`.
+2. Backend creates a Razorpay order in INR and returns order payload to the client.
+3. Client opens Razorpay Checkout using the returned order details.
+4. After successful checkout, client sends `razorpay_order_id`, `razorpay_payment_id`, and `razorpay_signature` to `POST /api/v1/payments/verifypayment`.
+5. Backend verifies signature with `HMAC-SHA256` using `RAZORPAY_KEY_SECRET`.
+6. On valid signature, backend records payment and updates user subscription state.
+
 ## Environment Variables
 
 Create a `.env` file in the project root with values similar to:
@@ -111,6 +133,8 @@ cloudinary_api_key=your_api_key
 cloudinary_api_secret=your_api_secret
 EMAIL_USER=your_email@gmail.com
 EMAIL_PASS=your_email_app_password
+RAZORPAY_KEY_ID=your_razorpay_key_id
+RAZORPAY_KEY_SECRET=your_razorpay_key_secret
 ```
 
 For Gmail SMTP, use a Google App Password in `EMAIL_PASS` instead of your normal account password.
