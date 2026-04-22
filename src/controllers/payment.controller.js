@@ -7,6 +7,7 @@ import responseHandler from "../utils/responseHandler.js";
 
 import Payment from "../models/payment.model.js";
 import { User } from "../models/user.model.js";
+import errorhandler from "../utils/errorhandler.js";
 
 const createorder = asyncHandler(async (req, res) => {
   const type = req.body.type;
@@ -42,33 +43,31 @@ const verifypayment = asyncHandler(async (req, res) => {
   const order = await instance.orders.fetch(razorpay_order_id);
   const subscriptionType = order.notes.type;
 
-  const expectedamount = subscriptionType === "premiumlifetime" ? 1000 : 99;
-  if (expectedamount * 100 !== order.amount) {
+  const amount = subscriptionType === "premiumlifetime" ? 1000 : 99;
+  if (amount * 100 !== order.amount) {
     return res
       .status(400)
       .json(new responseHandler(400, "Payment verification failed"));
   }
-
-  const existingPayment = await Payment.findOne({
-    paymentId: razorpay_payment_id,
-  });
-  if (existingPayment) {
-    return res
-      .status(200)
-      .json(new responseHandler(200, "Payment already processed"));
-  }
-   await Payment.create({
-    user: order.notes.userId,
-    expectedamount,
-    paymentId: razorpay_payment_id,
-    subscriptionType,
-    status: "success",
-    subscriptionstartdate: new Date(),
-    subscriptionenddate:
-      subscriptionType === "premiumlifetime"
-        ? null
-        : new Date(new Date().setMonth(new Date().getMonth() + 1)),
-  });
+   try {
+    await Payment.create({
+     user: order.notes.userId,
+     amount,
+     paymentId: razorpay_payment_id,
+     subscriptionType,
+     status: "success",
+     subscriptionstartdate: new Date(),
+     subscriptionenddate:
+       subscriptionType === "premiumlifetime"
+         ? null
+         : new Date(new Date().setMonth(new Date().getMonth() + 1)),
+   });
+   } catch (error) {
+    if(error.code === 11000){
+      return res.status(200).json(new responseHandler(200, "Payment already verified"));
+   }
+   throw error;
+    }
   await User.findByIdAndUpdate(
     order.notes.userId,
     {
@@ -101,34 +100,34 @@ const verifypaymentwebhook = asyncHandler(async (req, res) => {
     const payment = event.payload.payment.entity;
     const razorpay_payment_id = payment.id;
     const razorpay_order_id = payment.order_id;
-    const existingPayment = await Payment.findOne({
-      paymentId: razorpay_payment_id,
-    });
-    if (existingPayment) {
-      return res
-        .status(200)
-        .json(new responseHandler(200, "Payment already processed"));
-    }
+   
     const order = await instance.orders.fetch(razorpay_order_id);
     const subscriptionType = order.notes.type;
-    const expectedamount = subscriptionType === "premiumlifetime" ? 1000 : 99;
-    if (expectedamount * 100 !== order.amount) {
+    const amount = subscriptionType === "premiumlifetime" ? 1000 : 99;
+    if (amount * 100 !== order.amount) {
       return res
         .status(400)
         .json(new responseHandler(400, "Payment verification failed"));
     }
-    await Payment.create({
-      user: order.notes.userId,
-      expectedamount,
-      paymentId: razorpay_payment_id,
-      subscriptionType,
-      status: "success",
-      subscriptionstartdate: new Date(),
-      subscriptionenddate:
-        subscriptionType === "premiumlifetime"
-          ? null
-          : new Date(new Date().setMonth(new Date().getMonth() + 1)),
-    });
+    try {
+      await Payment.create({
+        user: order.notes.userId,
+        amount,
+        paymentId: razorpay_payment_id,
+        subscriptionType,
+        status: "success",
+        subscriptionstartdate: new Date(),
+        subscriptionenddate:
+          subscriptionType === "premiumlifetime"
+            ? null
+            : new Date(new Date().setMonth(new Date().getMonth() + 1)),
+      });
+    } catch (error) {
+      if (error.code === 11000) {
+        return res.status(200).json(new responseHandler(200, "Payment already verified"));
+      }
+      throw error;
+    }
     await User.findByIdAndUpdate(
       order.notes.userId,
       {
