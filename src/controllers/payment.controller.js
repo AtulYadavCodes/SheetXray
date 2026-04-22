@@ -49,25 +49,27 @@ const verifypayment = asyncHandler(async (req, res) => {
       .status(400)
       .json(new responseHandler(400, "Payment verification failed"));
   }
-   try {
+  try {
     await Payment.create({
-     user: order.notes.userId,
-     amount,
-     paymentId: razorpay_payment_id,
-     subscriptionType,
-     status: "success",
-     subscriptionstartdate: new Date(),
-     subscriptionenddate:
-       subscriptionType === "premiumlifetime"
-         ? null
-         : new Date(new Date().setMonth(new Date().getMonth() + 1)),
-   });
-   } catch (error) {
-    if(error.code === 11000){
-      return res.status(200).json(new responseHandler(200, "Payment already verified"));
-   }
-   throw error;
+      user: order.notes.userId,
+      amount,
+      paymentId: razorpay_payment_id,
+      subscriptionType,
+      status: "success",
+      subscriptionstartdate: new Date(),
+      subscriptionenddate:
+        subscriptionType === "premiumlifetime"
+          ? null
+          : new Date(new Date().setMonth(new Date().getMonth() + 1)),
+    });
+  } catch (error) {
+    if (error.code === 11000) {
+      return res
+        .status(200)
+        .json(new responseHandler(200, "Payment already verified"));
     }
+    throw error;
+  }
   await User.findByIdAndUpdate(
     order.notes.userId,
     {
@@ -100,7 +102,7 @@ const verifypaymentwebhook = asyncHandler(async (req, res) => {
     const payment = event.payload.payment.entity;
     const razorpay_payment_id = payment.id;
     const razorpay_order_id = payment.order_id;
-   
+
     const order = await instance.orders.fetch(razorpay_order_id);
     const subscriptionType = order.notes.type;
     const amount = subscriptionType === "premiumlifetime" ? 1000 : 99;
@@ -124,7 +126,9 @@ const verifypaymentwebhook = asyncHandler(async (req, res) => {
       });
     } catch (error) {
       if (error.code === 11000) {
-        return res.status(200).json(new responseHandler(200, "Payment already verified"));
+        return res
+          .status(200)
+          .json(new responseHandler(200, "Payment already verified"));
       }
       throw error;
     }
