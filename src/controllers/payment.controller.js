@@ -1,4 +1,4 @@
-import { asyncHandler } from "../utils/asyncHandler";
+import { asyncHandler } from "../utils/asyncHandler.js";
 
 import { instance } from "../utils/razorpay.js";
 import crypto from "crypto";
@@ -10,13 +10,14 @@ import { User } from "../models/user.model.js";
 
 const createorder = asyncHandler(async (req, res) => {
   const type = req.body.type;
-  const amount = type === "lifetime" ? 1000 : 99;
+  const amount = type === "premiumlifetime" ? 1000 : 99;
 
   const order = await instance.orders.create({
     amount: amount * 100,
     currency: "INR",
     receipt: `receipt_order_${new Date().getTime()}`,
     notes: {
+      userId: req.user._id.toString(),
       type: type,
     },
   });
@@ -41,35 +42,107 @@ const verifypayment = asyncHandler(async (req, res) => {
   const order = await instance.orders.fetch(razorpay_order_id);
   const subscriptionType = order.notes.type;
 
-  const amount = subscriptionType === "lifetime" ? 1000 : 99;
-
-  const existingPayment = await Payment.findOne({ paymentId: razorpay_payment_id });
-  if (existingPayment) {
+  const expectedamount = subscriptionType === "premiumlifetime" ? 1000 : 99;
+  if (expectedamount * 100 !== order.amount) {
     return res
       .status(400)
-      .json(new responseHandler(400, "Payment already processed"));
+      .json(new responseHandler(400, "Payment verification failed"));
   }
-  const paymentDetails = await Payment.create({
-    user: req.user._id,
-    amount,
+
+  const existingPayment = await Payment.findOne({
+    paymentId: razorpay_payment_id,
+  });
+  if (existingPayment) {
+    return res
+      .status(200)
+      .json(new responseHandler(200, "Payment already processed"));
+  }
+   await Payment.create({
+    user: order.notes.userId,
+    expectedamount,
     paymentId: razorpay_payment_id,
     subscriptionType,
     status: "success",
     subscriptionstartdate: new Date(),
     subscriptionenddate:
-      subscriptionType === "lifetime"
+      subscriptionType === "premiumlifetime"
         ? null
         : new Date(new Date().setMonth(new Date().getMonth() + 1)),
   });
-  const user = await User.findByIdAndUpdate(req.user._id,{
-    usertype : subscriptionType,
-    waspremium : true,
-    subscriptionExpiryDate :
-    subscriptionType === "lifetime"
-      ? null
-      : new Date(new Date().setMonth(new Date().getMonth() + 1))},
-    { new: true });
+  await User.findByIdAndUpdate(
+    order.notes.userId,
+    {
+      usertype: subscriptionType,
+      waspremium: true,
+      subscriptionExpiryDate:
+        subscriptionType === "premiumlifetime"
+          ? null
+          : new Date(new Date().setMonth(new Date().getMonth() + 1)),
+    },
+    { new: true },
+  );
   return res
     .status(200)
     .json(new responseHandler(200, "Payment verified successfully"));
 });
+
+const verifypaymentwebhook = asyncHandler(async (req, res) => {
+  const secret = process.env.RAZORPAY_WEBHOOK_SECRET;
+  const signature = req.headers["x-razorpay-signature"];
+  const generated_signature = crypto
+    .createHmac("sha256", secret)
+    .update(req.body)
+    .digest("hex");
+  if (generated_signature !== signature) {
+    return res.status(400).json({ message: "Invalid signature" });
+  }
+  const event = JSON.parse(req.body);
+  if (event.event === "payment.captured") {
+    const payment = event.payload.payment.entity;
+    const razorpay_payment_id = payment.id;
+    const razorpay_order_id = payment.order_id;
+    const existingPayment = await Payment.findOne({
+      paymentId: razorpay_payment_id,
+    });
+    if (existingPayment) {
+      return res
+        .status(200)
+        .json(new responseHandler(200, "Payment already processed"));
+    }
+    const order = await instance.orders.fetch(razorpay_order_id);
+    const subscriptionType = order.notes.type;
+    const expectedamount = subscriptionType === "premiumlifetime" ? 1000 : 99;
+    if (expectedamount * 100 !== order.amount) {
+      return res
+        .status(400)
+        .json(new responseHandler(400, "Payment verification failed"));
+    }
+    await Payment.create({
+      user: order.notes.userId,
+      expectedamount,
+      paymentId: razorpay_payment_id,
+      subscriptionType,
+      status: "success",
+      subscriptionstartdate: new Date(),
+      subscriptionenddate:
+        subscriptionType === "premiumlifetime"
+          ? null
+          : new Date(new Date().setMonth(new Date().getMonth() + 1)),
+    });
+    await User.findByIdAndUpdate(
+      order.notes.userId,
+      {
+        usertype: subscriptionType,
+        waspremium: true,
+        subscriptionExpiryDate:
+          subscriptionType === "premiumlifetime"
+            ? null
+            : new Date(new Date().setMonth(new Date().getMonth() + 1)),
+      },
+      { new: true },
+    );
+  }
+  return res.status(200).json({ message: "Webhook received successfully" });
+});
+
+export { createorder, verifypayment, verifypaymentwebhook };
