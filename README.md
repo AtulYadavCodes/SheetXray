@@ -99,19 +99,40 @@ Example:
 
 ### Payment Routes
 
-| Method | Endpoint                         | Auth | Purpose                                                     |
-| ------ | -------------------------------- | ---- | ----------------------------------------------------------- |
-| POST   | `/api/v1/payments/createorder`   | JWT  | Create a Razorpay order for selected subscription type      |
-| POST   | `/api/v1/payments/verifypayment` | JWT  | Verify Razorpay signature and update user subscription data |
+| Method | Endpoint                         | Auth   | Purpose                                                       |
+| ------ | -------------------------------- | ------ | ------------------------------------------------------------- |
+| POST   | `/api/v1/payments/createorder`   | JWT    | Create a Razorpay order for selected subscription type        |
+| POST   | `/api/v1/payments/verifypayment` | JWT    | Verify Razorpay signature and update user subscription data   |
+| POST   | `/api/v1/payments/webhook`       | Public | Receive Razorpay payment events and process captured payments |
 
 ### Payment Flow
 
-1. Client sends `POST /api/v1/payments/createorder` with body `{ "type": "lifetime" }` or `{ "type": "monthly" }`.
+1. Client sends `POST /api/v1/payments/createorder` with body `{ "type": "premiumlifetime" }` or another supported plan value used by the frontend.
 2. Backend creates a Razorpay order in INR and returns order payload to the client.
 3. Client opens Razorpay Checkout using the returned order details.
 4. After successful checkout, client sends `razorpay_order_id`, `razorpay_payment_id`, and `razorpay_signature` to `POST /api/v1/payments/verifypayment`.
 5. Backend verifies signature with `HMAC-SHA256` using `RAZORPAY_KEY_SECRET`.
 6. On valid signature, backend records payment and updates user subscription state.
+
+### Webhook Handling
+
+Razorpay can also notify the backend directly through `POST /api/v1/payments/webhook`.
+
+1. The webhook route is mounted before `express.json()` so the request body stays raw.
+2. The backend validates the webhook using the `x-razorpay-signature` header and `RAZORPAY_WEBHOOK_SECRET`.
+3. Only the `payment.captured` event is processed for subscription updates.
+4. The backend fetches the original Razorpay order, checks the amount, and creates a `Payment` record.
+5. The user record is then updated with the subscription type and expiry date.
+6. If the same payment is received again, the duplicate payment ID is ignored and the request is treated as already processed.
+
+### If Payment Is Not Completed
+
+If the user closes the Razorpay checkout, cancels the payment, or the payment fails, then:
+
+1. `verifypayment` is never completed successfully.
+2. The `payment.captured` webhook is not handled for that transaction.
+3. No `Payment` record is created.
+4. The user subscription remains unchanged.
 
 ## Environment Variables
 
