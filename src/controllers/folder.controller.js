@@ -13,7 +13,7 @@ const createfolder=asyncHandler(async(req,res)=>{
         owner:req.user._id
     })
     if(!newfolder){
-        return errorhandler(500,"folder not created",[]);
+        throw new errorhandler(500,"folder not created",[]);
     }
     else
       return res.status(200).json(new responseHandler(200,"folder created successfully",newfolder));

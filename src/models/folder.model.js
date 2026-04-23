@@ -10,7 +10,11 @@ const folderschema=new Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:"User",
         required:true
-    }
+    },
+    noofqueries:{
+            type:Number,
+            default:0
+           }
 },{
     timestamps:true
 })

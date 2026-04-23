@@ -49,7 +49,7 @@ const uploadsheet=asyncHandler(async(req,res)=>{
     });
     const savedsheet=await Sheet.findById(newsheet._id);
     if(!savedsheet){
-        return res.status(500).json(new errorhandler(500,"sheet not saved",[]));
+        throw new errorhandler(500,"sheet not saved",[]);
     }
     
     res.status(200).json(new responseHandler(200,"sheet uploaded successfully",savedsheet));
