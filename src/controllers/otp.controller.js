@@ -7,13 +7,17 @@ import errorhandler from "../utils/errorhandler.js";
 import { emailtemplate } from "../utils/emailtemplate.js";
 
 const createotpandmail = asyncHandler(async (req, res) => {
-  const { email } = req.body;
+  const email = (req.body?.email || "").trim().toLowerCase();
+  if (!email) {
+    throw new errorhandler(400, "Email is required");
+  }
+
   const otp = crypto.randomInt(100000, 999999);
   await redis.set(`otp${email}`, otp, "EX", 240);
 
   await nodemailermethod(email, otp);
   //ratelimiter
-  const key = `otp${email}${req.ip}`;
+  const key = `otp${email}:${req.ip}`;
   await redis.incr(key);
   await redis.expire(key, 60);
   return res

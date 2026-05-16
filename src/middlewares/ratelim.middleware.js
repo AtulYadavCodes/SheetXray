@@ -3,14 +3,13 @@ import errorhandler from "../utils/errorhandler.js";
 import redis from "../db/redis.js";
 
 export const ratelimMiddleware=(type)=>asyncHandler(async(req,res,next)=>{
-    const ip=req.ip;
     const key=`${type}${req.body.email}:${req.ip}`;
-    const attempts=await redis.get(key);
+    const attempts=Number(await redis.get(key) || 0);
     /*if(attempts===1){
         await redis.expire(key,60);
     }
         */
-    if(attempts&&attempts>5)
+     if(attempts>=5)
       if(type==="login")
          throw new errorhandler(429,"Too many login attempts. Please try again later.",);
       else
