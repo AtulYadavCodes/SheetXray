@@ -1,0 +1,7 @@
+@import "tailwindcss";
+body {
+  background-color: #000000; /* pure black for AMOLED */
+  color: white;
+}html {
+  scroll-behavior: smooth;
+}
