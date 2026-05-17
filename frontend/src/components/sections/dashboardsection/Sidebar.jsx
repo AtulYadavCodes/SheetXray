@@ -1,15 +1,11 @@
-// Sidebar.jsx
+import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 
-import { useState, useEffect, useRef } from "react";
-const Routes = [
-  {
-    path: "", label: "Files & Folders"
-  },
-  {
-    path: "profile", label: "User Profile"
-  }
-]
+const routes = [
+  { path: "", label: "Files & Folders" },
+  { path: "profile", label: "User Profile" }
+];
+
 function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState(null);
@@ -29,33 +25,57 @@ function Sidebar() {
     };
     fetchUser();
   }, []);
+
+  const closeMobileMenu = () => {
+    if (window.innerWidth < 640) setIsOpen(false);
+  };
+
   return (
     <>
+      {/* Mobile Toggle Button */}
       <button
-        className="sm:hidden fixed top-21 min-w-10 h-5 left-4 z-30  rounded-md  text-gray-400 "
         onClick={() => setIsOpen(!isOpen)}
+        className="fixed left-4 top-20 z-50 rounded-md   bg p-2 text-zinc-400 hover:text-white sm:hidden"
+        aria-label="Toggle Navigation Sidebar"
       >
-
+        <svg className="h-4 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          {isOpen ? (
+            null
+          ) : (
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+          )}
+        </svg>
       </button>
-      <aside className={`${isOpen ? "flex fixed z-40" : "hidden"}  sm:flex h-[80vh] w-64 flex-col border-r  p-4`}>
 
+      {/* Backdrop Backdrop Overlay for Mobile */}
+      {isOpen && (
+        <div 
+          onClick={closeMobileMenu} 
+          className="fixed inset-0 z-30 bg-black/60 backdrop-blur-sm sm:hidden"
+        />
+      )}
 
-
-
-        <div className="space-y-2">
-          {Routes.slice(0, 2).map((route) => {
-            const path = route.path ? `/dashboard/${route.path}` : "/dashboard";
-
+      {/* Main Sidebar Panel */}
+      <aside
+        className={`fixed inset-y-0 left-0 z-40 flex w-64 flex-col border-r border-zinc-900 bg-black p-4 pt-16 transition-transform duration-300 sm:translate-x-0 sm:pt-4 ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        } sm:sticky sm:top-[65px] sm:h-[calc(100vh-65px)]`}
+      >
+        {/* Main Route Navigation */}
+        <div className="space-y-1.5">
+          {routes.map((route) => {
+            const absolutePath = route.path ? `/dashboard/${route.path}` : "/dashboard";
             return (
               <NavLink
                 key={route.path}
-                to={path}
-                onClick={() => { if (window.innerWidth < 640) setIsOpen(!isOpen) }}
-                end={route.path === ""} // important for "/dashboard"
+                to={absolutePath}
+                end={route.path === ""}
+                onClick={closeMobileMenu}
                 className={({ isActive }) =>
-                  `w-full block text-left font-mono text-sm px-4 py-2 border transition ${isActive
-                    ? "bg-yellow-500 text-black border-yellow-500 font-semibold"
-                    : "bg-gray-800 text-gray-300 border-gray-700 hover:bg-gray-700"
+                  `block w-full rounded-md px-4 py-2.5 font-mono text-sm border transition duration-150 text-left ${
+                    isActive
+                      ? "bg-yellow-400 text-black border-yellow-400 font-semibold shadow-md shadow-yellow-400/10"
+                      : "bg-zinc-900 text-zinc-400 border-zinc-800 hover:bg-zinc-800 hover:text-white"
                   }`
                 }
               >
@@ -65,43 +85,23 @@ function Sidebar() {
           })}
         </div>
 
-        {/* Bottom */}
+        {/* Auto Spacer pushes dynamic actions to layout footer */}
         <div className="flex-1" />
 
-        {/* Bottom */}
-        <div className="space-y-3">
-          {Routes.slice(2).map((route) => {
-            const path = `/dashboard/${route.path}`;
-
-            return (
-              <NavLink
-                onClick={() => { if (window.innerWidth < 640) setIsOpen(!isOpen) }}
-                key={route.path}
-                to={path}
-                className={({ isActive }) =>
-                  `w-full block text-left font-mono text-sm px-4 py-2 border transition ${isActive
-                    ? "bg-yellow-500 text-black border-yellow-500 font-semibold"
-                    : "bg-gray-800 text-gray-300 border-gray-700 hover:bg-gray-700"
-                  }`
-                }
-              >
-                {route.label}
-              </NavLink>
-            );
-          })}
-
-          {/* Subscription Button */}
+        {/* Action Callouts */}
+        <div className="mt-auto pt-4 border-t border-zinc-900">
           <NavLink
             to="/dashboard/subs"
-            onClick={() => { if (window.innerWidth < 640) setIsOpen(!isOpen) }}
+            onClick={closeMobileMenu}
             className={({ isActive }) =>
-              `w-full block text-left font-mono text-sm px-4 py-2 border transition ${isActive
-                ? "bg-yellow-400 text-black border-yellow-400 font-semibold"
-                : "bg-gray-800 text-gray-300 border-gray-700 hover:bg-gray-700"
+              `block w-full rounded-md px-4 py-2.5 font-mono text-sm border transition duration-150 text-left ${
+                isActive
+                  ? "bg-yellow-400 text-black border-yellow-400 font-semibold"
+                  : "bg-zinc-900 text-zinc-300 border-zinc-800 hover:bg-zinc-800"
               }`
             }
           >
-            {user?.usertype === 'pro' ? '✓ Pro Plan' : '🚀 Get Pro'}
+            {user?.usertype === "pro" ? "✓ Pro Plan Active" : "🚀 Upgrade to Pro"}
           </NavLink>
         </div>
       </aside>

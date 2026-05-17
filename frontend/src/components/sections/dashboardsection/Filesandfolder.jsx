@@ -54,8 +54,8 @@ function Filesandfolder() {
         <h3 className="font-mono text-sm uppercase tracking-widest text-gray-400 px-1 hidden sm:block">
           Your Folders
         </h3>
-        <h3 className="font-mono text-sm uppercase tracking-widest text-gray-400 px-1 sm:hidden">
-          ☰ Your Folders
+        <h3 className="font-mono text-sm uppercase tracking-widest text-gray-400 px-9 sm:hidden">
+           Your Folders
         </h3>
 
         <button
