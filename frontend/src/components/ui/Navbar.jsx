@@ -1,112 +1,125 @@
-
-
-
-import { HashLink } from 'react-router-hash-link'
+import { useState } from 'react';
+import { HashLink } from 'react-router-hash-link';
 import { useAuth } from '../../Context/LoginContext';
 import { useNavigate } from 'react-router-dom';
 
-
-import { useState } from 'react';
 function Navbar() {
-	const { isAuth, setIsAuth } = useAuth();
+  const { isAuth, setIsAuth } = useAuth();
+  const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
 
-	const [open, setOpen] = useState(false);
-	const navigate = useNavigate();
-	//logout
-	const handleclick = async () => {
-		const url = `${import.meta.env.VITE_API_BASE}/api/v1/users/logout`
-		try {
-			const res = await fetch(url, {
-				method: "POST",
-				credentials: "include"
-			})
-			if (res.ok) {
+  const handleLogout = async () => {
+    const url = `${import.meta.env.VITE_API_BASE}/api/v1/users/logout`;
+    try {
+      const res = await fetch(url, { method: "POST", credentials: "include" });
+      if (res.ok) {
+        setIsAuth(false);
+        navigate("/", { replace: true });
+      }
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  };
 
-				navigate("/", { replace: true });
-				setIsAuth(false);
-			}
-		} catch (error) {
-			console.error("Logout error:", error);
-		}
+  // Centralized Navigation Configurations
+  const navLinks = [
+    { label: "Home", to: "/#", show: true },
+    { label: isAuth ? "Dashboard" : "Go to dashboard", to: "/dashboard/#", show: isAuth },
+  ];
 
-	}
-	//logout ends
-	return (
-		<header className="sticky w-full top-0 z-20 border-b-2 border-black bg-black">
+  return (
+    <header className="sticky top-0 z-50 w-full border-b border-zinc-800 bg-black backdrop-blur-md bg-opacity-95">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
+        
+        {/* Brand Logo */}
+        <HashLink smooth to="/#" className="font-mono text-lg font-semibold tracking-[0.16em] text-white">
+          SheetXray
+        </HashLink>
 
-			<div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
-				<HashLink smooth to="/#" className="font-mono text-lg font-semibold tracking-[0.16em] text-white">
-					SheetXray
-				</HashLink>
+        {/* Desktop Navigation */}
+        <nav className="hidden items-center gap-1 text-sm sm:flex sm:gap-3">
+          {navLinks.map((link) => link.show && (
+            <HashLink 
+              key={link.label} 
+              smooth 
+              to={link.to} 
+              className="rounded-md px-3 py-2 font-mono text-zinc-400 transition hover:text-white"
+            >
+              {link.label}
+            </HashLink>
+          ))}
+          
+          {!isAuth ? (
+            <HashLink
+              smooth
+              to="/auth"
+              className="rounded-md bg-yellow-400 px-3 py-2 font-mono font-semibold text-black transition hover:bg-yellow-300"
+            >
+              Sign Up / Login
+            </HashLink>
+          ) : (
+            <button
+              onClick={handleLogout}
+              className="rounded-md px-3 py-2 font-mono font-semibold text-zinc-400 transition hover:text-white"
+            >
+              Logout
+            </button>
+          )}
+        </nav>
 
-				<button onClick={() => setOpen(!open)} className='sm:hidden text-white' >{open ? "X" : "☰"}</button>
-				{/* NAV mobile */}
-				{open && (
-					<nav className=" mt-3 flex flex-col gap-2 border-t border-gray-800 pt-4 bg-black fixed left-0 right-0 top-16 px-4 pb-4">
-						<HashLink
-							onClick={() => setOpen(false)}
-							smooth
-							to="/#"
-							className="px-3 py-2 rounded-md font-mono text-gray-300 hover:text-white hover:bg-gray-900 transition"
-						>
-							Home
-						</HashLink>
+        {/* Mobile Hamburger Toggle */}
+        <button 
+          onClick={() => setOpen(!open)} 
+          className="block text-zinc-400 hover:text-white sm:hidden focus:outline-none" 
+          aria-label={open ? "Close menu" : "Open menu"}
+        >
+          <svg className="h-6 w-6 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            {open ? (
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            ) : (
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            )}
+          </svg>
+        </button>
 
-						{isAuth && (
-							<HashLink
-								onClick={() => setOpen(false)}
-								to="/dashboard/#"
-								className="px-3 py-2 rounded-md font-mono text-gray-300 hover:text-white hover:bg-gray-900 transition"
-							>
-								Dashboard
-							</HashLink>
-						)}
+        {/* Mobile Navigation Dropdown */}
+        {open && (
+          <nav className="absolute left-0 right-0 top-full flex flex-col gap-1 border-b border-zinc-800 bg-black px-4 pb-4 pt-2 shadow-xl sm:hidden">
+            {navLinks.map((link) => link.show && (
+              <HashLink
+                key={link.label}
+                smooth
+                to={link.to}
+                onClick={() => setOpen(false)}
+                className="rounded-md px-3 py-2 font-mono text-zinc-400 transition hover:bg-zinc-900 hover:text-white"
+              >
+                {link.label}
+              </HashLink>
+            ))}
 
-						{!isAuth ? (
-							<HashLink
-								onClick={() => setOpen(false)}
-								to="/auth"
-								className="px-3 py-2 rounded-md font-mono font-semibold text-black bg-yellow-400 hover:bg-yellow-300 transition"
-							>
-								Login
-							</HashLink>
-						) : (
-							<button
-								onClick={() => {
-									handleclick();
-									setOpen(false);
-								}}
-								className="px-3 py-2 rounded-md font-mono font-semibold text-gray-300 hover:text-white hover:bg-gray-900 transition text-left"
-							>
-								Logout
-							</button>
-						)}
+            {!isAuth ? (
+              <HashLink
+                smooth
+                to="/auth"
+                onClick={() => setOpen(false)}
+                className="mt-2 rounded-md bg-yellow-400 px-3 py-2 text-center font-mono font-semibold text-black transition hover:bg-yellow-300"
+              >
+                Sign Up / Login
+              </HashLink>
+            ) : (
+              <button
+                onClick={() => { handleLogout(); setOpen(false); }}
+                className="rounded-md px-3 py-2 text-left font-mono font-semibold text-zinc-400 transition hover:bg-zinc-900 hover:text-white"
+              >
+                Logout
+              </button>
+            )}
+          </nav>
+        )}
 
-					</nav>
-				)}
-				{/* NAV desktop */}
-				<nav className="hidden sm:flex flex-wrap items-center gap-2 text-sm sm:gap-3">
-					<HashLink smooth className="px-3 py-2 font-mono text-gray-300 transition hover:text-white" to="/#">
-						Home
-					</HashLink>
-					{isAuth && <HashLink smooth className="px-3 py-2 font-mono text-gray-300 transition hover:text-white" to="/dashboard">
-						Go to dashboard
-					</HashLink>}
-					{!isAuth ? (<HashLink
-						smooth className="rounded-md border border-yellow-500 bg-yellow-400 px-3 py-2 font-mono font-semibold text-black transition hover:bg-yellow-300"
-						to="/auth"
-					>
-						Sign Up / Login
-					</HashLink>) : <button
-						className="px-3 py-2 font-mono font-semibold text-gray-300 transition hover:text-white"
-						onClick={handleclick}
-					>
-						logout
-					</button>}
-				</nav>
-			</div>
-		</header>
-	)
+      </div>
+    </header>
+  );
 }
 
-export default Navbar
+export default Navbar;

@@ -40,9 +40,7 @@ function Subs() {
 
     return (
         <section className="w-full px-6 sm:px-10 lg:px-16 py-8 font-mono">
-            <h2 className="text-3xl font-semibold text-white mb-8">
-                Subscription Plans
-            </h2>
+            <div className="w-100 h-9"></div>
 
             {user?.usertype === 'premiummonthly' || 'premiumlifetime' ? (
                 // Already Pro
