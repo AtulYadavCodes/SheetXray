@@ -6,8 +6,15 @@ import responseHandler from "../utils/responseHandler.js";
 
 import mongoose from "mongoose";
 import { Qachat } from "../models/qachat.model.js";
+import { User } from "../models/user.model.js";
 
 const createfolder=asyncHandler(async(req,res)=>{
+    if(req.user.usertype==="free"){
+        const userfolderscount=await Folder.countDocuments({owner:req.user._id});
+        if(userfolderscount>=3){
+            throw new errorhandler(403,"free plan users can only create up to 3 folders. Please upgrade to pro to create more folders.",[]);
+        }
+    }
     const newfolder=await Folder.create({
         foldername:req.body.foldername,
         owner:req.user._id
@@ -16,6 +23,7 @@ const createfolder=asyncHandler(async(req,res)=>{
         throw new errorhandler(500,"folder not created",[]);
     }
     else
+        await User.findByIdAndUpdate(req.user._id,{$inc:{folders:1}});
       return res.status(200).json(new responseHandler(200,"folder created successfully",newfolder));
 })
 
@@ -59,9 +67,11 @@ const deletefolder=asyncHandler(async(req,res)=>{
     if(!folder){
         throw new errorhandler(404,"folder not found",[]);
     }
-    const sheetsinfolder=Sheet.find({folder:folderid}).select("_id");
-    await Sheet.deleteMany({_id:{$in:sheetsinfolder}});
+    await Sheet.deleteMany({ folder: folderid });
     const deletedfolder=await Folder.findByIdAndDelete(folderid);
+    if(deletedfolder){
+        await User.findByIdAndUpdate(req.user._id,{$inc:{folders:-1}});
+    }
     return res.status(200).json(new responseHandler(200,"folder deleted successfully",deletedfolder._id));
         
 })
@@ -75,6 +85,14 @@ const allsheetsinfolder=asyncHandler(async(req,res)=>{
     return res.status(200).json(new responseHandler(200,"sheets in folder fetched successfully",sheets));
 });
 
+const getchathistory=asyncHandler(async(req,res)=>{
+    const folderid=new mongoose.Types.ObjectId(req.params.folderid);
+    const chathistory=await Qachat.find({folderid:folderid});
+    if(!chathistory||chathistory.length===0){
+        throw new errorhandler(404,"no chat history found for this folder",[]);
+    }
+    return res.status(200).json(new responseHandler(200,"chat history fetched successfully",chathistory));
+})
 const queryfolder=asyncHandler(async(req,res)=>{
 
     
@@ -100,4 +118,4 @@ const queryfolder=asyncHandler(async(req,res)=>{
 
     return res.status(200).json(new responseHandler(200,"folder queried successfully",newQachat));
 })
-export {createfolder,getalluserfolders,queryfolder,deletefolder,allsheetsinfolder};
+export {createfolder,getalluserfolders,getchathistory,queryfolder,deletefolder,allsheetsinfolder};

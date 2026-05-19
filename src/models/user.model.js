@@ -39,10 +39,10 @@ const userSchema=new Schema({
     refreshTokens:{
         type:[String],
     },
-    folders:[{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"Folder"
-    }],
+    folders:{
+        type:Number,
+         default:0
+    },
     usertype:{
         type:String,
         enum:["free","premiumlifetime","premiummonthly"],
