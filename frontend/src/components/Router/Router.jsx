@@ -42,7 +42,7 @@ export const router = createBrowserRouter([
 
                     { path: "profile", element: <UserProfile /> },
                     { path: "subs", element: <Subs /> },
-                    { path: "files/:foldername", element: <Files /> }
+                    { path: "files/:folderid", element: <Files /> }
                 ]
             }
 

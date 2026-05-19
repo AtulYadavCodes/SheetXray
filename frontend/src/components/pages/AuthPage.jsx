@@ -132,7 +132,7 @@ function AuthPage({ mode = "login" }) {
             name="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white outline-none focus:border-yellow-400 placeholder-gray-500"
+            className="w-full border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white outline-none focus:border-white placeholder-gray-500"
           />
 
           {!isLogin && (
@@ -149,7 +149,7 @@ function AuthPage({ mode = "login" }) {
                 type="text"
                 name="otp"
                 placeholder="Enter OTP"
-                className="w-full border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white outline-none focus:border-yellow-400 placeholder-gray-500"
+                className="w-full border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white outline-none focus:border-white placeholder-gray-500"
               />
             </>
           )}
@@ -158,13 +158,13 @@ function AuthPage({ mode = "login" }) {
             type="password"
             name="password"
             placeholder="Password (min 6 chars)"
-            className="w-full border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white outline-none focus:border-yellow-400 placeholder-gray-500"
+            className="w-full border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white outline-none focus:border-white placeholder-gray-500"
           />
 
           {/* CTA */}
           <button
             type="submit"
-            className="w-full rounded-md border border-yellow-400 bg-yellow-400 px-4 py-2 font-mono text-sm font-semibold text-black hover:bg-yellow-300 transition"
+            className="w-full rounded-md border border-white bg-white px-4 py-2 font-mono text-sm font-semibold text-black hover:bg-gray-200 transition"
           >
             {isLogin ? "Login" : "Sign Up"}
           </button>
@@ -176,7 +176,7 @@ function AuthPage({ mode = "login" }) {
 
           <button
             onClick={() => setIsLogin(!isLogin)}
-            className="ml-2 font-mono text-yellow-400 underline hover:text-yellow-300"
+            className="ml-2 font-mono text-white underline hover:text-gray-200"
           >
             {isLogin ? "Sign up" : "Login"}
           </button>
