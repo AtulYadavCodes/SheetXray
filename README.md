@@ -135,7 +135,7 @@ flowchart LR
 
 ### External Services & Integrations
 
-- **ImageFlow**: Self-made media management service for user profile pictures ([GitHub](https://github.com/yourusername/imageflow))
+- **ImageFlow**: Self-made media management service for user profile pictures ([GitHub](https://github.com/AtulYadavCodes/imageflow))
 - **Cloudinary**: Cloud storage for spreadsheet files and documents
 - **OpenRouter**: Unified API for accessing multiple LLM providers
 - **Razorpay**: Payment gateway for subscription processing
@@ -831,7 +831,7 @@ The endpoint returns the optimized image URL from ImageFlow that can be displaye
 
 For more information, setup, and customization:
 
-📦 **ImageFlow GitHub**: [GitHub Repository Link](https://github.com/yourusername/imageflow)
+📦 **ImageFlow GitHub**: [GitHub Repository Link](https://github.com/AtulYadavCodes/imageflow)
 
 ---
 
