@@ -771,3 +771,133 @@ http://localhost:3000/api/v1
 ```
 
 All authenticated endpoints require the `Authorization: Bearer <accessToken>` header in the request.
+
+---
+
+## Getting Started with AI Features
+
+### Quick Start: Enable AI for Your Spreadsheets
+
+1. **Upload a spreadsheet** through the dashboard
+2. **Wait for indexing** to complete (status shown in file list)
+3. **Open the chat interface** for the folder
+4. **Ask questions** about your data:
+   - "What's the total revenue from Q1?"
+   - "Show me sales trends by region"
+   - "Which products had the highest growth?"
+
+### Example Queries
+
+```
+Query: "Calculate the average salary by department"
+Agent Steps:
+1. Retrieves relevant rows from the payroll sheet
+2. Groups data by department field
+3. Calculates averages using available tools
+4. Formats and returns result with context
+
+Query: "Which customers spent more than $10,000?"
+Agent Steps:
+1. Vector search finds customer purchase records
+2. Filters based on transaction amounts
+3. Returns customer names and totals
+4. Provides summary statistics
+
+Query: "Compare Q1 vs Q2 revenue trends"
+Agent Steps:
+1. Retrieves quarterly revenue data
+2. Calculates month-over-month changes
+3. Identifies trends and anomalies
+4. Generates formatted comparison report
+```
+
+### Using the AI Service Directly
+
+For advanced integration, call the AI service endpoints directly:
+
+```bash
+# Start a chat session
+curl -X POST http://localhost:8000/ai/v1/chat \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "What is the highest sales value?",
+    "folder_id": "folder_123",
+    "session_id": "session_456"
+  }'
+
+# Index a new sheet (automatic on upload, but can be triggered manually)
+curl -X POST http://localhost:8000/ai/v1/index \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "sheet_id": "sheet_789",
+    "sheet_content": "...",
+    "sheet_metadata": {}
+  }'
+
+# Use WebSocket for real-time streaming
+wscat -c ws://localhost:8000/ai/v1/ws/chat/session_456 \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+```
+
+### LangChain Agent Tools
+
+The AI agent has access to these tools for reasoning:
+
+- **Data Filtering**: Filter rows based on conditions
+- **Calculations**: Sum, average, count, min, max operations
+- **Grouping**: Group data by specified columns
+- **Sorting**: Sort data by multiple columns
+- **Formatting**: Format results in tables, lists, or summaries
+- **Time Series**: Analyze trends over time periods
+- **Statistical Analysis**: Basic statistical operations
+
+### Best Practices
+
+1. **Sheet Organization**: Ensure consistent column headers and data types
+2. **Query Clarity**: Ask specific, well-formed questions for better results
+3. **Chunk Size**: For very large sheets, results are paginated automatically
+4. **Context Limits**: The agent maintains context for the last 5-10 exchanges
+5. **Rate Limiting**: API calls are rate-limited; implement exponential backoff
+6. **Error Handling**: Listen for error events in WebSocket for graceful degradation
+
+### Troubleshooting
+
+**Issue: "Vector database connection failed"**
+
+- Ensure Chroma or Pinecone is running/configured
+- Check `VECTOR_DB_TYPE` environment variable
+- Verify connection credentials in AI service `.env`
+
+**Issue: "OpenRouter API key invalid"**
+
+- Verify `OPENROUTER_API_KEY` is set in AI service `.env`
+- Check OpenRouter account and API quotas
+- Ensure model name matches available models on OpenRouter
+
+**Issue: "Sheet indexing timeout"**
+
+- Large sheets may take longer to embed
+- Check vector DB performance and available memory
+- Consider splitting very large sheets
+
+**Issue: "Chat response is truncated or incomplete"**
+
+- Enable response streaming for better handling
+- Use WebSocket instead of HTTP for large responses
+- Check token limits for selected LLM model
+
+---
+
+## Contributing & Development
+
+See individual service READMEs for contribution guidelines:
+
+- Frontend: `frontend/README.md`
+- Backend: See inline documentation in `src/`
+- AI Service: `ai_service/README.md` (when available)
+
+## License
+
+This project is licensed under the MIT License.
