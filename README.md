@@ -1,16 +1,36 @@
-# SheetXray Backend
+# SheetXray
 
 <p>
-	<img src="https://img.shields.io/badge/SheetXray-Backend-0f766e" alt="SheetXray" />
+	<img src="https://img.shields.io/badge/SheetXray-Full%20Stack-0f766e" alt="SheetXray" />
+	<img src="https://img.shields.io/badge/React-18-61dafb" alt="React" />
+	<img src="https://img.shields.io/badge/Vite-Latest-646cff" alt="Vite" />
 	<img src="https://img.shields.io/badge/Express-5-1d4ed8" alt="Express" />
+	<img src="https://img.shields.io/badge/FastAPI-Latest-009485" alt="FastAPI" />
+	<img src="https://img.shields.io/badge/LangChain-AI%20Agents-41b883" alt="LangChain" />
+	<img src="https://img.shields.io/badge/OpenRouter-LLM-ff6b35" alt="OpenRouter" />
+	<img src="https://img.shields.io/badge/RAG-Vector%20Search-9c27b0" alt="RAG" />
 	<img src="https://img.shields.io/badge/MongoDB-Mongoose-16a34a" alt="MongoDB" />
 	<img src="https://img.shields.io/badge/Redis-Rate%20Limit-f97316" alt="Redis" />
 	<img src="https://img.shields.io/badge/Cloudinary-Uploads-db2777" alt="Cloudinary" />
+	<img src="https://img.shields.io/badge/Docker-Compose-2496ed" alt="Docker" />
 </p>
 
-SheetXray is the backend for a spreadsheet assistant that lets users register, log in, organize files into folders, upload sheet documents, and prepare data for future query/chat workflows.
+SheetXray is an advanced full-stack spreadsheet assistant platform that enables users to register, log in, organize files into folders, upload sheet documents, and leverage AI-powered RAG (Retrieval Augmented Generation) agents for intelligent query/chat workflows. The application features a modern React frontend with Vite, a robust Express backend with JWT authentication, a dedicated Python FastAPI service for AI operations with LangChain and OpenRouter integration, and integrated payment processing via Razorpay.
 
 ## Highlights
+
+### Frontend
+
+- Modern React 18 UI built with Vite for fast development
+- User authentication with JWT tokens (login/register/logout)
+- Responsive layout with navigation and sidebar
+- Dashboard with file management and folder organization
+- Profile management and subscription status display
+- Integration with Razorpay payment gateway for premium subscriptions
+- Protected routes for authenticated users
+- Chat interface for AI-powered spreadsheet queries
+
+### Backend (Express)
 
 - User auth with JWT access and refresh tokens
 - OTP-based registration flow
@@ -22,6 +42,19 @@ SheetXray is the backend for a spreadsheet assistant that lets users register, l
 - File upload support through Multer and Cloudinary
 - Razorpay order creation and payment verification endpoints
 - Protected routes for user, folder, and sheet operations
+- Integration with Python FastAPI AI service for intelligent queries
+
+### AI Service (Python FastAPI)
+
+- FastAPI-based microservice for AI and RAG operations
+- LangChain integration for advanced chain-of-thought reasoning
+- OpenRouter API integration for flexible LLM model selection
+- RAG (Retrieval Augmented Generation) capabilities for context-aware responses
+- Intelligent agent framework for multi-step reasoning
+- Vector embeddings for semantic search and document retrieval
+- Sheet content processing and indexing
+- Real-time chat interface powered by AI agents
+- Support for multiple AI models through OpenRouter
 
 > Login and OTP endpoints are rate-limited through Redis to reduce abuse and repeated attempts.
 
@@ -36,13 +69,45 @@ flowchart LR
 		E --> F[JWT Protected Routes]
 		E --> G[Rate Limited by Redis]
 		B --> H[Rate Limited by Redis]
-		F --> I[Create Payment Order]
-		I --> J[Razorpay Checkout]
-		J --> K[Verify Payment Signature]
-		K --> L[Update Subscription]
+		F --> I[Upload Sheet]
+		I --> J[Index in Vector DB]
+		F --> K[Chat Query]
+		J --> L[RAG Retrieval]
+		K --> L
+		L --> M[LangChain Agent]
+		M --> N[OpenRouter LLM]
+		N --> O[Stream Response]
+		O --> F
 ```
 
+### Authentication & File Upload Flow
+
+1. User registers with OTP verification
+2. Login generates JWT tokens with rate limiting
+3. Sheets uploaded and stored on Cloudinary
+4. Sheet content indexed for AI search
+
+### AI & RAG Query Flow
+
+1. User sends query through chat interface
+2. Query embedded into vector space
+3. Vector similarity search retrieves relevant sheet sections
+4. LangChain agent processes query + retrieved context
+5. Agent routes to appropriate OpenRouter LLM
+6. Response streamed back to user in real-time
+
 ## Tech Stack
+
+### Frontend
+
+- React 18
+- Vite (build tool and dev server)
+- React Router for client-side routing
+- Context API for state management
+- CSS for styling
+- Axios or Fetch API for HTTP requests
+
+### Backend (Express)
 
 - Node.js
 - Express 5
@@ -54,6 +119,61 @@ flowchart LR
 - Nodemailer for OTP email sending
 - JWT and cookie-parser for authentication
 - Razorpay for payment processing
+
+### AI Service (Python)
+
+- FastAPI (high-performance async web framework)
+- LangChain (orchestration framework for LLM applications)
+- OpenRouter API client (unified LLM provider)
+- Pydantic (data validation)
+- Vector databases (Pinecone/Chroma for embeddings)
+- Document processing libraries (pdf2image, python-pptx, openpyxl for sheet parsing)
+- Async/await for concurrent request handling
+- WebSocket support for real-time chat
+
+### Infrastructure
+
+- Docker and Docker Compose
+- MongoDB container
+- Redis container
+- Multi-stage builds for optimized images
+
+## Architecture Overview
+
+SheetXray follows a client-server architecture with the following layers:
+
+```
+┌─────────────────────────────────────────────────────────┐
+│              Frontend (React + Vite)                    │
+│         Running on http://localhost:5173                │
+└─────────────────────────────────────────────────────────┘
+         ↕ (HTTP/REST)                    ↕ (WebSocket)
+┌──────────────────────────────────────────────────────────────┐
+│           Backend API (Express)   +   AI Service (FastAPI)   │
+│  /api/v1/* (3000)               /ai/* (8000)                │
+│  Auth, Files, Payments          Chat, RAG, Agents           │
+└──────────────────────────────────────────────────────────────┘
+    ↕              ↕              ↕              ↕
+┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐
+│ MongoDB  │  │  Redis   │  │ Vector   │  │OpenRouter│
+│Container │  │Container │  │DB/Chroma │  │  API     │
+└──────────┘  └──────────┘  └──────────┘  └──────────┘
+    ↕              ↕              ↕
+┌──────────┐  ┌──────────┐  ┌──────────┐
+│Cloudinary│  │ Razorpay │  │S3/Cloud  │
+│ Uploads  │  │ Payments │  │ Storage  │
+└──────────┘  └──────────┘  └──────────┘
+```
+
+- **Frontend**: Single Page Application (SPA) served by Vite dev server during development
+- **Express Backend**: REST API handling authentication, file operations, payments, and service orchestration on port 3000
+- **FastAPI AI Service**: Dedicated async service for LLM operations, RAG, and intelligent agents on port 8000
+- **Database**: MongoDB for persistent data storage (users, folders, sheets, payments)
+- **Cache**: Redis for rate limiting, session management, and vector cache
+- **Vector Store**: Chroma/Pinecone for storing and retrieving embeddings for RAG
+- **Storage**: Cloudinary for sheet file uploads
+- **LLM Provider**: OpenRouter API for flexible access to multiple AI models
+- **Payments**: Razorpay for payment processing and subscription management
 
 ## API Base
 
@@ -105,6 +225,50 @@ Example:
 | POST   | `/api/v1/payments/verifypayment` | JWT    | Verify Razorpay signature and update user subscription data   |
 | POST   | `/api/v1/payments/webhook`       | Public | Receive Razorpay payment events and process captured payments |
 
+### AI & RAG Routes (FastAPI)
+
+| Method    | Endpoint                    | Auth | Purpose                                                     |
+| --------- | --------------------------- | ---- | ----------------------------------------------------------- |
+| POST      | `/ai/v1/chat`               | JWT  | Send a message to the AI agent for real-time chat responses |
+| POST      | `/ai/v1/query`              | JWT  | Query spreadsheet data using RAG with context awareness     |
+| POST      | `/ai/v1/index`              | JWT  | Index uploaded sheets for RAG vector embeddings             |
+| GET       | `/ai/v1/history/:folderid`  | JWT  | Retrieve chat history for a specific folder                 |
+| POST      | `/ai/v1/analyze`            | JWT  | Analyze sheet data and provide insights                     |
+| WebSocket | `/ai/v1/ws/chat/:sessionid` | JWT  | WebSocket connection for real-time streaming responses      |
+| DELETE    | `/ai/v1/cache/:folderid`    | JWT  | Clear RAG cache and embeddings for a folder                 |
+
+### AI & RAG Workflow
+
+The AI service powers intelligent spreadsheet analysis through the following workflow:
+
+1. **Document Ingestion**: Uploaded sheet files are processed and converted to text/structured data
+2. **Embedding Generation**: LangChain chunks the data and generates vector embeddings via OpenRouter embeddings API
+3. **Vector Storage**: Embeddings are stored in Chroma/Pinecone vector database for efficient similarity search
+4. **Query Processing**: User queries are embedded and matched against stored vectors
+5. **Context Retrieval**: Top-k relevant chunks are retrieved from the vector store (RAG context)
+6. **Agent Reasoning**: LangChain agents combine user query + RAG context + available tools for multi-step reasoning
+7. **LLM Response**: OpenRouter API calls the selected LLM model with augmented context
+8. **Response Streaming**: Real-time streaming responses via WebSocket to frontend
+
+### AI Agent Capabilities
+
+- **Multi-step Reasoning**: Agents can break down complex queries into sub-queries
+- **Tool Integration**: Agents can use external tools for calculations, data transformations
+- **Memory Management**: Maintains conversation context and session state
+- **Context-Aware Responses**: Uses RAG to ground responses in actual spreadsheet data
+- **Error Handling**: Graceful fallbacks and clarifying questions for ambiguous queries
+- **Model Flexibility**: Seamless switching between different LLM providers via OpenRouter
+
+### OpenRouter Integration
+
+SheetXray uses OpenRouter to provide access to multiple LLM models:
+
+- **Supported Models**: GPT-4, Claude 3, Mixtral, Llama 2, and many more
+- **Unified API**: Single interface for model selection and cost management
+- **Fallback Handling**: Automatic fallback to alternative models if primary fails
+- **Usage Tracking**: Monitor token usage and costs per model
+- **A/B Testing**: Easy model comparison for performance tuning
+
 ### Payment Flow
 
 1. Client sends `POST /api/v1/payments/createorder` with body `{ "type": "premiumlifetime" }` or another supported plan value used by the frontend.
@@ -136,6 +300,8 @@ If the user closes the Razorpay checkout, cancels the payment, or the payment fa
 
 ## Environment Variables
 
+### Backend Environment (.env in project root)
+
 Create a `.env` file in the project root with values similar to:
 
 ```env
@@ -156,43 +322,452 @@ EMAIL_USER=your_email@gmail.com
 EMAIL_PASS=your_email_app_password
 RAZORPAY_KEY_ID=your_razorpay_key_id
 RAZORPAY_KEY_SECRET=your_razorpay_key_secret
+RAZORPAY_WEBHOOK_SECRET=your_razorpay_webhook_secret
+AI_SERVICE_URL=http://localhost:8000
 ```
 
 For Gmail SMTP, use a Google App Password in `EMAIL_PASS` instead of your normal account password.
 
+### AI Service Environment (.env in ai_service/ directory or Python settings)
+
+Create `.env` or update your Python environment with:
+
+```env
+OPENROUTER_API_KEY=your_openrouter_api_key
+OPENROUTER_MODEL=openai/gpt-4-turbo  # or another supported model
+OPENROUTER_EMBEDDING_MODEL=openai/text-embedding-3-small
+VECTOR_DB_TYPE=chroma  # or pinecone
+CHROMA_HOST=localhost
+CHROMA_PORT=8001
+PINECONE_API_KEY=your_pinecone_api_key
+PINECONE_ENVIRONMENT=your_environment
+PINECONE_INDEX_NAME=sheetxray
+MONGODB_URI=mongodb://127.0.0.1:27017
+REDIS_HOST=127.0.0.1
+REDIS_PORT=6379
+LOG_LEVEL=INFO
+EMBEDDING_DIMENSION=1536
+CHUNK_SIZE=1000
+CHUNK_OVERLAP=100
+MAX_RETRIEVED_CHUNKS=5
+```
+
+### Frontend Environment (.env in frontend/ directory)
+
+Create a `.env` file in the `frontend/` directory:
+
+```env
+VITE_API_BASE_URL=http://localhost:3000/api/v1
+VITE_AI_WS_URL=ws://localhost:8000
+```
+
 ## Local Setup
 
-1. Install dependencies.
+### Prerequisites
+
+- Node.js (v14 or higher)
+- npm or yarn
+- MongoDB (local or Docker)
+- Redis (local or Docker)
+- Git
+
+### Option 1: Using Docker Compose (Recommended)
+
+This is the easiest way to get the entire stack running with all services containerized.
+
+1. **Clone and navigate to the project:**
+
+```bash
+cd SheetXray
+```
+
+2. **Create environment files:**
+
+Create `.env` in the project root with the backend environment variables (see Environment Variables section above).
+
+Create `frontend/.env` with the frontend environment variables.
+
+Create `ai_service/.env` with the AI service environment variables.
+
+3. **Start all services with Docker Compose:**
+
+```bash
+docker compose up --build
+```
+
+This will start:
+
+- Frontend (Vite dev server on http://localhost:5173)
+- Backend (Express API on http://localhost:3000)
+- AI Service (FastAPI on http://localhost:8000)
+- MongoDB (container)
+- Redis (container)
+- Vector DB (Chroma on http://localhost:8001 if configured)
+
+4. **Access the application:**
+
+- Frontend: http://localhost:5173
+- Backend API: http://localhost:3000/api/v1
+- MongoDB: localhost:27017
+
+5. **Stop all services:**
+
+```bash
+docker compose down
+```
+
+### Option 2: Local Development Setup
+
+Run frontend and backend separately on your machine with local MongoDB and Redis.
+
+#### Backend Setup
+
+1. **Navigate to project root and install dependencies:**
 
 ```bash
 npm install
 ```
 
-2. Start Redis if you are using the included Docker Compose setup.
+2. **Start Redis (requires Redis installed locally):**
+
+On Windows (if Redis is installed via WSL or native):
 
 ```bash
-docker compose up -d
+redis-server
 ```
 
-3. Create the `.env` file and fill in the variables above.
+On macOS:
 
-4. Start the server.
+```bash
+redis-server
+```
+
+3. **Create the `.env` file** (see Environment Variables section).
+
+4. **Start the backend server:**
 
 ```bash
 npm start
 ```
 
+Server will run on `http://localhost:3000`
+
+#### Frontend Setup
+
+1. **Navigate to the frontend directory:**
+
+```bash
+cd frontend
+```
+
+2. **Install dependencies:**
+
+```bash
+npm install
+```
+
+3. **Create `.env` file** (see Environment Variables section).
+
+4. **Start the development server:**
+
+```bash
+npm run dev
+```
+
+Frontend will run on `http://localhost:5173`
+
+#### AI Service Setup
+
+1. **Navigate to the AI service directory:**
+
+```bash
+cd ai_service
+```
+
+2. **Create a Python virtual environment:**
+
+```bash
+python -m venv venv
+```
+
+3. **Activate the virtual environment:**
+
+On Windows:
+
+```bash
+venv\Scripts\activate
+```
+
+On macOS/Linux:
+
+```bash
+source venv/bin/activate
+```
+
+4. **Install Python dependencies:**
+
+```bash
+pip install -r requirements.txt
+```
+
+5. **Create `.env` file** (see Environment Variables section).
+
+6. **Start the FastAPI server:**
+
+```bash
+python -m uvicorn main:app --reload --host 0.0.0.0 --port 8000
+```
+
+AI Service will run on `http://localhost:8000`
+
+#### Vector Database Setup (Optional but Recommended)
+
+Chroma vector database for RAG embeddings:
+
+```bash
+docker run -d -p 8001:8000 --name chroma chromadb/chroma:latest
+```
+
+Or use Pinecone cloud: Configure `PINECONE_API_KEY` and `PINECONE_ENVIRONMENT` in AI service `.env`
+
+#### Database Setup
+
+If not using Docker Compose, ensure MongoDB and Redis are running:
+
+**MongoDB:**
+
+- Local installation: MongoDB should be running on `localhost:27017`
+- Docker container:
+
+```bash
+docker run -d -p 27017:27017 --name mongodb mongo:latest
+```
+
+**Redis:**
+
+- Local installation: Redis should be running on `localhost:6379`
+- Docker container:
+
+```bash
+docker run -d -p 6379:6379 --name redis redis:latest
+```
+
+### Option 3: Hybrid Setup (Local Frontend + Docker Backend Services)
+
+Run the frontend locally while using Docker for backend dependencies.
+
+1. **Start Docker services:**
+
+```bash
+docker compose up -d mongodb redis
+```
+
+2. **Backend setup:**
+
+```bash
+npm install
+npm start
+```
+
+3. **Frontend setup:**
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
 ## Project Structure
 
-- `src/controllers` contains route handlers
+```
+SheetXray/
+├── frontend/                          # React Vite application
+│   ├── src/
+│   │   ├── components/               # Reusable UI components
+│   │   │   ├── layout/              # Layout wrapper
+│   │   │   ├── pages/               # Page components (Auth, Dashboard, Home)
+│   │   │   ├── Router/              # Routing logic (Protected routes)
+│   │   │   ├── sections/            # Feature sections (Hero, Chat, Files, etc.)
+│   │   │   └── ui/                  # UI components (Navbar, Footer)
+│   │   ├── Context/                 # React Context for state
+│   │   │   ├── LoginContext.jsx
+│   │   │   └── Hookcustom/          # Custom hooks
+│   │   ├── App.jsx
+│   │   ├── main.jsx
+│   │   └── index.css
+│   ├── vite.config.js
+│   ├── package.json
+│   └── Dockerfile                   # Frontend container image
+│
+├── src/                               # Express backend
+│   ├── controllers/                 # Route handlers
+│   │   ├── user.controller.js
+│   │   ├── folder.controller.js
+│   │   ├── sheet.controller.js
+│   │   ├── payment.controller.js
+│   │   └── otp.controller.js
+│   ├── middlewares/                 # Express middleware
+│   │   ├── auth.middleware.js       # JWT validation
+│   │   ├── verifyotp.middleware.js  # OTP verification
+│   │   ├── multer.middleware.js     # File upload
+│   │   └── ratelim.middleware.js    # Rate limiting
+│   ├── models/                      # Mongoose schemas
+│   │   ├── user.model.js
+│   │   ├── folder.model.js
+│   │   ├── sheet.model.js
+│   │   ├── payment.model.js
+│   │   └── qachat.model.js
+│   ├── routes/                      # API route definitions
+│   │   ├── user.routes.js
+│   │   ├── folder.routes.js
+│   │   ├── sheet.routes.js
+│   │   └── payment.route.js
+│   ├── utils/                       # Helper utilities
+│   │   ├── asyncHandler.js         # Async error wrapper
+│   │   ├── errorhandler.js         # Error handling
+│   │   ├── responseHandler.js      # Standardized responses
+│   │   ├── uploadoncloudinary.js   # Cloudinary integration
+│   │   ├── mailtransport.js        # Email configuration
+│   │   ├── razorpay.js             # Razorpay utilities
+│   │   ├── cron.js                 # Scheduled tasks
+│   │   └── emailtemplate.js        # Email templates
+│   ├── db/                          # Database configuration
+│   │   ├── index.js                # MongoDB connection
+│   │   └── redis.js                # Redis connection
+│   ├── app.js                       # Express app setup
+│   ├── index.js                     # Server entry point
+│   └── constant.js                  # Constants and config
+│
+├── public/                           # Static files and temp storage
+│   └── temp/
+│
+├── ai_service/                        # FastAPI AI/RAG service
+│   ├── main.py                      # FastAPI app entry point
+│   ├── config.py                    # Configuration and environment
+│   ├── requirements.txt             # Python dependencies
+│   ├── agents/                      # LangChain agent implementations
+│   │   ├── __init__.py
+│   │   ├── sheet_agent.py          # Spreadsheet query agent
+│   │   └── chat_agent.py           # Multi-turn conversation agent
+│   ├── models/                      # Pydantic models for validation
+│   │   ├── __init__.py
+│   │   ├── chat.py                 # Chat request/response models
+│   │   └── rag.py                  # RAG models
+│   ├── services/                    # Business logic services
+│   │   ├── __init__.py
+│   │   ├── embedding_service.py    # Vector embedding generation
+│   │   ├── rag_service.py          # RAG retrieval and indexing
+│   │   ├── llm_service.py          # OpenRouter LLM integration
+│   │   └── chat_service.py         # Chat management
+│   ├── routes/                      # FastAPI route handlers
+│   │   ├── __init__.py
+│   │   ├── chat.py                 # Chat endpoints
+│   │   ├── rag.py                  # RAG endpoints
+│   │   └── health.py               # Health check
+│   ├── utils/                       # Helper utilities
+│   │   ├── __init__.py
+│   │   ├── vector_db.py           # Vector database interface (Chroma/Pinecone)
+│   │   ├── sheet_parser.py        # Sheet content extraction
+│   │   ├── cache.py               # Redis caching utilities
+│   │   └── logging.py             # Logging configuration
+│   ├── prompts/                     # LLM prompt templates
+│   │   ├── __init__.py
+│   │   ├── system_prompts.py       # System message templates
+│   │   └── few_shots.py            # Few-shot examples
+│   ├── tests/                       # Unit and integration tests
+│   │   └── test_*.py
+│   └── Dockerfile                   # Container image for AI service
+│
+├── docker-compose.yaml              # Docker Compose configuration
+├── package.json                     # Backend dependencies
+└── README.md                        # This file
+```
+
+### Key Directories
+
+**Backend (Express):**
+
+- `src/controllers` contains route handlers for all API endpoints
 - `src/middlewares` contains auth, OTP, upload, and rate-limit middleware
-- `src/models` contains Mongoose schemas
-- `src/routes` defines the API endpoints
-- `src/utils` contains shared helpers
+- `src/models` contains Mongoose schemas for MongoDB collections
+- `src/routes` defines all API routes (mounted under `/api/v1`)
+- `src/utils` contains shared helpers (email, payment, uploads, error handling)
+
+**Frontend (React):**
+
+- `src/components` contains React components organized by feature area
+- `src/Context` manages global state using React Context API
+- `src/components/Router` handles protected routes and navigation
+- `src/components/pages` contains page-level components (Home, Auth, Dashboard)
+- `src/components/sections` contains reusable feature sections
+
+**AI Service (FastAPI):**
+
+- `ai_service/agents` contains LangChain agent implementations for spreadsheet queries and conversation
+- `ai_service/services` contains core business logic for embeddings, RAG, LLM calls, and chat
+- `ai_service/routes` defines FastAPI endpoints for chat, RAG, indexing, and health checks
+- `ai_service/utils` contains vector DB interfaces, sheet parsing, caching, and logging utilities
+- `ai_service/models` contains Pydantic models for request/response validation
+- `ai_service/prompts` contains system prompts and few-shot examples for LLM optimization
 
 ## Notes
 
-- The current backend already supports user auth, folder management, and sheet uploads.
-- Login and OTP requests are protected with Redis-backed rate limiting.
-- The query route is available on folders, which is the current entry point for spreadsheet question workflows.
-- Future RAG features can be layered on top of the existing upload and folder pipeline.
+### Full-Stack Features
+
+- User authentication with JWT tokens and refresh token rotation
+- OTP-based registration with email verification
+- Secure payment processing with Razorpay webhook handling
+- File uploads to Cloudinary with folder organization
+- Redis-backed rate limiting to prevent abuse
+- Protected API routes requiring JWT authentication
+- Responsive React frontend with client-side routing
+- Subscription-based access control
+
+### Important Implementation Details
+
+- The Razorpay webhook route is mounted **before** `express.json()` to access raw request body for signature verification
+- Webhook signatures use `HMAC-SHA256` with the webhook secret
+- Duplicate payment webhook events are idempotent (ignored if already processed)
+- Login and OTP endpoints use Redis-backed rate limiting
+- File uploads are validated and stored on Cloudinary
+- Email notifications are sent for registration and password updates
+
+### AI & RAG Implementation Details
+
+- **LangChain Integration**: LangChain orchestrates multi-step reasoning chains combining user queries with RAG context
+- **Vector Embeddings**: Sheet content is chunked and embedded using OpenRouter's embedding models
+- **Semantic Search**: Vector similarity search retrieves the most relevant sheet passages for user queries
+- **Agent Framework**: LangChain agents support tool use, memory management, and complex reasoning
+- **OpenRouter Models**: Supports any model available on OpenRouter with automatic fallback logic
+- **Real-time Streaming**: WebSocket connections enable live response streaming for better UX
+- **Rate Limiting**: API calls to OpenRouter and vector DB are cached and rate-limited via Redis
+- **Context Window Management**: Intelligent context windowing prevents token limit issues on large sheets
+- **Memory Persistence**: Chat history and query results are stored in MongoDB for session continuity
+
+### Performance Considerations
+
+- **Async Processing**: FastAPI's async nature handles concurrent requests efficiently
+- **Embedding Caching**: Vector embeddings are cached to reduce repeated computations
+- **Connection Pooling**: MongoDB and Redis connections are pooled for optimal performance
+- **Response Streaming**: Large responses are streamed to prevent timeouts
+- **Batch Processing**: Multiple sheet embeddings can be processed in parallel
+
+### Future Enhancements
+
+- Advanced RAG features (multi-hop reasoning, cross-sheet analysis)
+- Chart generation from query results
+- Advanced file processing (images, scanned documents via OCR)
+- Team collaboration and shared analysis
+- Advanced analytics and dashboards
+- Custom model fine-tuning on user data
+- Real-time spreadsheet syncing
+
+## API Reference
+
+### Base URL
+
+```
+http://localhost:3000/api/v1
+```
+
+All authenticated endpoints require the `Authorization: Bearer <accessToken>` header in the request.
