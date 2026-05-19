@@ -131,11 +131,10 @@ flowchart LR
 - Vector databases (Pinecone/Chroma for embeddings)
 - Document processing libraries (pdf2image, python-pptx, openpyxl for sheet parsing)
 - Async/await for concurrent request handling
-- WebSocket support for real-time chat
 
 ### External Services & Integrations
 
-- **ImageFlow**: Self-made media management service for user profile pictures ([GitHub](https://github.com/AtulYadavCodes/imageflow))
+- **ImageFlow**: Self-made media management service for user profile pictures ([GitHub](https://github.com/yourusername/imageflow))
 - **Cloudinary**: Cloud storage for spreadsheet files and documents
 - **OpenRouter**: Unified API for accessing multiple LLM providers
 - **Razorpay**: Payment gateway for subscription processing
@@ -147,44 +146,6 @@ flowchart LR
 - MongoDB container
 - Redis container
 - Multi-stage builds for optimized images
-
-## Architecture Overview
-
-SheetXray follows a client-server architecture with the following layers:
-
-```
-┌─────────────────────────────────────────────────────────┐
-│              Frontend (React + Vite)                    │
-│         Running on http://localhost:5173                │
-└─────────────────────────────────────────────────────────┘
-         ↕ (HTTP/REST)                    ↕ (WebSocket)
-┌──────────────────────────────────────────────────────────────┐
-│           Backend API (Express)   +   AI Service (FastAPI)   │
-│  /api/v1/* (3000)               /ai/* (8000)                │
-│  Auth, Files, Payments          Chat, RAG, Agents           │
-└──────────────────────────────────────────────────────────────┘
-    ↕              ↕              ↕              ↕
-┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐
-│ MongoDB  │  │  Redis   │  │ Vector   │  │OpenRouter│
-│Container │  │Container │  │DB/Chroma │  │  API     │
-└──────────┘  └──────────┘  └──────────┘  └──────────┘
-    ↕              ↕              ↕
-┌──────────┐  ┌──────────┐  ┌──────────┐
-│Cloudinary│  │ImageFlow │  │ Razorpay │
-│Sheets    │  │Profiles  │  │ Payments │
-└──────────┘  └──────────┘  └──────────┘
-```
-
-- **Frontend**: Single Page Application (SPA) served by Vite dev server during development
-- **Express Backend**: REST API handling authentication, file operations, payments, and service orchestration on port 3000
-- **FastAPI AI Service**: Dedicated async service for LLM operations, RAG, and intelligent agents on port 8000
-- **Database**: MongoDB for persistent data storage (users, folders, sheets, payments)
-- **Cache**: Redis for rate limiting, session management, and vector cache
-- **Vector Store**: Chroma/Pinecone for storing and retrieving embeddings for RAG
-- **File Storage**: Cloudinary for spreadsheet uploads; ImageFlow for profile pictures
-- **Profile Service**: ImageFlow for user avatar management
-- **LLM Provider**: OpenRouter API for flexible access to multiple AI models
-- **Payments**: Razorpay for payment processing and subscription management
 
 ## API Base
 
@@ -345,7 +306,6 @@ Create `.env` or update your Python environment with:
 
 ```env
 OPENROUTER_API_KEY=your_openrouter_api_key
-OPENROUTER_MODEL=openai/gpt-4-turbo  # or another supported model
 OPENROUTER_EMBEDDING_MODEL=openai/text-embedding-3-small
 VECTOR_DB_TYPE=chroma  # or pinecone
 CHROMA_HOST=localhost
@@ -831,7 +791,7 @@ The endpoint returns the optimized image URL from ImageFlow that can be displaye
 
 For more information, setup, and customization:
 
-📦 **ImageFlow GitHub**: [GitHub Repository Link](https://github.com/AtulYadavCodes/imageflow)
+📦 **ImageFlow GitHub**: [GitHub Repository Link](https://github.com/yourusername/imageflow)
 
 ---
 
