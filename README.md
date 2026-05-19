@@ -131,6 +131,7 @@ flowchart LR
 - Vector databases (Pinecone/Chroma for embeddings)
 - Document processing libraries (pdf2image, python-pptx, openpyxl for sheet parsing)
 - Async/await for concurrent request handling
+- WebSocket support for real-time chat
 
 ### External Services & Integrations
 
@@ -146,6 +147,44 @@ flowchart LR
 - MongoDB container
 - Redis container
 - Multi-stage builds for optimized images
+
+## Architecture Overview
+
+SheetXray follows a client-server architecture with the following layers:
+
+```
+┌─────────────────────────────────────────────────────────┐
+│              Frontend (React + Vite)                    │
+│         Running on http://localhost:5173                │
+└─────────────────────────────────────────────────────────┘
+         ↕ (HTTP/REST)                    ↕ (WebSocket)
+┌──────────────────────────────────────────────────────────────┐
+│           Backend API (Express)   +   AI Service (FastAPI)   │
+│  /api/v1/* (3000)               /ai/* (8000)                │
+│  Auth, Files, Payments          Chat, RAG, Agents           │
+└──────────────────────────────────────────────────────────────┘
+    ↕              ↕              ↕              ↕
+┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐
+│ MongoDB  │  │  Redis   │  │ Vector   │  │OpenRouter│
+│Container │  │Container │  │DB/Chroma │  │  API     │
+└──────────┘  └──────────┘  └──────────┘  └──────────┘
+    ↕              ↕              ↕
+┌──────────┐  ┌──────────┐  ┌──────────┐
+│Cloudinary│  │ImageFlow │  │ Razorpay │
+│Sheets    │  │Profiles  │  │ Payments │
+└──────────┘  └──────────┘  └──────────┘
+```
+
+- **Frontend**: Single Page Application (SPA) served by Vite dev server during development
+- **Express Backend**: REST API handling authentication, file operations, payments, and service orchestration on port 3000
+- **FastAPI AI Service**: Dedicated async service for LLM operations, RAG, and intelligent agents on port 8000
+- **Database**: MongoDB for persistent data storage (users, folders, sheets, payments)
+- **Cache**: Redis for rate limiting, session management, and vector cache
+- **Vector Store**: Chroma/Pinecone for storing and retrieving embeddings for RAG
+- **File Storage**: Cloudinary for spreadsheet uploads; ImageFlow for profile pictures
+- **Profile Service**: ImageFlow for user avatar management
+- **LLM Provider**: OpenRouter API for flexible access to multiple AI models
+- **Payments**: Razorpay for payment processing and subscription management
 
 ## API Base
 
@@ -278,12 +317,13 @@ Create a `.env` file in the project root with values similar to:
 
 ```env
 PORT=3000
-MONGODB_URI=your_mongodb_connection_uri
+CORS_ORIGIN=http://localhost:5173
+MONGODB_URI=mongodb://127.0.0.1:27017
 JWT_SECRET=your_access_secret
 JWT_EXPIRES_IN=1d
 JWT_REFRESH_SECRET=your_refresh_secret
 JWT_REFRESH_EXPIRES_IN=7d
-REDIS_HOST=your_redis_host
+REDIS_HOST=127.0.0.1
 REDIS_PORT=6379
 REDIS_PASSWORD=
 cloudinary_name=your_cloud_name
@@ -294,7 +334,7 @@ EMAIL_PASS=your_email_app_password
 RAZORPAY_KEY_ID=your_razorpay_key_id
 RAZORPAY_KEY_SECRET=your_razorpay_key_secret
 RAZORPAY_WEBHOOK_SECRET=your_razorpay_webhook_secret
-AI_SERVICE_URL=your_ai_service_url
+AI_SERVICE_URL=http://localhost:8000
 ```
 
 For Gmail SMTP, use a Google App Password in `EMAIL_PASS` instead of your normal account password.
@@ -305,15 +345,16 @@ Create `.env` or update your Python environment with:
 
 ```env
 OPENROUTER_API_KEY=your_openrouter_api_key
+OPENROUTER_MODEL=openai/gpt-4-turbo  # or another supported model
 OPENROUTER_EMBEDDING_MODEL=openai/text-embedding-3-small
 VECTOR_DB_TYPE=chroma  # or pinecone
-CHROMA_HOST=your_chroma_host
+CHROMA_HOST=localhost
 CHROMA_PORT=8001
-PINCONE_API_KEY=your_pinecone_api_key
-PINCONE_ENVIRONMENT=your_environment
-PINCONE_INDEX_NAME=sheetxray
-MONGODB_URI=your_mongodb_connection_uri
-REDIS_HOST=your_redis_host
+PINECONE_API_KEY=your_pinecone_api_key
+PINECONE_ENVIRONMENT=your_environment
+PINECONE_INDEX_NAME=sheetxray
+MONGODB_URI=mongodb://127.0.0.1:27017
+REDIS_HOST=127.0.0.1
 REDIS_PORT=6379
 LOG_LEVEL=INFO
 EMBEDDING_DIMENSION=1536
@@ -327,11 +368,225 @@ MAX_RETRIEVED_CHUNKS=5
 Create a `.env` file in the `frontend/` directory:
 
 ```env
-VITE_API_BASE_URL=your_api_base_url
-VITE_AI_WS_URL=your_ai_ws_url
+VITE_API_BASE_URL=http://localhost:3000/api/v1
+VITE_AI_WS_URL=ws://localhost:8000
 ```
 
+## Local Setup
 
+### Prerequisites
+
+- Node.js (v14 or higher)
+- npm or yarn
+- MongoDB (local or Docker)
+- Redis (local or Docker)
+- Git
+
+### Option 1: Using Docker Compose (Recommended)
+
+This is the easiest way to get the entire stack running with all services containerized.
+
+1. **Clone and navigate to the project:**
+
+```bash
+cd SheetXray
+```
+
+2. **Create environment files:**
+
+Create `.env` in the project root with the backend environment variables (see Environment Variables section above).
+
+Create `frontend/.env` with the frontend environment variables.
+
+Create `ai_service/.env` with the AI service environment variables.
+
+3. **Start all services with Docker Compose:**
+
+```bash
+docker compose up --build
+```
+
+This will start:
+
+- Frontend (Vite dev server on http://localhost:5173)
+- Backend (Express API on http://localhost:3000)
+- AI Service (FastAPI on http://localhost:8000)
+- MongoDB (container)
+- Redis (container)
+- Vector DB (Chroma on http://localhost:8001 if configured)
+
+4. **Access the application:**
+
+- Frontend: http://localhost:5173
+- Backend API: http://localhost:3000/api/v1
+- MongoDB: localhost:27017
+
+5. **Stop all services:**
+
+```bash
+docker compose down
+```
+
+### Option 2: Local Development Setup
+
+Run frontend and backend separately on your machine with local MongoDB and Redis.
+
+#### Backend Setup
+
+1. **Navigate to project root and install dependencies:**
+
+```bash
+npm install
+```
+
+2. **Start Redis (requires Redis installed locally):**
+
+On Windows (if Redis is installed via WSL or native):
+
+```bash
+redis-server
+```
+
+On macOS:
+
+```bash
+redis-server
+```
+
+3. **Create the `.env` file** (see Environment Variables section).
+
+4. **Start the backend server:**
+
+```bash
+npm start
+```
+
+Server will run on `http://localhost:3000`
+
+#### Frontend Setup
+
+1. **Navigate to the frontend directory:**
+
+```bash
+cd frontend
+```
+
+2. **Install dependencies:**
+
+```bash
+npm install
+```
+
+3. **Create `.env` file** (see Environment Variables section).
+
+4. **Start the development server:**
+
+```bash
+npm run dev
+```
+
+Frontend will run on `http://localhost:5173`
+
+#### AI Service Setup
+
+1. **Navigate to the AI service directory:**
+
+```bash
+cd ai_service
+```
+
+2. **Create a Python virtual environment:**
+
+```bash
+python -m venv venv
+```
+
+3. **Activate the virtual environment:**
+
+On Windows:
+
+```bash
+venv\Scripts\activate
+```
+
+On macOS/Linux:
+
+```bash
+source venv/bin/activate
+```
+
+4. **Install Python dependencies:**
+
+```bash
+pip install -r requirements.txt
+```
+
+5. **Create `.env` file** (see Environment Variables section).
+
+6. **Start the FastAPI server:**
+
+```bash
+python -m uvicorn main:app --reload --host 0.0.0.0 --port 8000
+```
+
+AI Service will run on `http://localhost:8000`
+
+#### Vector Database Setup (Optional but Recommended)
+
+Chroma vector database for RAG embeddings:
+
+```bash
+docker run -d -p 8001:8000 --name chroma chromadb/chroma:latest
+```
+
+Or use Pinecone cloud: Configure `PINECONE_API_KEY` and `PINECONE_ENVIRONMENT` in AI service `.env`
+
+#### Database Setup
+
+If not using Docker Compose, ensure MongoDB and Redis are running:
+
+**MongoDB:**
+
+- Local installation: MongoDB should be running on `localhost:27017`
+- Docker container:
+
+```bash
+docker run -d -p 27017:27017 --name mongodb mongo:latest
+```
+
+**Redis:**
+
+- Local installation: Redis should be running on `localhost:6379`
+- Docker container:
+
+```bash
+docker run -d -p 6379:6379 --name redis redis:latest
+```
+
+### Option 3: Hybrid Setup (Local Frontend + Docker Backend Services)
+
+Run the frontend locally while using Docker for backend dependencies.
+
+1. **Start Docker services:**
+
+```bash
+docker compose up -d mongodb redis
+```
+
+2. **Backend setup:**
+
+```bash
+npm install
+npm start
+```
+
+3. **Frontend setup:**
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
 ## Project Structure
 
