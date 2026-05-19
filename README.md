@@ -278,13 +278,12 @@ Create a `.env` file in the project root with values similar to:
 
 ```env
 PORT=3000
-CORS_ORIGIN=http://localhost:5173
-MONGODB_URI=mongodb://127.0.0.1:27017
+MONGODB_URI=your_mongodb_connection_uri
 JWT_SECRET=your_access_secret
 JWT_EXPIRES_IN=1d
 JWT_REFRESH_SECRET=your_refresh_secret
 JWT_REFRESH_EXPIRES_IN=7d
-REDIS_HOST=127.0.0.1
+REDIS_HOST=your_redis_host
 REDIS_PORT=6379
 REDIS_PASSWORD=
 cloudinary_name=your_cloud_name
@@ -295,7 +294,7 @@ EMAIL_PASS=your_email_app_password
 RAZORPAY_KEY_ID=your_razorpay_key_id
 RAZORPAY_KEY_SECRET=your_razorpay_key_secret
 RAZORPAY_WEBHOOK_SECRET=your_razorpay_webhook_secret
-AI_SERVICE_URL=http://localhost:8000
+AI_SERVICE_URL=your_ai_service_url
 ```
 
 For Gmail SMTP, use a Google App Password in `EMAIL_PASS` instead of your normal account password.
@@ -308,13 +307,13 @@ Create `.env` or update your Python environment with:
 OPENROUTER_API_KEY=your_openrouter_api_key
 OPENROUTER_EMBEDDING_MODEL=openai/text-embedding-3-small
 VECTOR_DB_TYPE=chroma  # or pinecone
-CHROMA_HOST=localhost
+CHROMA_HOST=your_chroma_host
 CHROMA_PORT=8001
-PINECONE_API_KEY=your_pinecone_api_key
-PINECONE_ENVIRONMENT=your_environment
-PINECONE_INDEX_NAME=sheetxray
-MONGODB_URI=mongodb://127.0.0.1:27017
-REDIS_HOST=127.0.0.1
+PINCONE_API_KEY=your_pinecone_api_key
+PINCONE_ENVIRONMENT=your_environment
+PINCONE_INDEX_NAME=sheetxray
+MONGODB_URI=your_mongodb_connection_uri
+REDIS_HOST=your_redis_host
 REDIS_PORT=6379
 LOG_LEVEL=INFO
 EMBEDDING_DIMENSION=1536
@@ -328,8 +327,8 @@ MAX_RETRIEVED_CHUNKS=5
 Create a `.env` file in the `frontend/` directory:
 
 ```env
-VITE_API_BASE_URL=http://localhost:3000/api/v1
-VITE_AI_WS_URL=ws://localhost:8000
+VITE_API_BASE_URL=your_api_base_url
+VITE_AI_WS_URL=your_ai_ws_url
 ```
 
 ## Local Setup
