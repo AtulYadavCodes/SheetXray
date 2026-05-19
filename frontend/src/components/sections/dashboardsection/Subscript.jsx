@@ -4,6 +4,7 @@ import axios from "axios";
 function Subs() {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [paymentError, setPaymentError] = useState(null);
     const [selectedPlan, setSelectedPlan] = useState('pro');
 
     useEffect(() => {
@@ -24,10 +25,142 @@ function Subs() {
         fetchUser();
     }, []);
 
-    const handlePayment = async () => {
-        if (!selectedPlan) return;
-        // TODO: Integrate with payment gateway (Razorpay)
-        console.log("Processing payment for:", selectedPlan);
+    useEffect(() => {
+        // Debug: verify Vite env and Razorpay script availability in browser console
+        try {
+            console.log("VITE_RAZORPAY_KEY_ID =>", import.meta.env.VITE_RAZORPAY_KEY_ID);
+            console.log("window.Razorpay =>", typeof window !== "undefined" && !!window.Razorpay);
+        } catch (e) {
+            console.warn("Could not read import.meta.env from this context", e);
+        }
+    }, []);
+
+    const handlePayment = async (plan = selectedPlan) => {
+        if (!plan) return;
+
+        try {
+            setLoading(true);
+
+            // Validate frontend env and Razorpay script
+            if (!import.meta.env.VITE_RAZORPAY_KEY_ID) {
+                setLoading(false);
+                alert(
+                    "Missing Razorpay key. Add VITE_RAZORPAY_KEY_ID to your frontend .env and restart the dev server."
+                );
+                return;
+            }
+
+            if (typeof window === "undefined" || !window.Razorpay) {
+                setLoading(false);
+                alert(
+                    "Razorpay checkout library not loaded. Ensure the checkout script is included in index.html and reload the page."
+                );
+                return;
+            }
+
+            // Map plan selection to subscription type
+            const subscriptionType = plan === 'pro' ? 'premiummonthly' : 'premiumlifetime';
+
+            // Step 1: Create order from backend
+            const orderResponse = await fetch(
+                `${import.meta.env.VITE_API_BASE}/api/v1/payments/createorder`,
+                {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    credentials: "include",
+                    body: JSON.stringify({ type: subscriptionType }),
+                }
+            );
+
+            const orderText = await orderResponse.text();
+            if (!orderResponse.ok) {
+                throw new Error(`Failed to create order: ${orderResponse.status} ${orderText}`);
+            }
+
+            const orderData = JSON.parse(orderText);
+            const order = orderData.data;
+
+            // Step 2: Open Razorpay payment modal
+            const options = {
+                key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+                order_id: order.id,
+                amount: order.amount,
+                currency: order.currency,
+                name: "SheetXray",
+                description: `${subscriptionType === 'premiummonthly' ? 'Pro Monthly' : 'Pro Lifetime'} Subscription`,
+                handler: async (response) => {
+                    try {
+                        // Step 3: Verify payment with backend
+                        const verifyResponse = await fetch(
+                            `${import.meta.env.VITE_API_BASE}/api/v1/payments/verifypayment`,
+                            {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                credentials: "include",
+                                body: JSON.stringify({
+                                    razorpay_order_id: response.razorpay_order_id,
+                                    razorpay_payment_id: response.razorpay_payment_id,
+                                    razorpay_signature: response.razorpay_signature,
+                                }),
+                            }
+                        );
+
+                        if (verifyResponse.ok) {
+                            // Refresh user data to show updated subscription status
+                            const profileRes = await fetch(
+                                `${import.meta.env.VITE_API_BASE}/api/v1/users/profile`,
+                                { credentials: "include" }
+                            );
+                            const profileData = await profileRes.json();
+                            setUser(profileData.data);
+                            alert("Payment successful! Your subscription is now active.");
+                        } else {
+                            alert("Payment verification failed. Please contact support.");
+                        }
+                    } catch (error) {
+                        console.error("Payment verification error:", error);
+                        alert("Error verifying payment. Please try again.");
+                    } finally {
+                        setLoading(false);
+                    }
+                },
+                prefill: {
+                    email: user?.email || "",
+                    contact: user?.phone || "",
+                },
+                theme: {
+                    color: "#FCD34D",
+                },
+                modal: {
+                    ondismiss: () => {
+                        setLoading(false);
+                    },
+                },
+            };
+
+            const razorpay = new window.Razorpay(options);
+
+            // Listen for payment failures (card declined, etc.) and show a friendly message
+            try {
+                razorpay.on && razorpay.on('payment.failed', function (response) {
+                    console.error('Razorpay payment failed:', response);
+                    const errMsg =
+                        response?.error?.description || response?.error?.reason || 'Payment failed. Please try another payment method.';
+                    setPaymentError(errMsg);
+                    setLoading(false);
+                    // Keep selected plan so user can retry
+                });
+            } catch (e) {
+                // Older/check environments may not support .on — ignore silently
+                console.warn('Could not attach payment.failed listener', e);
+            }
+
+            razorpay.open();
+        } catch (error) {
+            console.error("Payment error:", error);
+            alert("Failed to initiate payment. Please try again.");
+            setLoading(false);
+        }
     };
 
     if (loading) {
@@ -42,11 +175,11 @@ function Subs() {
         <section className="w-full px-6 sm:px-10 lg:px-16 py-8 font-mono">
             <div className="w-100 h-9"></div>
 
-            {user?.usertype === 'premiummonthly' || 'premiumlifetime' ? (
+            {user?.usertype === 'premiummonthly' || user?.usertype === 'premiumlifetime' ? (
                 // Already Pro
                 <div className="max-w-4xl">
                     {/* Header Card */}
-                    <div className="bg-gradient-to-r from-yellow-400 to-yellow-300 rounded-lg p-8 mb-8 text-gray-900">
+                    <div className="bg-gradient-to-r from-white to-gray-200 rounded-lg p-8 mb-8 text-gray-900">
                         <div className="flex items-start justify-between">
                             <div>
                                 <h3 className="text-4xl font-bold mb-2">🎉 Premium Active</h3>
@@ -136,17 +269,26 @@ function Subs() {
                             📥 Download Invoice
                         </button>
 
+                        {user?.usertype === 'premiummonthly' && (
+                            <button
+                                onClick={() => handlePayment('enterprise')}
+                                className="border-2 border-white text-gray-200 font-semibold py-3 rounded-lg hover:bg-white hover:text-black transition"
+                            >
+                                ⬆️ Upgrade to Lifetime
+                            </button>
+                        )}
+
                     </div>
                 </div>
             ) : (
                 // Payment Plans
                 <div className="max-w-4xl space-y-6">
                     {/* Pro Plan Card */}
-                    <div className="border-2 border-gray-700 rounded-lg p-6 hover:border-yellow-400 transition cursor-pointer bg-gray-900"
+                    <div className="border-2 border-gray-700 rounded-lg p-6 hover:border-white transition cursor-pointer bg-gray-900"
                         onClick={() => setSelectedPlan('pro')}>
                         <div className="flex items-start justify-between mb-4">
                             <div>
-                                <h3 className="text-2xl font-semibold text-white">Pro Plan</h3>
+                                <h3 className="text-2xl font-semibold text-white">Pro monthly</h3>
                                 <p className="text-gray-400 text-sm mt-1">For power users</p>
                             </div>
                             <div className="text-right">
@@ -177,15 +319,15 @@ function Subs() {
                     </div>
 
                     {/* life Plan Card */}
-                    <div className="border-2 border-gray-700 rounded-lg p-6 hover:border-yellow-400 transition cursor-pointer bg-gray-900"
+                    <div className="border-2 border-gray-700 rounded-lg p-6 hover:border-white transition cursor-pointer bg-gray-900"
                         onClick={() => setSelectedPlan('enterprise')}>
                         <div className="flex items-start justify-between mb-4">
                             <div>
-                                <h3 className="text-2xl font-semibold text-white">Enterprise</h3>
+                                <h3 className="text-2xl font-semibold text-white">Pro lifetime</h3>
                                 <p className="text-gray-400 text-sm mt-1">For teams & organizations</p>
                             </div>
                             <div className="text-right">
-                                <span className="text-4xl font-bold text-white">₹999</span>
+                                <span className="text-4xl font-bold text-white">₹1000</span>
                                 <span className="text-gray-400 text-sm">/life</span>
                             </div>
                         </div>
@@ -215,7 +357,7 @@ function Subs() {
                     <button
                         onClick={handlePayment}
                         disabled={!selectedPlan}
-                        className="w-full bg-yellow-400 hover:bg-yellow-300 disabled:opacity-40 text-black font-semibold py-3 rounded-lg transition mt-6"
+                        className="w-full bg-white hover:bg-gray-200 disabled:opacity-40 text-black font-semibold py-3 rounded-lg transition mt-6"
                     >
                         Proceed to Payment
                     </button>

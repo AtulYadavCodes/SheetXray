@@ -24,13 +24,13 @@ function Navbar() {
   // Centralized Navigation Configurations
   const navLinks = [
     { label: "Home", to: "/#", show: true },
-    { label: isAuth ? "Dashboard" : "Go to dashboard", to: "/dashboard/#", show: isAuth },
+    { label: isAuth ? "Dashboard" : "Go to dashboard", to: "/dashboard", show: isAuth },
   ];
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-zinc-800 bg-black backdrop-blur-md bg-opacity-95">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
-        
+      <div className="mx-auto flex  items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
+
         {/* Brand Logo */}
         <HashLink smooth to="/#" className="font-mono text-lg font-semibold tracking-[0.16em] text-white">
           SheetXray
@@ -39,21 +39,21 @@ function Navbar() {
         {/* Desktop Navigation */}
         <nav className="hidden items-center gap-1 text-sm sm:flex sm:gap-3">
           {navLinks.map((link) => link.show && (
-            <HashLink 
-              key={link.label} 
-              smooth 
-              to={link.to} 
+            <HashLink
+              key={link.label}
+              smooth
+              to={link.to}
               className="rounded-md px-3 py-2 font-mono text-zinc-400 transition hover:text-white"
             >
               {link.label}
             </HashLink>
           ))}
-          
+
           {!isAuth ? (
             <HashLink
               smooth
               to="/auth"
-              className="rounded-md bg-yellow-400 px-3 py-2 font-mono font-semibold text-black transition hover:bg-yellow-300"
+              className="rounded-md bg-white px-3 py-2 font-mono font-semibold text-black transition hover:bg-gray-200"
             >
               Sign Up / Login
             </HashLink>
@@ -68,9 +68,9 @@ function Navbar() {
         </nav>
 
         {/* Mobile Hamburger Toggle */}
-        <button 
-          onClick={() => setOpen(!open)} 
-          className="block text-zinc-400 hover:text-white sm:hidden focus:outline-none" 
+        <button
+          onClick={() => setOpen(!open)}
+          className="block text-zinc-400 hover:text-white sm:hidden focus:outline-none"
           aria-label={open ? "Close menu" : "Open menu"}
         >
           <svg className="h-6 w-6 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -102,7 +102,7 @@ function Navbar() {
                 smooth
                 to="/auth"
                 onClick={() => setOpen(false)}
-                className="mt-2 rounded-md bg-yellow-400 px-3 py-2 text-center font-mono font-semibold text-black transition hover:bg-yellow-300"
+                className="mt-2 rounded-md bg-white px-3 py-2 text-center font-mono font-semibold text-black transition hover:bg-gray-200"
               >
                 Sign Up / Login
               </HashLink>

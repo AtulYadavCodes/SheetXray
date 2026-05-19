@@ -59,8 +59,8 @@ function UserProfile() {
 
 
       <Block title="stats">
-        <Line label="folders" value={user.folders?.length || 0} />
-        <Line label="files" value={user.files?.length || 0} />
+        <Line label="folders" value={user.folders || 0} />
+   
         <Line
           label="joined"
           value={new Date(user.createdAt).toLocaleDateString()}
