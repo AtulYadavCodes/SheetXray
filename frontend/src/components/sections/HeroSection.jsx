@@ -10,7 +10,7 @@ function HeroSection() {
         {/* Left Column: Text Content */}
         <div className="flex flex-col justify-center space-y-6 text-left">
           <div>
-            <span className="inline-flex items-center rounded border border-gray-800 bg-gray-900 px-3 py-1 font-mono text-xs font-medium uppercase tracking-[0.16em] text-yellow-400">
+            <span className="inline-flex items-center rounded border border-gray-800 bg-gray-900 px-3 py-1 font-mono text-xs font-medium uppercase tracking-[0.16em] text-white">
               RAG + Agentic Intelligence
             </span>
           </div>
@@ -18,7 +18,7 @@ function HeroSection() {
           <h1 className="font-mono text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl lg:leading-tight">
             Organize sheets. <br />
             Upload files. <br />
-            <span className="text-yellow-400">Prepare data for chat.</span>
+            <span className="text-white">Prepare data for chat.</span>
           </h1>
 
           <p className="max-w-xl text-sm leading-relaxed text-gray-400 md:text-base">
@@ -29,7 +29,7 @@ function HeroSection() {
           <div className="flex flex-wrap gap-4 pt-2">
             <a
               href="/auth"
-              className="inline-flex items-center justify-center bg-yellow-400 px-5 py-3 font-mono text-sm font-semibold text-black transition-colors hover:bg-yellow-500"
+              className="inline-flex items-center justify-center bg-white px-5 py-3 font-mono text-sm font-semibold text-black transition-colors hover:bg-gray-200"
             >
               Get Started
             </a>
@@ -44,7 +44,7 @@ function HeroSection() {
 
         {/* Right Column: Image Container */}
         <div className="flex items-center justify-center lg:mt-0">
-          <div className="relative w-full overflow-hidden rounded-xl border border-gray-800 bg-gray-900/50 p-2 shadow-2xl shadow-yellow-500/5">
+          <div className="relative w-full overflow-hidden rounded-xl by-100 p-2 shadow-2xl shadow-white/5">
             <img
               src={image}
               alt="SheetXray product interface showing data analysis and chat assistant"

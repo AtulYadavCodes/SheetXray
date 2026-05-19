@@ -4,7 +4,7 @@ function PricingSection() {
     const plans = [
         {
             name: "Free",
-            price: "$0",
+            price: "0",
             description: "Get started with basic features",
             features: [
                 "Up to 1 folders",
@@ -29,7 +29,7 @@ function PricingSection() {
         },
         {
             name: "pro complete",
-            price: "999",
+            price: "1000",
             period: "/lifetime",
 
             features: [
@@ -57,12 +57,12 @@ function PricingSection() {
                     <div
                         key={idx}
                         className={`rounded-lg border-2 p-8 ${plan.highlight
-                            ? "border-yellow-400 bg-yellow-900/20 shadow-lg"
+                            ? "border-white bg-white/20 shadow-lg"
                             : "border-gray-700  hover:shadow-md"
                             } transition`}
                     >
                         {plan.highlight && (
-                            <div className="mb-3 inline-block rounded-full bg-yellow-400 px-3 py-1 text-xs font-mono font-semibold text-gray-950">
+                            <div className="mb-3 inline-block rounded-full bg-white px-3 py-1 text-xs font-mono font-semibold text-gray-950">
                                 Most Popular
                             </div>
                         )}
@@ -86,7 +86,7 @@ function PricingSection() {
                             ))}
                         </ul>
 
-                        
+
                     </div>
                 ))}
             </div>
