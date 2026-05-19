@@ -150,30 +150,6 @@ flowchart LR
 
 ## Architecture Overview
 
-SheetXray follows a client-server architecture with the following layers:
-
-```
-┌─────────────────────────────────────────────────────────┐
-│              Frontend (React + Vite)                    │
-│         Running on http://localhost:5173                │
-└─────────────────────────────────────────────────────────┘
-         ↕ (HTTP/REST)                    ↕ (WebSocket)
-┌──────────────────────────────────────────────────────────────┐
-│           Backend API (Express)   +   AI Service (FastAPI)   │
-│  /api/v1/* (3000)               /ai/* (8000)                │
-│  Auth, Files, Payments          Chat, RAG, Agents           │
-└──────────────────────────────────────────────────────────────┘
-    ↕              ↕              ↕              ↕
-┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐
-│ MongoDB  │  │  Redis   │  │ Vector   │  │OpenRouter│
-│Container │  │Container │  │DB/Chroma │  │  API     │
-└──────────┘  └──────────┘  └──────────┘  └──────────┘
-    ↕              ↕              ↕
-┌──────────┐  ┌──────────┐  ┌──────────┐
-│Cloudinary│  │ImageFlow │  │ Razorpay │
-│Sheets    │  │Profiles  │  │ Payments │
-└──────────┘  └──────────┘  └──────────┘
-```
 
 - **Frontend**: Single Page Application (SPA) served by Vite dev server during development
 - **Express Backend**: REST API handling authentication, file operations, payments, and service orchestration on port 3000
