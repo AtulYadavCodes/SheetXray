@@ -12,6 +12,7 @@
 	<img src="https://img.shields.io/badge/MongoDB-Mongoose-16a34a" alt="MongoDB" />
 	<img src="https://img.shields.io/badge/Redis-Rate%20Limit-f97316" alt="Redis" />
 	<img src="https://img.shields.io/badge/Cloudinary-Uploads-db2777" alt="Cloudinary" />
+	<img src="https://img.shields.io/badge/ImageFlow-Profile%20Images-00bcd4" alt="ImageFlow" />
 	<img src="https://img.shields.io/badge/Docker-Compose-2496ed" alt="Docker" />
 </p>
 
@@ -25,7 +26,8 @@ SheetXray is an advanced full-stack spreadsheet assistant platform that enables 
 - User authentication with JWT tokens (login/register/logout)
 - Responsive layout with navigation and sidebar
 - Dashboard with file management and folder organization
-- Profile management and subscription status display
+- Profile management with avatar upload powered by ImageFlow service
+- Subscription status display
 - Integration with Razorpay payment gateway for premium subscriptions
 - Protected routes for authenticated users
 - Chat interface for AI-powered spreadsheet queries
@@ -153,25 +155,26 @@ SheetXray follows a client-server architecture with the following layers:
 │  /api/v1/* (3000)               /ai/* (8000)                │
 │  Auth, Files, Payments          Chat, RAG, Agents           │
 └──────────────────────────────────────────────────────────────┘
-    ↕              ↕              ↕              ↕
-┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐
-│ MongoDB  │  │  Redis   │  │ Vector   │  │OpenRouter│
-│Container │  │Container │  │DB/Chroma │  │  API     │
-└──────────┘  └──────────┘  └──────────┘  └──────────┘
-    ↕              ↕              ↕
-┌──────────┐  ┌──────────┐  ┌──────────┐
-│Cloudinary│  │ Razorpay │  │S3/Cloud  │
-│ Uploads  │  │ Payments │  │ Storage  │
-└──────────┘  └──────────┘  └──────────┘
+    ↕              ↕              ↕              ↕        ↕
+┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────────┐
+│ MongoDB  │  │  Redis   │  │ Vector   │  │OpenRouter│  │ ImageFlow    │
+│Container │  │Container │  │DB/Chroma │  │  API     │  │Service (3001)│
+└──────────┘  └──────────┘  └──────────┘  └──────────┘  └──────────────┘
+    ↕              ↕              ↕                           ↓
+┌──────────┐  ┌──────────┐  ┌──────────────────────────────────────┐
+│Cloudinary│  │ Razorpay │  │        Cloudinary                    │
+│ Uploads  │  │ Payments │  │  (Sheets + Profile Images Storage)   │
+└──────────┘  └──────────┘  └──────────────────────────────────────┘
 ```
 
 - **Frontend**: Single Page Application (SPA) served by Vite dev server during development
 - **Express Backend**: REST API handling authentication, file operations, payments, and service orchestration on port 3000
 - **FastAPI AI Service**: Dedicated async service for LLM operations, RAG, and intelligent agents on port 8000
+- **ImageFlow Service**: Microservice for profile image processing and optimization on port 3001 (optional, can be external)
 - **Database**: MongoDB for persistent data storage (users, folders, sheets, payments)
 - **Cache**: Redis for rate limiting, session management, and vector cache
 - **Vector Store**: Chroma/Pinecone for storing and retrieving embeddings for RAG
-- **Storage**: Cloudinary for sheet file uploads
+- **Storage**: Cloudinary for both sheet uploads and profile images (via ImageFlow processing)
 - **LLM Provider**: OpenRouter API for flexible access to multiple AI models
 - **Payments**: Razorpay for payment processing and subscription management
 
@@ -197,7 +200,7 @@ Example:
 | POST   | `/api/v1/users/refreshAccessToken`  | Public | Refresh the access token                                                  |
 | POST   | `/api/v1/users/logout`              | JWT    | Log out the current user                                                  |
 | GET    | `/api/v1/users/profile`             | JWT    | Get the logged-in user profile                                            |
-| PATCH  | `/api/v1/users/updateprofileavatar` | JWT    | Update the user avatar                                                    |
+| PATCH  | `/api/v1/users/updateprofileavatar` | JWT    | Update the user avatar (via ImageFlow service integration)                |
 | POST   | `/api/v1/users/updatepassword`      | JWT    | Update the user password                                                  |
 | PATCH  | `/api/v1/users/updateemail`         | JWT    | Update the user email                                                     |
 
@@ -269,6 +272,75 @@ SheetXray uses OpenRouter to provide access to multiple LLM models:
 - **Usage Tracking**: Monitor token usage and costs per model
 - **A/B Testing**: Easy model comparison for performance tuning
 
+## External Service Integrations
+
+### ImageFlow Service
+
+**Purpose**: In-house image management service (similar to ImageKit) built for developers to efficiently manage user profile display pictures (DPs).
+
+**Repository**: [ImageFlow Project](https://github.com/AtulYadavCodes/imageflow)
+
+**About ImageFlow**:
+ImageFlow is a custom-built, developer-friendly image management solution designed to handle profile picture uploads, processing, and delivery. It provides a lightweight alternative to commercial services like ImageKit, optimized for managing user profile pictures across applications.
+
+**Integration Details**:
+
+- SheetXray delegates user profile picture management to ImageFlow service
+- ImageFlow handles image validation, resizing, optimization, and format conversion
+- All processed profile images are stored on Cloudinary for distributed delivery
+- Provides CDN-optimized URLs for fast profile image loading
+- Supports multiple image formats (JPEG, PNG, WebP) with automatic optimization
+
+**Features**:
+
+- **Profile Picture Management**: Specialized for user display picture (DP) uploads and updates
+- **Image Optimization**: Automatic resizing (circular crop, multiple sizes) and compression
+- **Format Conversion**: Convert images to WebP for better compression and modern browser support
+- **Quality Management**: Configurable quality levels optimized for profile images
+- **Validation**: Validate image dimensions, file size, format, and content
+- **Error Handling**: Graceful fallbacks with default avatar support
+- **Cloudinary Integration**: Direct storage on Cloudinary with CDN benefits
+
+**API Usage**:
+When users update their profile picture on SheetXray:
+
+```bash
+PATCH /api/v1/users/updateprofileavatar
+Content-Type: multipart/form-data
+Authorization: Bearer <JWT_TOKEN>
+
+Body:
+- file: <image_file>
+
+Flow:
+1. Express backend receives profile picture upload request
+2. Forwards to ImageFlow service for processing
+3. ImageFlow validates image (dimensions, format, file size)
+4. Generates optimized versions (thumbnail, display, high-res)
+2. Forwards to ImageFlow service for processing
+3. ImageFlow validates, optimizes, and stores on Cloudinary
+4. Returns optimized image URL
+5. Updates user profile in MongoDB with image URL
+```
+
+**Benefits**:
+
+- Decoupled architecture: Profile image handling is independent
+- Reusable: ImageFlow service can be used by other projects
+- Optimized: Images are processed and optimized before storage
+- Scalable: Cloudinary handles CDN distribution
+- Maintainable: Centralized image processing logic
+
+**Configuration**:
+ImageFlow uses the same Cloudinary credentials configured in the main `.env`:
+
+```env
+cloudinary_name=your_cloud_name
+cloudinary_api_key=your_api_key
+cloudinary_api_secret=your_api_secret
+IMAGEFLOW_SERVICE_URL=http://localhost:3001  # ImageFlow service endpoint
+```
+
 ### Payment Flow
 
 1. Client sends `POST /api/v1/payments/createorder` with body `{ "type": "premiumlifetime" }` or another supported plan value used by the frontend.
@@ -324,6 +396,7 @@ RAZORPAY_KEY_ID=your_razorpay_key_id
 RAZORPAY_KEY_SECRET=your_razorpay_key_secret
 RAZORPAY_WEBHOOK_SECRET=your_razorpay_webhook_secret
 AI_SERVICE_URL=http://localhost:8000
+IMAGEFLOW_SERVICE_URL=http://localhost:3001
 ```
 
 For Gmail SMTP, use a Google App Password in `EMAIL_PASS` instead of your normal account password.
