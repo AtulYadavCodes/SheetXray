@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
-
 function Files() {
   const { folderid } = useParams();
 
@@ -21,12 +20,11 @@ function Files() {
     try {
       const res = await axios.get(
         `${import.meta.env.VITE_API_BASE}/api/v1/folders/getallsheetsinfolder/${folderid}`,
-        { withCredentials: true }
+        { withCredentials: true },
       );
 
       const data = Array.isArray(res.data) ? res.data : res.data.data;
       setFiles(data);
-
     } catch (err) {
       console.log(err);
     }
@@ -37,7 +35,7 @@ function Files() {
     try {
       const res = await axios.get(
         `${import.meta.env.VITE_API_BASE}/api/v1/folders/getchathistory/${folderid}`,
-        { withCredentials: true }
+        { withCredentials: true },
       );
 
       const data = Array.isArray(res.data) ? res.data : res.data.data;
@@ -73,14 +71,16 @@ function Files() {
       const res = await axios.post(
         `${import.meta.env.VITE_API_BASE}/api/v1/folders/query/${folderid}`,
         { query: query },
-        { withCredentials: true }
+        { withCredentials: true },
       );
 
       const newChat = res.data?.data || res.data;
 
       // Replace temp chat with actual response
       setChats((prev) =>
-        prev.map((chat) => (chat._id === tempId ? { ...newChat, isLoading: false } : chat))
+        prev.map((chat) =>
+          chat._id === tempId ? { ...newChat, isLoading: false } : chat,
+        ),
       );
       setLoadingChatId(null);
     } catch (err) {
@@ -102,7 +102,8 @@ function Files() {
   // Auto-scroll to latest message
   useEffect(() => {
     if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
     }
   }, [chats]);
 
@@ -116,9 +117,8 @@ function Files() {
       const res = await axios.post(
         `${import.meta.env.VITE_API_BASE}/api/v1/sheets/uploadsheet/${folderid}`,
         formData,
-        { withCredentials: true }
+        { withCredentials: true },
       );
-
 
       fetchFiles();
     } catch (err) {
@@ -178,16 +178,20 @@ function Files() {
       </div>
 
       <div className="flex-1 overflow-hidden">
-
         {/* Chat Interface - Bottom Area */}
         <div className="flex flex-col h-full bg">
           {/* Chat Messages */}
-          <div className="flex-1  overflow-y-auto p-6 space-y-4" ref={chatContainerRef}>
+          <div
+            className="flex-1  overflow-y-auto p-6 space-y-4"
+            ref={chatContainerRef}
+          >
             {chats.length === 0 ? (
               <div className="h-full flex items-center justify-center">
                 <div className="text-center">
                   <div className="text-6xl mb-4">💭</div>
-                  <p className="text-gray-400 font-mono text-sm">Ask a question about your files</p>
+                  <p className="text-gray-400 font-mono text-sm">
+                    Ask a question about your files
+                  </p>
                 </div>
               </div>
             ) : (
@@ -258,7 +262,6 @@ function Files() {
           </div>
         </div>
       </div>
-      
     </section>
   );
 }
