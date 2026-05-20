@@ -5,3 +5,6 @@ body {
 }html {
   scroll-behavior: smooth;
 }
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}

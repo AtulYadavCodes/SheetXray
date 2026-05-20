@@ -11,6 +11,7 @@ function Files() {
   const [sendingMessage, setSendingMessage] = useState(false);
   const [selectedImageKey, setSelectedImageKey] = useState(null);
   const [loadingChatId, setLoadingChatId] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
 
   const fileInputRef = useRef(null);
   const chatEndRef = useRef(null);
@@ -111,6 +112,19 @@ function Files() {
   const handleUpload = async (file) => {
     if (!file) return;
 
+    // Validate file type
+    const allowedExtensions = [".xlsx", ".csv"];
+    const fileName = file.name.toLowerCase();
+    const isValidFile = allowedExtensions.some((ext) =>
+      fileName.endsWith(ext)
+    );
+
+    if (!isValidFile) {
+      alert("Only .xlsx and .csv files are allowed");
+      return;
+    }
+
+    setIsUploading(true);
     try {
       const formData = new FormData();
       formData.append("file", file);
@@ -123,6 +137,9 @@ function Files() {
       fetchFiles();
     } catch (err) {
       console.log(err);
+      alert("Failed to upload file");
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -139,7 +156,7 @@ function Files() {
               {files.length} files · {chats.length} chats
             </p>
 
-            <div className="mt-3 flex items-center gap-3 overflow-x-auto">
+            <div className="mt-3 flex items-center gap-3 overflow-x-auto hide-scrollbar">
               {files.length === 0 ? (
                 <span className="text-xs text-gray-500">No files uploaded</span>
               ) : (
@@ -160,18 +177,22 @@ function Files() {
             <input
               type="file"
               ref={fileInputRef}
+              accept=".xlsx,.csv"
               onChange={(e) => {
                 const selected = e.target.files[0];
                 if (!selected) return;
                 handleUpload(selected);
+                // Reset file input
+                e.target.value = "";
               }}
               className="hidden"
             />
             <button
               onClick={() => fileInputRef.current.click()}
-              className="bg-white text-black py-2 px-4 text-xs font-mono rounded-lg hover:bg-gray-200 transition"
+              disabled={isUploading}
+              className="bg-white text-black py-2 px-4 text-xs font-mono rounded-lg hover:bg-gray-200 transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              + Upload File
+              {isUploading ? "Uploading..." : "+ Upload File"}
             </button>
           </div>
         </div>
