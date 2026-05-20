@@ -258,45 +258,7 @@ function Files() {
           </div>
         </div>
       </div>
-
-      {/* Image Preview Modal */}
-      {selectedImageKey && (
-        <div
-          className="fixed inset-0 z-60 bg-black/80 backdrop-blur-sm overflow-y-auto"
-          onClick={(e) => {
-            if (e.target === e.currentTarget) setSelectedImageKey(null);
-          }}
-        >
-          <button
-            onClick={() => setSelectedImageKey(null)}
-            className="fixed top-5 right-5 z-10 text-gray-400 hover:text-white text-xl"
-          >
-            ✕
-          </button>
-
-          <div className="max-w-7xl mx-auto py-10 px-4">
-            <div className="mx-auto max-w-4xl rounded-lg border border-gray-700 bg-gray-950 p-4 sm:p-6">
-              <div className="mb-4 flex items-center justify-between gap-4 border-b border-gray-800 pb-3">
-                <div>
-                  <p className="font-mono text-xs uppercase tracking-[0.16em] text-gray-400">Image Preview</p>
-                  <p className="mt-1 break-all text-sm text-gray-300">{selectedImageKey}</p>
-                </div>
-                <button
-                  onClick={() => setSelectedImageKey(null)}
-                  className="rounded-md border border-gray-700 bg-gray-900 px-3 py-2 font-mono text-xs text-gray-300 hover:bg-gray-800"
-                >
-                  Close
-                </button>
-              </div>
-              <img
-                src={`${import.meta.env.VITE_API_BASE}/images/path/${selectedImageKey}`}
-                alt="Selected file"
-                className="max-h-[75vh] w-full object-contain"
-              />
-            </div>
-          </div>
-        </div>
-      )}
+      
     </section>
   );
 }

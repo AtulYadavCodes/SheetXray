@@ -22,7 +22,7 @@ function Filesandfolder() {
       const data = Array.isArray(res.data) ? res.data : res.data.data;
       setFolders(data);
     } catch (err) {
-      console.log(err);
+      setFolders([]);
     }
   };
 
