@@ -144,7 +144,7 @@ function Filesandfolder() {
         {folders.map((f) => (
           <Link key={f._id} to={`/dashboard/files/${f._id}`}>
             <div
-              className="cursor-pointer rounded-xl border border-emerald-200 hover:border-emerald-500 bg-emerald-50 transition p-4 flex flex-col items-center relative group shadow-sm hover:shadow-md"
+              className="cursor-pointer rounded-xl border border-emerald-200 hover:border-emerald-500 bg-emerald  transition p-4 flex flex-col items-center relative group shadow-sm hover:shadow-md"
             >
               <span className="text-3xl">📁</span>
               <span className="mt-2 text-xs text-emerald-900 font-mono text-center truncate w-full font-semibold">
@@ -153,7 +153,7 @@ function Filesandfolder() {
 
               <button
                 onClick={(e) => handleDeleteFolder(e, f._id, f.foldername)}
-                className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 bg-red-600 hover:bg-red-700 text-white rounded-tr-2xl p-1 transition text-xs"
+                className="absolute top-1 right-1  group-hover:opacity-100 bg-red-600  text-white rounded-tr-2xl p-1 transition text-xs"
                 title="Delete folder"
               >
                 x
