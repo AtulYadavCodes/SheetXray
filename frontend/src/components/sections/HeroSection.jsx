@@ -8,9 +8,9 @@ function HeroSection() {
         className="mx-auto grid w-full max-w-7xl items-center gap-12 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:px-8 lg:py-24"
       >
         {/* Left Column: Text Content */}
-        <div className="flex flex-col justify-center space-y-6 text-left">
+        <div className="flex flex-col justify-center space-y-6 text-left ">
           <div>
-            <span className="inline-flex items-center rounded border border-gray-800 bg-gray-900 px-3 py-1 font-mono text-xs font-medium uppercase tracking-[0.16em] text-white">
+            <span className="inline-flex items-center rounded bord00 px-3 py-1 font-mono text-xs font-medium uppercase tracking-[0.16em] text-white">
               RAG + Agentic Intelligence
             </span>
           </div>

@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { jsPDF } from "jspdf";
 
 function Subs() {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const [paymentError, setPaymentError] = useState(null);
     const [selectedPlan, setSelectedPlan] = useState('pro');
+    const [downloadingInvoice, setDownloadingInvoice] = useState(false);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -26,7 +28,7 @@ function Subs() {
     }, []);
 
     useEffect(() => {
-        // Debug: verify Vite env and Razorpay script availability in browser console
+        //  Vite env and Razorpay script availability in browser console
         try {
             console.log("VITE_RAZORPAY_KEY_ID =>", import.meta.env.VITE_RAZORPAY_KEY_ID);
             console.log("window.Razorpay =>", typeof window !== "undefined" && !!window.Razorpay);
@@ -61,7 +63,7 @@ function Subs() {
             // Map plan selection to subscription type
             const subscriptionType = plan === 'pro' ? 'premiummonthly' : 'premiumlifetime';
 
-            // Step 1: Create order from backend
+            // St Create order from backend
             const orderResponse = await fetch(
                 `${import.meta.env.VITE_API_BASE}/api/v1/payments/createorder`,
                 {
@@ -80,7 +82,7 @@ function Subs() {
             const orderData = JSON.parse(orderText);
             const order = orderData.data;
 
-            // Step 2: Open Razorpay payment modal
+            // St Open Razorpay payment modal
             const options = {
                 key: import.meta.env.VITE_RAZORPAY_KEY_ID,
                 order_id: order.id,
@@ -90,7 +92,7 @@ function Subs() {
                 description: `${subscriptionType === 'premiummonthly' ? 'Pro Monthly' : 'Pro Lifetime'} Subscription`,
                 handler: async (response) => {
                     try {
-                        // Step 3: Verify payment with backend
+                        // St Verify payment with backend
                         const verifyResponse = await fetch(
                             `${import.meta.env.VITE_API_BASE}/api/v1/payments/verifypayment`,
                             {
@@ -140,7 +142,7 @@ function Subs() {
 
             const razorpay = new window.Razorpay(options);
 
-            // Listen for payment failures (card declined, etc.) and show a friendly message
+            //  for payment failures (card declined, etc.) and show a friendly message
             try {
                 razorpay.on && razorpay.on('payment.failed', function (response) {
                     console.error('Razorpay payment failed:', response);
@@ -160,6 +162,80 @@ function Subs() {
             console.error("Payment error:", error);
             alert("Failed to initiate payment. Please try again.");
             setLoading(false);
+        }
+    };
+
+    const handleDownloadInvoice = async () => {
+        try {
+            setDownloadingInvoice(true);
+            const response = await fetch(
+                `${import.meta.env.VITE_API_BASE}/api/v1/payments/getinvoice`,
+                { credentials: "include" }
+            );
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch invoice data');
+            }
+
+            const result = await response.json();
+            const payment = result.data;
+
+            // Generate PDF using jsPDF
+            const doc = new jsPDF();
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const pageHeight = doc.internal.pageSize.getHeight();
+            let yPosition = 20;
+
+            // Header
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(24);
+            doc.text("SheetXray", pageWidth / 2, yPosition, { align: "center" });
+
+            yPosition += 15;
+            doc.setFontSize(10);
+            doc.setFont("helvetica", "normal");
+            doc.text("Invoice", pageWidth / 2, yPosition, { align: "center" });
+
+            // Invoice details
+            yPosition += 20;
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(12);
+            doc.text("Invoice Details", 20, yPosition);
+
+            yPosition += 10;
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(10);
+
+            const invoiceData = [
+                [`Invoice ID:`, payment._id || "N/A"],
+                [`Payment ID:`, payment.paymentId || "N/A"],
+                [`Date:`, new Date(payment.createdAt).toLocaleDateString() || "N/A"],
+                [`Amount:`, `₹${payment.amount || 0}`],
+                [`Status:`, payment.status?.toUpperCase() || "N/A"],
+                [`Subscription Type:`, payment.subscriptionType === 'premiumlifetime' ? 'Pro Lifetime' : 'Pro Monthly'],
+                [`Start Date:`, new Date(payment.subscriptionstartdate).toLocaleDateString() || "N/A"],
+                [`End Date:`, payment.subscriptionenddate ? new Date(payment.subscriptionenddate).toLocaleDateString() : "Lifetime"],
+            ];
+
+            invoiceData.forEach(([label, value]) => {
+                doc.text(label, 20, yPosition);
+                doc.text(String(value), 100, yPosition);
+                yPosition += 8;
+            });
+
+            // Footer
+            yPosition += 15;
+            doc.setFont("helvetica", "italic");
+            doc.setFontSize(9);
+            doc.text("Thank you for your subscription!", pageWidth / 2, pageHeight - 20, { align: "center" });
+
+            // Download PDF
+            doc.save(`invoice-${payment._id || Date.now()}.pdf`);
+        } catch (error) {
+            console.error('Error downloading invoice:', error);
+            alert('Failed to download invoice');
+        } finally {
+            setDownloadingInvoice(false);
         }
     };
 
@@ -265,8 +341,12 @@ function Subs() {
 
                     {/* Action Buttons */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <button className="border-2 border-gray-700 text-white font-semibold py-3 rounded-lg hover:bg-gray-800 transition">
-                            📥 Download Invoice
+                        <button
+                            onClick={handleDownloadInvoice}
+                            disabled={downloadingInvoice}
+                            className="border-2 border-gray-700 text-white font-semibold py-3 rounded-lg hover:bg-gray-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            {downloadingInvoice ? '⏳ Downloading...' : '📥 Download Invoice'}
                         </button>
 
                         {user?.usertype === 'premiummonthly' && (

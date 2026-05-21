@@ -9,6 +9,19 @@ import Payment from "../models/payment.model.js";
 import { User } from "../models/user.model.js";
 import errorhandler from "../utils/errorhandler.js";
 
+const getinvoice = asyncHandler(async (req, res) => {
+  const payment = await Payment.findOne({ user: req.user._id }).sort({
+    createdAt: -1,
+  }).limit(1);
+
+  if (!payment) {
+    return res.status(404).json(new responseHandler(404, "No payment found"));
+  }
+
+  return res
+    .status(200)
+    .json(new responseHandler(200, "Invoice retrieved successfully", payment));
+});
 const createorder = asyncHandler(async (req, res) => {
   const type = req.body.type;
   const amount = type === "premiumlifetime" ? 1000 : 99;
@@ -148,4 +161,4 @@ const verifypaymentwebhook = asyncHandler(async (req, res) => {
   return res.status(200).json({ message: "Webhook received successfully" });
 });
 
-export { createorder, verifypayment, verifypaymentwebhook };
+export { createorder, verifypayment, verifypaymentwebhook, getinvoice };
