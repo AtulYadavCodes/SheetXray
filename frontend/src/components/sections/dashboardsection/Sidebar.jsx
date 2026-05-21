@@ -32,10 +32,9 @@ function Sidebar() {
 
   return (
     <>
-      {/* Mobile Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="absolute left-4 top-20 z-50 rounded-md   bg p-2 text-zinc-400 hover:text-white sm:hidden"
+        className="absolute left-4 top-10 z-50 rounded-md  text-emerald-700  sm:hidden shadow-sm"
         aria-label="Toggle Navigation Sidebar"
       >
         <svg className="h-4 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -47,7 +46,6 @@ function Sidebar() {
         </svg>
       </button>
 
-      {/* Backdrop Backdrop Overlay for Mobile */}
       {isOpen && (
         <div
           onClick={closeMobileMenu}
@@ -55,12 +53,10 @@ function Sidebar() {
         />
       )}
 
-      {/* Main Sidebar Panel */}
       <aside
-        className={`fixed inset-y-0  left-0 z-40 flex w-64 flex-col border-r border-zinc-900 bg-black p-4 pt-16 transition-transform duration-300 sm:translate-x-0 sm:pt-4 ${isOpen ? "translate-x-0" : "-translate-x-full"
-          } sm:sticky sm:top-[65px] sm:h-[calc(100vh-65px)]`}
-      >
-        {/* Main Route Navigation */}
+        className={`fixed inset-y-0 left-0 z-40 flex w-64 flex-col border-r border-gray-200 bg-white p-4 pt-16 transition-transform duration-300 sm:translate-x-0 sm:pt-4 ${isOpen ? "translate-x-0" : "-translate-x-full"
+          } sm:sticky sm:top-16.25 sm:h-[calc(100vh-65px)]`}>
+
         <div className="space-y-1.5">
           {routes.map((route) => {
             const absolutePath = route.path ? `/dashboard/${route.path}` : "/dashboard";
@@ -72,8 +68,8 @@ function Sidebar() {
                 onClick={closeMobileMenu}
                 className={({ isActive }) =>
                   `block w-full rounded-md my-3 px-4 py-2.5 font-mono text-sm border transition duration-150 text-left ${isActive
-                    ? "bg-white text-black border-white font-semibold shadow-md shadow-white/10"
-                    : "bg-zinc-900 text-zinc-400 border-zinc-800 hover:bg-zinc-800 hover:text-white"
+                    ? "bg-emerald-600 text-white border-emerald-600 font-semibold shadow-sm"
+                    : "bg-white text-emerald-700 border-gray-200 hover:bg-emerald-50 hover:text-emerald-900"
                   }`
                 }
               >
@@ -83,18 +79,16 @@ function Sidebar() {
           })}
         </div>
 
-        {/* Auto Spacer pushes dynamic actions to layout footer */}
         <div className="flex-1" />
 
-        {/* Action Callouts */}
-        <div className="mt-auto pt-4 border-t border-zinc-900">
+        <div className="mt-auto pt-4 border-t border-gray-200">
           <NavLink
             to="/dashboard/subs"
             onClick={closeMobileMenu}
             className={({ isActive }) =>
               `block w-full rounded-md px-4 py-2.5 font-mono text-sm border transition duration-150 text-left ${isActive
-                ? "bg-white text-black border-white font-semibold"
-                : "bg-zinc-900 text-zinc-300 border-zinc-800 hover:bg-zinc-800"
+                ? "bg-emerald-600 text-white border-emerald-600 font-semibold"
+                : "bg-white text-emerald-700 border-gray-200 hover:bg-emerald-50"
               }`
             }
           >

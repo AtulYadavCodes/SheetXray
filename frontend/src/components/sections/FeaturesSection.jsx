@@ -36,7 +36,6 @@ function FeaturesSection() {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-                {/* Features Grid */}
                 <div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         {features.map((feature, idx) => (
@@ -54,7 +53,6 @@ function FeaturesSection() {
                     </div>
                 </div>
 
-                {/* Chat Section */}
                 <ChatSection />
             </div>
         </section>

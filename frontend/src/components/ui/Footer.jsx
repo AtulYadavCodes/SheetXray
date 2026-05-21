@@ -2,13 +2,13 @@ import { HashLink } from "react-router-hash-link";
 
 function FooterSection() {
   return (
-    <footer className="mx-auto w-full border-t border-gray-200 py-8 px-4 sm:px-6 lg:px-8 dark:border-gray-800">
+    <footer className="mx-auto w-full border-t border-emerald-200 bg-emerald-50 py-8 px-4 sm:px-6 lg:px-8">
       <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <p className="font-mono text-sm uppercase tracking-[0.16em] text-gray-400">
-            SheetXray
+          <p className="font-mono text-sm uppercase tracking-[0.16em] text-emerald-700 font-semibold">
+            📊 SheetXray
           </p>
-          <p className="mt-1 text-sm text-gray-400 max-w-md">
+          <p className="mt-1 text-sm text-emerald-700 max-w-md">
             Upload files, organize sheets, and prepare data for chat workflows. Built with love by Atul Yadav.
           </p>
         </div>
@@ -17,7 +17,7 @@ function FooterSection() {
           <HashLink
             smooth
             to="/#"
-            className="rounded-md px-3 py-2 font-mono text-gray-400 transition hover:bg-gray-700 hover:text-white"
+            className="rounded-md px-3 py-2 font-mono text-emerald-700 transition hover:bg-emerald-100 hover:text-emerald-900"
           >
             Home
           </HashLink>
@@ -25,7 +25,7 @@ function FooterSection() {
             href="https://github.com/AtulYadavCodes"
             target="_blank"
             rel="noreferrer"
-            className="rounded-md px-3 py-2 font-mono text-white transition hover:bg-gray-700"
+            className="rounded-md px-3 py-2 font-mono text-emerald-700 transition hover:bg-emerald-100 hover:text-emerald-900"
           >
             GitHub
           </a>

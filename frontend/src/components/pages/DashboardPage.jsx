@@ -8,7 +8,7 @@ function DashboardPage() {
 
   const location = useLocation().pathname;
   return (
-    <div className='flex h-full w-full'>
+    <div className='flex h-full w-full relative'>
       {!(location.includes("files"))&&
       <Sidebar />}
       <div className="h-full w-full overflow-y-auto pt-1"><Outlet /> </div>

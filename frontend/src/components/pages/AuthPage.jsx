@@ -40,7 +40,7 @@ function AuthPage({ mode = "login" }) {
   };
 
   useEffect(() => {
-    setApimessage(""); //reset API message on mode swi....
+    setApimessage("");
   }, [isLogin])
 
   const handleSubmit = async (e) => {
@@ -58,8 +58,8 @@ function AuthPage({ mode = "login" }) {
 
       const res = await fetch(url, {
         method: "POST",
-        credentials: "include", // for cookies
-        body: formData, // no headers!
+        credentials: "include",
+        body: formData,
       });
 
       const data = await res.json();
@@ -67,8 +67,7 @@ function AuthPage({ mode = "login" }) {
         setIsLogin(true);
       }
       if (isLogin && res.ok) {
-        // Redirect to dashboard or homepage after successful login 
-        setIsAuth(true);// update auth state in context
+        setIsAuth(true);
       }
       setApimessage(data.message);
       console.log(isLogin ? "Login:" : "Signup:", data);
@@ -79,25 +78,22 @@ function AuthPage({ mode = "login" }) {
   };
 
   return (
-    <div className="min-h-screen w-full bg-black flex items-center justify-center px-4">
-      <div className="w-full max-w-md border-2 border-gray-700 bg-gray-900 p-6 rounded-lg">
+    <div className="min-h-screen w-full bg-white flex items-center justify-center px-4">
+      <div className="w-full max-w-md border-2 border-gray-200 bg-white p-6 rounded-lg">
 
-        {/* HEADER */}
         <div className="mb-6 text-center">
-          <h2 className="font-mono text-2xl font-semibold text-white">
+          <h2 className="font-mono text-2xl font-semibold text-emerald-900">
             {isLogin ? "Welcome back" : "Create account"}
           </h2>
-          <p className="mt-2 text-sm text-gray-400">
+          <p className="mt-2 text-sm text-emerald-700">
             {isLogin
               ? "Login to continue to SheetXray"
               : "Start building with SheetXray"}
           </p>
         </div>
 
-        {/* FORM */}
         <form onSubmit={handleSubmit} className="space-y-4">
 
-          {/* SIGNUP ONLY */}
           {!isLogin && (
             <>
               <img src={avatar ? URL.createObjectURL(avatar) : "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png"} alt="avatar preview" className="w-24 h-24 rounded-full object-cover mx-auto" />
@@ -105,11 +101,10 @@ function AuthPage({ mode = "login" }) {
                 type="text"
                 placeholder="Full Name"
                 name="fullname"
-                className="w-full border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white outline-none focus:border-gray-500 placeholder-gray-500"
+                className="w-full border border-gray-300 bg-gray-50 px-3 py-2 text-sm text-gray-900 outline-none focus:border-emerald-600 placeholder-gray-400"
               />
 
-              {/* Avatar Upload */}
-              <div className="w-full border border-dashed border-gray-700 bg-gray-800 p-3 text-center text-xs text-gray-400">
+              <div className="w-full border border-dashed border-gray-300 bg-gray-50 p-3 text-center text-xs text-gray-700">
                 <input
                   type="file"
                   accept="image/*"
@@ -125,14 +120,13 @@ function AuthPage({ mode = "login" }) {
             </>
           )}
 
-          {/* COMMON */}
           <input
             type="email"
             placeholder="Email"
             name="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white outline-none focus:border-white placeholder-gray-500"
+            className="w-full border border-gray-300 bg-gray-50 px-3 py-2 text-sm text-gray-900 outline-none focus:border-emerald-600 placeholder-gray-400"
           />
 
           {!isLogin && (
@@ -140,7 +134,7 @@ function AuthPage({ mode = "login" }) {
               <button
                 type="button"
                 onClick={handleSendOtp}
-                className="w-full rounded-md border border-gray-700 bg-gray-800 px-4 py-2 font-mono text-xs text-white transition hover:bg-gray-700"
+                className="w-full rounded-md border border-emerald-600 bg-emerald-600 px-4 py-2 font-mono text-xs text-white transition hover:bg-emerald-700"
               >
                 Send OTP
               </button>
@@ -149,7 +143,7 @@ function AuthPage({ mode = "login" }) {
                 type="text"
                 name="otp"
                 placeholder="Enter OTP"
-                className="w-full border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white outline-none focus:border-white placeholder-gray-500"
+                className="w-full border border-gray-300 bg-gray-50 px-3 py-2 text-sm text-gray-900 outline-none focus:border-emerald-600 placeholder-gray-400"
               />
             </>
           )}
@@ -158,40 +152,37 @@ function AuthPage({ mode = "login" }) {
             type="password"
             name="password"
             placeholder="Password (min 6 chars)"
-            className="w-full border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white outline-none focus:border-white placeholder-gray-500"
+            className="w-full border border-gray-300 bg-gray-50 px-3 py-2 text-sm text-gray-900 outline-none focus:border-emerald-600 placeholder-gray-400"
           />
 
-          {/* CTA */}
           <button
             type="submit"
-            className="w-full rounded-md border border-white bg-white px-4 py-2 font-mono text-sm font-semibold text-black hover:bg-gray-200 transition"
+            className="w-full rounded-md border border-emerald-600 bg-emerald-600 px-4 py-2 font-mono text-sm font-semibold text-white hover:bg-emerald-700 transition"
           >
             {isLogin ? "Login" : "Sign Up"}
           </button>
         </form>
 
-        {/* SWITCH */}
-        <div className="mt-5 text-center text-sm text-gray-400">
+        <div className="mt-5 text-center text-sm text-gray-700">
           {isLogin ? "Don't have an account?" : "Already have an account?"}
 
           <button
             onClick={() => setIsLogin(!isLogin)}
-            className="ml-2 font-mono text-white underline hover:text-gray-200"
+            className="ml-2 font-mono text-emerald-700 underline hover:text-emerald-900"
           >
             {isLogin ? "Sign up" : "Login"}
           </button>
         </div>
-        <div className="mt-6 font-light text-center text-red-500">
+        <div className="mt-6 font-light text-center text-red-600">
 
           {apimessage}
         </div>
 
-        {/* BACK */}
         <div className="mt-6 text-center">
           <HashLink
             smooth
             to="/#"
-            className="text-xs text-gray-500 hover:text-gray-400 font-mono"
+            className="text-xs text-emerald-700 hover:text-emerald-900 font-mono"
           >
             ← Back to home
           </HashLink>

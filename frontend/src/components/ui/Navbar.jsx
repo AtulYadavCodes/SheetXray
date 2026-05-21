@@ -28,22 +28,20 @@ function Navbar() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-zinc-800 bg-black backdrop-blur-md bg-opacity-95">
+    <header className="sticky top-0 z-50 w-full border-b border-emerald-200 bg-white backdrop-blur-md bg-opacity-95">
       <div className="mx-auto flex  items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
 
-        {/* Brand Logo */}
-        <HashLink smooth to="/#" className="font-mono text-lg font-semibold tracking-[0.16em] text-white">
-          SheetXray
+        <HashLink smooth to="/#" className="font-mono text-lg font-semibold tracking-[0.16em] text-emerald-700">
+          📊 SheetXray
         </HashLink>
 
-        {/* Desktop Navigation */}
         <nav className="hidden items-center gap-1 text-sm sm:flex sm:gap-3">
           {navLinks.map((link) => link.show && (
             <HashLink
               key={link.label}
               smooth
               to={link.to}
-              className="rounded-md px-3 py-2 font-mono text-zinc-400 transition hover:text-white"
+              className="rounded-md px-3 py-2 font-mono text-emerald-900 transition hover:text-emerald-700 hover:bg-emerald-50"
             >
               {link.label}
             </HashLink>
@@ -53,24 +51,23 @@ function Navbar() {
             <HashLink
               smooth
               to="/auth"
-              className="rounded-md bg-white px-3 py-2 font-mono font-semibold text-black transition hover:bg-gray-200"
+              className="rounded-md bg-emerald-600 px-3 py-2 font-mono font-semibold text-white transition hover:bg-emerald-700"
             >
               Sign Up / Login
             </HashLink>
           ) : (
             <button
               onClick={handleLogout}
-              className="rounded-md px-3 py-2 font-mono font-semibold text-zinc-400 transition hover:text-white"
+              className="rounded-md px-3 py-2 font-mono font-semibold text-emerald-900 transition hover:text-emerald-700"
             >
               Logout
             </button>
           )}
         </nav>
 
-        {/* Mobile Hamburger Toggle */}
         <button
           onClick={() => setOpen(!open)}
-          className="block text-zinc-400 hover:text-white sm:hidden focus:outline-none"
+          className="block text-emerald-700 hover:text-emerald-900 sm:hidden focus:outline-none"
           aria-label={open ? "Close menu" : "Open menu"}
         >
           <svg className="h-6 w-6 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -82,16 +79,15 @@ function Navbar() {
           </svg>
         </button>
 
-        {/* Mobile Navigation Dropdown */}
         {open && (
-          <nav className="absolute left-0 right-0 top-full flex flex-col gap-1 border-b border-zinc-800 bg-black px-4 pb-4 pt-2 shadow-xl sm:hidden">
+          <nav className="top-full flex flex-col gap-1  bg-white  pb -4 pt-2  sm:hidden">
             {navLinks.map((link) => link.show && (
               <HashLink
                 key={link.label}
                 smooth
                 to={link.to}
                 onClick={() => setOpen(false)}
-                className="rounded-md px-3 py-2 font-mono text-zinc-400 transition hover:bg-zinc-900 hover:text-white"
+                className="rounded-md px-3 py-2 font-mono text-emerald-900 transition hover:bg-emerald-50 hover:text-emerald-700"
               >
                 {link.label}
               </HashLink>
@@ -102,14 +98,14 @@ function Navbar() {
                 smooth
                 to="/auth"
                 onClick={() => setOpen(false)}
-                className="mt-2 rounded-md bg-white px-3 py-2 text-center font-mono font-semibold text-black transition hover:bg-gray-200"
+                className="mt-2 rounded-md bg-emerald-600 px-3 py-2 text-center font-mono font-semibold text-white transition hover:bg-emerald-700"
               >
                 Sign Up / Login
               </HashLink>
             ) : (
               <button
                 onClick={() => { handleLogout(); setOpen(false); }}
-                className="rounded-md px-3 py-2 text-left font-mono font-semibold text-zinc-400 transition hover:bg-zinc-900 hover:text-white"
+                className="rounded-md px-3 py-2 text-left font-mono font-semibold text-emerald-900 transition hover:bg-emerald-50 hover:text-emerald-700"
               >
                 Logout
               </button>

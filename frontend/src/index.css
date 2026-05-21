@@ -1,8 +1,9 @@
 @import "tailwindcss";
 body {
-  background-color: #000000; /* pure black for AMOLED */
-  color: white;
-}html {
+  background-color: #ffffff;
+  color: #059669;
+}
+html {
   scroll-behavior: smooth;
 }
 .hide-scrollbar::-webkit-scrollbar {

@@ -44,10 +44,10 @@ function PricingSection() {
     return (
         <section id="pricing" className="mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:px-8 ">
             <div className="mb-12 text-center">
-                <h2 className="font-mono text-3xl font-semibold text-white sm:text-4xl">
+                <h2 className="font-mono text-3xl font-semibold text-emerald-900 sm:text-4xl">
                     Simple Pricing
                 </h2>
-                <p className="mt-4 text-lg text-gray-400">
+                <p className="mt-4 text-lg text-emerald-700">
                     Choose the plan that works for you
                 </p>
             </div>
@@ -57,29 +57,29 @@ function PricingSection() {
                     <div
                         key={idx}
                         className={`rounded-lg border-2 p-8 ${plan.highlight
-                            ? "border-white bg-white/20 shadow-lg"
-                            : "border-gray-700  hover:shadow-md"
+                            ? "border-emerald-600 bg-emerald-50 shadow-lg"
+                            : "border-emerald-200 bg-white hover:shadow-md"
                             } transition`}
                     >
                         {plan.highlight && (
-                            <div className="mb-3 inline-block rounded-full bg-white px-3 py-1 text-xs font-mono font-semibold text-gray-950">
+                            <div className="mb-3 inline-block rounded-full bg-emerald-600 px-3 py-1 text-xs font-mono font-semibold text-white">
                                 Most Popular
                             </div>
                         )}
-                        <h3 className="font-mono text-2xl font-semibold text-white mb-2">
+                        <h3 className="font-mono text-2xl font-semibold text-emerald-900 mb-2">
                             {plan.name}
                         </h3>
                         <div className="mb-4">
-                            <span className="text-4xl font-bold text-white">{plan.price}</span>
+                            <span className="text-4xl font-bold text-emerald-700">{plan.price}</span>
                             {plan.period && (
-                                <span className="text-sm text-gray-400">{plan.period}</span>
+                                <span className="text-sm text-emerald-600">{plan.period}</span>
                             )}
                         </div>
-                        <p className="text-sm text-gray-400 mb-6">{plan.description}</p>
+                        <p className="text-sm text-emerald-700 mb-6">{plan.description}</p>
 
                         <ul className="mb-8 space-y-3">
                             {plan.features.map((feature, i) => (
-                                <li key={i} className="flex items-start gap-2 text-sm text-gray-300">
+                                <li key={i} className="flex items-start gap-2 text-sm text-emerald-800">
                                     <span className="mt-1">✓</span>
                                     {feature}
                                 </li>

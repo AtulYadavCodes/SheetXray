@@ -17,16 +17,16 @@ function UserProfile() {
 
   if (!user) {
     return (
-      <div className="p-6 text-gray-400 font-mono text-sm">
+      <div className="p-6 text-emerald-700 font-mono text-sm">
         $ loading profile...
       </div>
     );
   }
 
   return (
-    <section className="w-full px-9 sm:px-10 lg:px-16 py-4 font-mono text-base text-white">
+    <section className="w-full px-9 sm:px-10 lg:px-16 py-8 font-mono text-base text-emerald-900 min-h-screen">
 
-      <h3 className="text-sm py-3 text-gray-400 sm:hidden"></h3>
+      <h3 className="text-sm py-3 text-emerald-700 sm:hidden"></h3>
       <div className="flex items-center gap-6 mb-10 mx-4">
 
         <img
@@ -36,10 +36,10 @@ function UserProfile() {
 
         <div>
 
-          <h1 className="text-2xl text-white tracking-wide">
+          <h1 className="text-2xl text-emerald-900 tracking-wide">
             {user.fullname}
           </h1>
-          <p className="text-gray-400 text-sm">{user.email}</p>
+          <p className="text-emerald-700 text-sm">{user.email}</p>
         </div>
       </div>
 
@@ -60,7 +60,7 @@ function UserProfile() {
 
       <Block title="stats">
         <Line label="folders" value={user.folders || 0} />
-   
+
         <Line
           label="joined"
           value={new Date(user.createdAt).toLocaleDateString()}
@@ -84,14 +84,14 @@ function UserProfile() {
 
 function Divider() {
   return (
-    <div className="my-8 border-t border-gray-700" />
+    <div className="my-8 border-t border-gray-200" />
   );
 }
 
 function Block({ title, children }) {
   return (
     <div className="mb-6 min-w-sm">
-      <p className="text-gray-400 mb-3 text-sm tracking-widest">
+      <p className="text-emerald-700 mb-3 text-sm tracking-widest">
         ── {title.toUpperCase()}
       </p>
 
@@ -105,8 +105,8 @@ function Block({ title, children }) {
 function Line({ label, value }) {
   return (
     <div className="flex gap-6 text-base">
-      <span className="w-28 text-gray-400">{label}</span>
-      <span className="text-white ">{value}</span>
+      <span className="w-28 text-emerald-700">{label}</span>
+      <span className="text-emerald-900 ">{value}</span>
     </div>
   );
 }

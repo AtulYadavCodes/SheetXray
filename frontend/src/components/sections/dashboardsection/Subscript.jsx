@@ -124,7 +124,7 @@ function Subs() {
                     contact: user?.phone || "",
                 },
                 theme: {
-                    color: "#FCD34D",
+                    color: "#059669",
                 },
                 modal: {
                     ondismiss: () => {
@@ -226,14 +226,14 @@ function Subs() {
 
     if (loading) {
         return (
-            <div className="p-6 text-gray-400 font-mono text-sm">
+            <div className="p-6 text-emerald-700 font-mono text-sm">
                 $ loading subscription...
             </div>
         );
     }
 
     return (
-        <section className="w-full px-6 sm:px-10 lg:px-16 py-8 font-mono">
+        <section className="w-full px-6 sm:px-10 lg:px-16 font-mono py-8 min-h-screen">
             <div className="w-100 h-9"></div>
 
             {user?.usertype === 'premiummonthly' || user?.usertype === 'premiumlifetime' ? (
@@ -249,56 +249,56 @@ function Subs() {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                        <div className="border-2 border-gray-700 rounded-lg p-6 bg-gray-900 hover:shadow-lg transition">
-                            <h4 className="text-sm text-gray-400 mb-2 uppercase tracking-wide font-mono">Plan Type</h4>
-                            <p className="text-3xl font-bold text-white mb-2">
+                        <div className="border-2 border-gray-200 rounded-lg p-6 bg-white hover:shadow transition">
+                            <h4 className="text-sm text-emerald-700 mb-2 uppercase tracking-wide font-mono">Plan Type</h4>
+                            <p className="text-3xl font-bold text-emerald-900 mb-2">
                                 {user?.usertype === 'premiumlifetime' ? 'Lifetime' : 'Monthly'}
                             </p>
-                            <p className="text-gray-400 text-sm">
+                            <p className="text-emerald-700 text-sm">
                                 {user?.usertype === 'premiumlifetime'
                                     ? 'One-time payment for lifetime access'
                                     : 'Renews monthly'}
                             </p>
                         </div>
 
-                        <div className="border-2 border-gray-700 rounded-lg p-6 bg-gray-900 hover:shadow-lg transition">
-                            <h4 className="text-sm text-gray-400 mb-2 uppercase tracking-wide font-mono">Member Since</h4>
-                            <p className="text-3xl font-bold text-white mb-2">
+                        <div className="border-2 border-gray-200 rounded-lg p-6 bg-white hover:shadow transition">
+                            <h4 className="text-sm text-emerald-700 mb-2 uppercase tracking-wide font-mono">Member Since</h4>
+                            <p className="text-3xl font-bold text-emerald-900 mb-2">
                                 {user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A'}
                             </p>
-                            <p className="text-gray-400 text-sm">Keep enjoying premium features</p>
+                            <p className="text-emerald-700 text-sm">Keep enjoying premium features</p>
                         </div>
                     </div>
 
-                    <div className="border-2 border-gray-700 rounded-lg p-8 bg-gray-900 mb-8">
-                        <h3 className="text-2xl font-bold text-white mb-6">Premium Features</h3>
+                    <div className="border-2 border-gray-200 rounded-lg p-8 bg-white mb-8">
+                        <h3 className="text-2xl font-bold text-emerald-900 mb-6">Premium Features</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="flex items-start gap-3">
-                                <span className="text-green-500 text-xl mt-1">✓</span>
+                                <span className="text-emerald-600 text-xl mt-1">✓</span>
                                 <div>
-                                    <p className="font-semibold text-white">Unlimited File Uploads</p>
-                                    <p className="text-sm text-gray-400">Upload & organize unlimited spreadsheets</p>
+                                    <p className="font-semibold text-emerald-900">Unlimited File Uploads</p>
+                                    <p className="text-sm text-emerald-700">Upload & organize unlimited spreadsheets</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">
-                                <span className="text-green-500 text-xl mt-1">✓</span>
+                                <span className="text-emerald-600 text-xl mt-1">✓</span>
                                 <div>
-                                    <p className="font-semibold text-white">Advanced RAG Search</p>
-                                    <p className="text-sm text-gray-400">Search across all your files instantly</p>
+                                    <p className="font-semibold text-emerald-900">Advanced RAG Search</p>
+                                    <p className="text-sm text-emerald-700">Search across all your files instantly</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">
-                                <span className="text-green-500 text-xl mt-1">✓</span>
+                                <span className="text-emerald-600 text-xl mt-1">✓</span>
                                 <div>
-                                    <p className="font-semibold text-white">Priority Support</p>
-                                    <p className="text-sm text-gray-400">Get help from our support team</p>
+                                    <p className="font-semibold text-emerald-900">Priority Support</p>
+                                    <p className="text-sm text-emerald-700">Get help from our support team</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">
-                                <span className="text-green-500 text-xl mt-1">✓</span>
+                                <span className="text-emerald-600 text-xl mt-1">✓</span>
                                 <div>
-                                    <p className="font-semibold text-white">Advanced Analytics</p>
-                                    <p className="text-sm text-gray-400">Deep insights into your data</p>
+                                    <p className="font-semibold text-emerald-900">Advanced Analytics</p>
+                                    <p className="text-sm text-emerald-700">Deep insights into your data</p>
                                 </div>
                             </div>
                         </div>
@@ -308,7 +308,7 @@ function Subs() {
                         <button
                             onClick={handleDownloadInvoice}
                             disabled={downloadingInvoice}
-                            className="border-2 border-gray-700 text-white font-semibold py-3 rounded-lg hover:bg-gray-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="border-2 border-emerald-600 bg-emerald-600 text-white font-semibold py-3 rounded-lg hover:bg-emerald-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             {downloadingInvoice ? '⏳ Downloading...' : '📥 Download Invoice'}
                         </button>
@@ -316,7 +316,7 @@ function Subs() {
                         {user?.usertype === 'premiummonthly' && (
                             <button
                                 onClick={() => handlePayment('enterprise')}
-                                className="border-2 border-white text-gray-200 font-semibold py-3 rounded-lg hover:bg-white hover:text-black transition"
+                                className="border-2 border-emerald-600 bg-emerald-600 text-white font-semibold py-3 rounded-lg hover:bg-emerald-700 transition"
                             >
                                 ⬆️ Upgrade to Lifetime
                             </button>
@@ -326,20 +326,20 @@ function Subs() {
                 </div>
             ) : (
                 <div className="max-w-4xl space-y-6">
-                    <div className="border-2 border-gray-700 rounded-lg p-6 hover:border-white transition cursor-pointer bg-gray-900"
+                    <div className="border-2 border-gray-200 rounded-lg p-6 hover:border-emerald-300 transition cursor-pointer bg-white"
                         onClick={() => setSelectedPlan('pro')}>
                         <div className="flex items-start justify-between mb-4">
                             <div>
-                                <h3 className="text-2xl font-semibold text-white">Pro monthly</h3>
-                                <p className="text-gray-400 text-sm mt-1">For power users</p>
+                                <h3 className="text-2xl font-semibold text-emerald-900">Pro monthly</h3>
+                                <p className="text-emerald-700 text-sm mt-1">For power users</p>
                             </div>
                             <div className="text-right">
-                                <span className="text-4xl font-bold text-white">₹99</span>
-                                <span className="text-gray-400 text-sm">/month</span>
+                                <span className="text-4xl font-bold text-emerald-900">₹99</span>
+                                <span className="text-emerald-700 text-sm">/month</span>
                             </div>
                         </div>
 
-                        <ul className="space-y-2 mb-6 text-sm text-gray-300">
+                        <ul className="space-y-2 mb-6 text-sm text-emerald-700">
                             <li>✓ Unlimited file uploads</li>
                             <li>✓ Advanced RAG search</li>
 
@@ -354,26 +354,26 @@ function Subs() {
                                 value="pro"
                                 checked={selectedPlan === 'pro'}
                                 onChange={(e) => setSelectedPlan(e.target.value)}
-                                className="w-4 h-4"
+                                className="w-4 h-4 text-emerald-600"
                             />
-                            <span className="text-gray-300">Select Pro Plan</span>
+                            <span className="text-emerald-700">Select Pro Plan</span>
                         </div>
                     </div>
 
-                    <div className="border-2 border-gray-700 rounded-lg p-6 hover:border-white transition cursor-pointer bg-gray-900"
+                    <div className="border-2 border-gray-200 rounded-lg p-6 hover:border-emerald-300 transition cursor-pointer bg-white"
                         onClick={() => setSelectedPlan('enterprise')}>
                         <div className="flex items-start justify-between mb-4">
                             <div>
-                                <h3 className="text-2xl font-semibold text-white">Pro lifetime</h3>
-                                <p className="text-gray-400 text-sm mt-1">For teams & organizations</p>
+                                <h3 className="text-2xl font-semibold text-emerald-900">Pro lifetime</h3>
+                                <p className="text-emerald-700 text-sm mt-1">For teams & organizations</p>
                             </div>
                             <div className="text-right">
-                                <span className="text-4xl font-bold text-white">₹1000</span>
-                                <span className="text-gray-400 text-sm">/life</span>
+                                <span className="text-4xl font-bold text-emerald-900">₹1000</span>
+                                <span className="text-emerald-700 text-sm">/life</span>
                             </div>
                         </div>
 
-                        <ul className="space-y-2 mb-6 text-sm text-gray-300">
+                        <ul className="space-y-2 mb-6 text-sm text-emerald-700">
                             <li>✓ Everything in Pro</li>
 
 
@@ -388,21 +388,21 @@ function Subs() {
                                 value="enterprise"
                                 checked={selectedPlan === 'enterprise'}
                                 onChange={(e) => setSelectedPlan(e.target.value)}
-                                className="w-4 h-4"
+                                className="w-4 h-4 text-emerald-600"
                             />
-                            <span className="text-gray-300">Select lifetime Plan</span>
+                            <span className="text-emerald-700">Select lifetime Plan</span>
                         </div>
                     </div>
 
                     <button
                         onClick={handlePayment}
                         disabled={!selectedPlan}
-                        className="w-full bg-white hover:bg-gray-200 disabled:opacity-40 text-black font-semibold py-3 rounded-lg transition mt-6"
+                        className="w-full bg-emerald-600 hover:bg-emerald-700 disabled:opacity-40 text-white font-semibold py-3 rounded-lg transition mt-6"
                     >
                         Proceed to Payment
                     </button>
 
-                    <p className="text-xs text-gray-400 text-center">
+                    <p className="text-xs text-emerald-700 text-center">
                         Secure payment powered by Razorpay
                     </p>
                 </div>

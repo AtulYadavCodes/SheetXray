@@ -6,7 +6,7 @@ import FooterSection from "../ui/Footer";
 function Layout() {
   return (
     <>
-      <div className="min-h-screen flex flex-col bg-black">
+      <div className="min-h-screen flex flex-col bg-white">
 
         <Navbar />
 
