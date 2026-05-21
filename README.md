@@ -15,35 +15,35 @@
 	<img src="https://img.shields.io/badge/Docker-Compose-2496ed" alt="Docker" />
 </p>
 
-SheetXray is an advanced full-stack spreadsheet assistant platform that enables users to register, log in, organize files into folders, upload sheet documents, and leverage AI-powered RAG (Retrieval Augmented Generation) agents for intelligent query/chat workflows. The application features a modern React frontend with Vite, a robust Express backend with JWT authentication, a dedicated Python FastAPI service for AI operations with LangChain and OpenRouter integration, and integrated payment processing via Razorpay.
+SheetXray is an enterprise-grade, full-stack spreadsheet intelligence platform designed to empower data-driven decision-making through AI-powered analytics and semantic search. The platform enables users to securely manage spreadsheet documents, perform advanced data queries using Retrieval Augmented Generation (RAG), and leverage intelligent AI agents for insights extraction. Built with modern cloud-native architecture, SheetXray converts uploaded spreadsheet files to optimized Parquet format for high-performance data access and processing using Pandas, ensuring efficient queries at scale.
 
 ## Highlights
 
 ### Frontend
 
-- Modern React 18 UI built with Vite for fast development
-- User authentication with JWT tokens (login/register/logout)
-- Responsive layout with navigation and sidebar
-- Dashboard with file management and folder organization
-- Profile management with avatar uploads via ImageFlow
-- Integration with Razorpay payment gateway for premium subscriptions
-- Protected routes for authenticated users
-- Chat interface for AI-powered spreadsheet queries
+- High-performance React 18 UI optimized with Vite bundler
+- Secure user authentication with JWT token management (access + refresh tokens)
+- Responsive, mobile-first design with progressive enhancement
+- Intuitive dashboard with advanced file management and hierarchical folder organization
+- User profile management with encrypted avatar uploads via Cloudinary
+- Integrated Razorpay payment gateway for subscription monetization
+- Route-level authentication guards for protected resources
+- Real-time chat interface for natural language spreadsheet queries
 
 ### Backend (Express)
 
-- User auth with JWT access and refresh tokens
-- OTP-based registration flow
-- OTP generation using Node.js crypto module
-- OTP email delivery via Nodemailer SMTP
-- Welcome email delivery after successful registration
-- Redis-backed rate limiting for login and OTP requests
-- Folder management for organizing uploaded sheets
-- Sheet file upload support through Multer and Cloudinary
-- User profile picture management via ImageFlow service
-- Razorpay order creation and payment verification endpoints
-- Protected routes for user, folder, and sheet operations
-- Integration with Python FastAPI AI service for intelligent queries
+- Enterprise-grade user authentication with JWT and secure refresh token rotation
+- OTP-based registration with email verification for account security
+- Cryptographically secure OTP generation using Node.js crypto primitives
+- Transactional email delivery via SMTP (Nodemailer) for operational notifications
+- Redis-based distributed rate limiting to mitigate brute-force and replay attacks
+- RESTful API for folder hierarchy management and sheet organization
+- Multipart file upload handling with Multer integration
+- Cloud storage management via Cloudinary CDN for reliable file serving
+- User profile picture management with optimization and caching
+- Razorpay payment orchestration with signature verification
+- Comprehensive role-based access control (RBAC) on all protected endpoints
+- Service integration layer with Python FastAPI for AI/ML operations
 
 ### AI Service (Python FastAPI)
 
@@ -53,7 +53,9 @@ SheetXray is an advanced full-stack spreadsheet assistant platform that enables 
 - RAG (Retrieval Augmented Generation) capabilities for context-aware responses
 - Intelligent agent framework for multi-step reasoning
 - Vector embeddings for semantic search and document retrieval
-- Sheet content processing and indexing
+- Sheet content processing and indexing with Pandas
+- Spreadsheet format conversion to Parquet for optimized data storage and retrieval
+- Columnar data format enabling efficient query performance and reduced memory footprint
 - Real-time chat interface powered by AI agents
 - Support for multiple AI models through OpenRouter
 
@@ -83,19 +85,22 @@ flowchart LR
 
 ### Authentication & File Upload Flow
 
-1. User registers with OTP verification
-2. Login generates JWT tokens with rate limiting
-3. Sheets uploaded and stored on Cloudinary
-4. Sheet content indexed for AI search
+1. User registers with OTP verification and JWT-based session management
+2. Login generates secure JWT tokens with Redis-backed rate limiting
+3. Sheets uploaded and stored on Cloudinary with metadata tracking
+4. Sheet content extracted and processed using Pandas
+5. Data converted to Parquet columnar format for optimized storage and retrieval
+6. Parquet-formatted data indexed for AI-powered semantic search and analytics
 
 ### AI & RAG Query Flow
 
-1. User sends query through chat interface
-2. Query embedded into vector space
-3. Vector similarity search retrieves relevant sheet sections
-4. LangChain agent processes query + retrieved context
-5. Agent routes to appropriate OpenRouter LLM
-6. Response streamed back to user in real-time
+1. User submits semantic query through chat interface
+2. Query embedding generated via vector model
+3. Vector similarity search retrieves relevant Parquet-stored sheet sections with high efficiency
+4. Pandas processes and aggregates retrieved data for contextual enrichment
+5. LangChain agent synthesizes query context with retrieved data insights
+6. Agent routes optimized request to OpenRouter LLM endpoints
+7. AI-generated response streamed in real-time to user dashboard
 
 ## Tech Stack
 
@@ -127,15 +132,17 @@ flowchart LR
 - FastAPI (high-performance async web framework)
 - LangChain (orchestration framework for LLM applications)
 - OpenRouter API client (unified LLM provider)
-- Pydantic (data validation)
-- Vector databases (Pinecone/Chroma for embeddings)
+- Pydantic (data validation and serialization)
+- Pandas (data manipulation and transformation)
+- PyArrow / Parquet (columnar data format for optimized storage and retrieval)
+- Vector databases (Pinecone/Chroma for semantic embeddings)
 - Document processing libraries (pdf2image, python-pptx, openpyxl for sheet parsing)
 - Async/await for concurrent request handling
 - WebSocket support for real-time chat
 
 ### External Services & Integrations
 
-- **ImageFlow**: Self-made media management service for user profile pictures ([GitHub](https://github.com/yourusername/imageflow))
+- **ImageFlow**: Proprietary media management microservice for secure user profile picture handling
 - **Cloudinary**: Cloud storage for spreadsheet files and documents
 - **OpenRouter**: Unified API for accessing multiple LLM providers
 - **Razorpay**: Payment gateway for subscription processing
@@ -150,17 +157,19 @@ flowchart LR
 
 ## Architecture Overview
 
+SheetXray employs a microservices-oriented architecture designed for scalability, fault isolation, and independent deployment:
 
-- **Frontend**: Single Page Application (SPA) served by Vite dev server during development
-- **Express Backend**: REST API handling authentication, file operations, payments, and service orchestration on port 3000
-- **FastAPI AI Service**: Dedicated async service for LLM operations, RAG, and intelligent agents on port 8000
-- **Database**: MongoDB for persistent data storage (users, folders, sheets, payments)
-- **Cache**: Redis for rate limiting, session management, and vector cache
-- **Vector Store**: Chroma/Pinecone for storing and retrieving embeddings for RAG
-- **File Storage**: Cloudinary for spreadsheet uploads; ImageFlow for profile pictures
-- **Profile Service**: ImageFlow for user avatar management
-- **LLM Provider**: OpenRouter API for flexible access to multiple AI models
-- **Payments**: Razorpay for payment processing and subscription management
+- **Frontend (React SPA)**: Client-side application with real-time reactivity, served by Vite development server
+- **Express REST API**: Stateless API layer handling authentication, file orchestration, payments, and service routing on port 3000
+- **FastAPI AI Service**: Dedicated high-performance async service for LLM operations, RAG vector search, and intelligent agent workflows on port 8000
+- **Data Processing Pipeline**: Pandas-based transformation layer converting uploaded spreadsheets to Parquet columnar format for efficient storage and querying
+- **Primary Database**: MongoDB for operational data (users, folders, sheets, payments, chat history)
+- **Cache Layer**: Redis for distributed rate limiting, session management, embeddings cache, and message queue
+- **Vector Store**: Chroma/Pinecone for semantic embedding storage and retrieval in RAG pipeline
+- **Object Storage**: Cloudinary CDN for spreadsheet file management and distribution
+- **Identity & Profile Service**: ImageFlow for secure avatar management and user profile picture optimization
+- **LLM Gateway**: OpenRouter API providing unified access to multiple state-of-the-art language models
+- **Payment Processing**: Razorpay for subscription transactions, order management, and webhook verification
 
 ## API Base
 
