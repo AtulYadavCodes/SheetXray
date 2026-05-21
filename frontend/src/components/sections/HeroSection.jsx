@@ -34,7 +34,7 @@ function HeroSection() {
               Get Started
             </a>
             <a
-              href="#demo"
+              href="youtube.com/@sheetxray"
               className="inline-flex items-center justify-center border border-gray-700 bg-transparent px-5 py-3 font-mono text-sm font-semibold text-white transition-colors hover:bg-gray-900"
             >
               Watch Demo
