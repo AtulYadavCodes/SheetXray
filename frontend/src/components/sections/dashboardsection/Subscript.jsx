@@ -28,7 +28,6 @@ function Subs() {
     }, []);
 
     useEffect(() => {
-        //  Vite env and Razorpay script availability in browser console
         try {
             console.log("VITE_RAZORPAY_KEY_ID =>", import.meta.env.VITE_RAZORPAY_KEY_ID);
             console.log("window.Razorpay =>", typeof window !== "undefined" && !!window.Razorpay);
@@ -43,7 +42,6 @@ function Subs() {
         try {
             setLoading(true);
 
-            // Validate frontend env and Razorpay script
             if (!import.meta.env.VITE_RAZORPAY_KEY_ID) {
                 setLoading(false);
                 alert(
@@ -60,10 +58,8 @@ function Subs() {
                 return;
             }
 
-            // Map plan selection to subscription type
             const subscriptionType = plan === 'pro' ? 'premiummonthly' : 'premiumlifetime';
 
-            // St Create order from backend
             const orderResponse = await fetch(
                 `${import.meta.env.VITE_API_BASE}/api/v1/payments/createorder`,
                 {
@@ -82,7 +78,6 @@ function Subs() {
             const orderData = JSON.parse(orderText);
             const order = orderData.data;
 
-            // St Open Razorpay payment modal
             const options = {
                 key: import.meta.env.VITE_RAZORPAY_KEY_ID,
                 order_id: order.id,
@@ -92,7 +87,6 @@ function Subs() {
                 description: `${subscriptionType === 'premiummonthly' ? 'Pro Monthly' : 'Pro Lifetime'} Subscription`,
                 handler: async (response) => {
                     try {
-                        // St Verify payment with backend
                         const verifyResponse = await fetch(
                             `${import.meta.env.VITE_API_BASE}/api/v1/payments/verifypayment`,
                             {
@@ -108,7 +102,6 @@ function Subs() {
                         );
 
                         if (verifyResponse.ok) {
-                            // Refresh user data to show updated subscription status
                             const profileRes = await fetch(
                                 `${import.meta.env.VITE_API_BASE}/api/v1/users/profile`,
                                 { credentials: "include" }
@@ -142,7 +135,6 @@ function Subs() {
 
             const razorpay = new window.Razorpay(options);
 
-            //  for payment failures (card declined, etc.) and show a friendly message
             try {
                 razorpay.on && razorpay.on('payment.failed', function (response) {
                     console.error('Razorpay payment failed:', response);
@@ -150,10 +142,8 @@ function Subs() {
                         response?.error?.description || response?.error?.reason || 'Payment failed. Please try another payment method.';
                     setPaymentError(errMsg);
                     setLoading(false);
-                    // Keep selected plan so user can retry
                 });
             } catch (e) {
-                // Older/check environments may not support .on — ignore silently
                 console.warn('Could not attach payment.failed listener', e);
             }
 
@@ -180,13 +170,11 @@ function Subs() {
             const result = await response.json();
             const payment = result.data;
 
-            // Generate PDF using jsPDF
             const doc = new jsPDF();
             const pageWidth = doc.internal.pageSize.getWidth();
             const pageHeight = doc.internal.pageSize.getHeight();
             let yPosition = 20;
 
-            // Header
             doc.setFont("helvetica", "bold");
             doc.setFontSize(24);
             doc.text("SheetXray", pageWidth / 2, yPosition, { align: "center" });
@@ -196,7 +184,6 @@ function Subs() {
             doc.setFont("helvetica", "normal");
             doc.text("Invoice", pageWidth / 2, yPosition, { align: "center" });
 
-            // Invoice details
             yPosition += 20;
             doc.setFont("helvetica", "bold");
             doc.setFontSize(12);
@@ -223,13 +210,11 @@ function Subs() {
                 yPosition += 8;
             });
 
-            // Footer
             yPosition += 15;
             doc.setFont("helvetica", "italic");
             doc.setFontSize(9);
             doc.text("Thank you for your subscription!", pageWidth / 2, pageHeight - 20, { align: "center" });
 
-            // Download PDF
             doc.save(`invoice-${payment._id || Date.now()}.pdf`);
         } catch (error) {
             console.error('Error downloading invoice:', error);
@@ -252,9 +237,7 @@ function Subs() {
             <div className="w-100 h-9"></div>
 
             {user?.usertype === 'premiummonthly' || user?.usertype === 'premiumlifetime' ? (
-                // Already Pro
                 <div className="max-w-4xl">
-                    {/* Header Card */}
                     <div className="bg-gradient-to-r from-white to-gray-200 rounded-lg p-8 mb-8 text-gray-900">
                         <div className="flex items-start justify-between">
                             <div>
@@ -265,9 +248,7 @@ function Subs() {
                         </div>
                     </div>
 
-                    {/* Plan Details Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                        {/* Plan Type Card */}
                         <div className="border-2 border-gray-700 rounded-lg p-6 bg-gray-900 hover:shadow-lg transition">
                             <h4 className="text-sm text-gray-400 mb-2 uppercase tracking-wide font-mono">Plan Type</h4>
                             <p className="text-3xl font-bold text-white mb-2">
@@ -280,7 +261,6 @@ function Subs() {
                             </p>
                         </div>
 
-                        {/* Member Since Card */}
                         <div className="border-2 border-gray-700 rounded-lg p-6 bg-gray-900 hover:shadow-lg transition">
                             <h4 className="text-sm text-gray-400 mb-2 uppercase tracking-wide font-mono">Member Since</h4>
                             <p className="text-3xl font-bold text-white mb-2">
@@ -290,7 +270,6 @@ function Subs() {
                         </div>
                     </div>
 
-                    {/* Features List */}
                     <div className="border-2 border-gray-700 rounded-lg p-8 bg-gray-900 mb-8">
                         <h3 className="text-2xl font-bold text-white mb-6">Premium Features</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -315,20 +294,6 @@ function Subs() {
                                     <p className="text-sm text-gray-400">Get help from our support team</p>
                                 </div>
                             </div>
-                            {/* <div className="flex items-start gap-3">
-                                <span className="text-green-500 text-xl mt-1">✓</span>
-                                <div>
-                                    <p className="font-semibold text-white">Custom Agents</p>
-                                    <p className="text-sm text-gray-400">Configure AI agents for your needs</p>
-                                </div>
-                            </div>
-                            <div className="flex items-start gap-3">
-                                <span className="text-green-500 text-xl mt-1">✓</span>
-                                <div>
-                                    <p className="font-semibold text-white">API Access</p>
-                                    <p className="text-sm text-gray-400">Integrate SheetXray with your apps</p>
-                                </div>
-                            </div> */}
                             <div className="flex items-start gap-3">
                                 <span className="text-green-500 text-xl mt-1">✓</span>
                                 <div>
@@ -339,7 +304,6 @@ function Subs() {
                         </div>
                     </div>
 
-                    {/* Action Buttons */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <button
                             onClick={handleDownloadInvoice}
@@ -361,9 +325,7 @@ function Subs() {
                     </div>
                 </div>
             ) : (
-                // Payment Plans
                 <div className="max-w-4xl space-y-6">
-                    {/* Pro Plan Card */}
                     <div className="border-2 border-gray-700 rounded-lg p-6 hover:border-white transition cursor-pointer bg-gray-900"
                         onClick={() => setSelectedPlan('pro')}>
                         <div className="flex items-start justify-between mb-4">
@@ -398,7 +360,6 @@ function Subs() {
                         </div>
                     </div>
 
-                    {/* life Plan Card */}
                     <div className="border-2 border-gray-700 rounded-lg p-6 hover:border-white transition cursor-pointer bg-gray-900"
                         onClick={() => setSelectedPlan('enterprise')}>
                         <div className="flex items-start justify-between mb-4">
@@ -433,7 +394,6 @@ function Subs() {
                         </div>
                     </div>
 
-                    {/* Payment Button */}
                     <button
                         onClick={handlePayment}
                         disabled={!selectedPlan}
