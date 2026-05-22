@@ -27,6 +27,17 @@ function Files() {
 
       const data = Array.isArray(res.data) ? res.data : res.data.data;
       setFiles(data);
+      forEach(data, (file) => {
+        sum=sum+file.filesize;
+      })
+     const user= await axios.get(
+        `${import.meta.env.VITE_API_BASE}/api/v1/users/getuserprofile`,
+        { withCredentials: true },
+      );
+      const userData = user.data?.data || user.data;
+      if(userdata.usertype==="free" && files.length>=10){
+        toast.info("You have reached the maximum file limit for free users. Please  upgrade your plan.");
+      }
     } catch (err) {
       console.log(err);
     }

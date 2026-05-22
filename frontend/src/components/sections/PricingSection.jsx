@@ -8,7 +8,7 @@ function PricingSection() {
             description: "Get started with basic features",
             features: [
                 "Up to 3 folders",
-                "100 MB storage",
+                "up to 10 files in each folder",
 
             ],
 
@@ -21,7 +21,7 @@ function PricingSection() {
             description: "For growing teams",
             features: [
                 "Unlimited folders",
-                "1 GB storage",
+                "Unlimited files in each folder",
                 "Priority support",
             ],
 
