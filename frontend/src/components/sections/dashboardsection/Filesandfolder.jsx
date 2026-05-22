@@ -20,6 +20,7 @@ function Filesandfolder() {
         { withCredentials: true }
       );
       const data = Array.isArray(res.data) ? res.data : res.data.data;
+      
       setFolders(data);
     } catch (err) {
       setFolders([]);
@@ -142,9 +143,25 @@ function Filesandfolder() {
 
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
         {folders.map((f) => (
-          <Link key={f._id} to={`/dashboard/files/${f._id}`}>
+          <Link
+            key={f._id}
+            to={f.disabled ? "#" : `/dashboard/files/${f._id}`}
+            aria-disabled={f.disabled}
+            onClick={(e) => {
+              if (f.disabled) {
+                e.preventDefault();
+                e.stopPropagation();
+                alert("Upgrade to a premium account to get back access to this folder and create more folders!");
+              }
+            }}
+            className={f.disabled ? "cursor-not-allowed" : ""}
+          >
             <div
-              className="cursor-pointer rounded-xl border border-emerald-200 hover:border-emerald-500 bg-emerald  transition p-4 flex flex-col items-center relative group shadow-sm hover:shadow-md"
+              className={`rounded-xl border bg-emerald transition p-4 flex flex-col items-center relative group shadow-sm ${
+                f.disabled
+                  ? "cursor-not-allowed border-slate-200 opacity-50"
+                  : "cursor-pointer border-emerald-200 hover:border-emerald-500 hover:shadow-md"
+              }`}
             >
               <span className="text-3xl">📁</span>
               <span className="mt-2 text-xs text-emerald-900 font-mono text-center truncate w-full font-semibold">
