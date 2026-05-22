@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 function Filesandfolder() {
   const [folders, setFolders] = useState([]);
 
@@ -20,7 +21,7 @@ function Filesandfolder() {
         { withCredentials: true }
       );
       const data = Array.isArray(res.data) ? res.data : res.data.data;
-      
+
       setFolders(data);
     } catch (err) {
       setFolders([]);
@@ -151,17 +152,19 @@ function Filesandfolder() {
               if (f.disabled) {
                 e.preventDefault();
                 e.stopPropagation();
-                alert("Upgrade to a premium account to get back access to this folder and create more folders!");
+                toast.info(
+                  "Upgrade to a premium account to get back access to this folder and create more folders!"
+                );
+                return;
               }
             }}
             className={f.disabled ? "cursor-not-allowed" : ""}
           >
             <div
-              className={`rounded-xl border bg-emerald transition p-4 flex flex-col items-center relative group shadow-sm ${
-                f.disabled
+              className={`rounded-xl border bg-emerald transition p-4 flex flex-col items-center relative group shadow-sm ${f.disabled
                   ? "cursor-not-allowed border-slate-200 opacity-50"
                   : "cursor-pointer border-emerald-200 hover:border-emerald-500 hover:shadow-md"
-              }`}
+                }`}
             >
               <span className="text-3xl">📁</span>
               <span className="mt-2 text-xs text-emerald-900 font-mono text-center truncate w-full font-semibold">

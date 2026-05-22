@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 function Files() {
   const { folderid } = useParams();
@@ -49,6 +50,12 @@ function Files() {
 
   const handleSendMessage = async () => {
     if (!userQuery.trim()) return;
+
+    // Require at least one uploaded file to query
+    if (!files || files.length === 0) {
+      toast.info("Please upload a file before sending a query.");
+      return;
+    }
 
     // Create a temporary chat ID for optimistic update
     const tempId = `temp_${Date.now()}`;
