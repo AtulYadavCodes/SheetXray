@@ -100,7 +100,7 @@ function Navbar() {
                 onClick={() => setOpen(false)}
                 className="mt-2 rounded-md bg-emerald-600 px-3 py-2 text-center font-mono font-semibold text-white transition hover:bg-emerald-700"
               >
-                Sign Up / Login
+                 Login
               </HashLink>
             ) : (
               <button
