@@ -27,17 +27,7 @@ function Files() {
 
       const data = Array.isArray(res.data) ? res.data : res.data.data;
       setFiles(data);
-      forEach(data, (file) => {
-        sum=sum+file.filesize;
-      })
-     const user= await axios.get(
-        `${import.meta.env.VITE_API_BASE}/api/v1/users/getuserprofile`,
-        { withCredentials: true },
-      );
-      const userData = user.data?.data || user.data;
-      if(userdata.usertype==="free" && files.length>=10){
-        toast.info("You have reached the maximum file limit for free users. Please  upgrade your plan.");
-      }
+
     } catch (err) {
       console.log(err);
     }
@@ -65,6 +55,13 @@ function Files() {
     // Require at least one uploaded file to query
     if (!files || files.length === 0) {
       toast.info("Please upload a file before sending a query.");
+      return;
+    }
+    const user = await axios.get(`${import.meta.env.VITE_API_BASE}/api/v1/users/profile`, { withCredentials: true });
+    const userdata = user.data?.data || user.data;
+    if (userdata.usertype === "free" && chats.length >= 10) {
+      toast.info("You have reached the maximum query limit for free users. Please  upgrade your plan.");
+
       return;
     }
 
@@ -128,7 +125,16 @@ function Files() {
 
   // upload
   const handleUpload = async (file) => {
+
+    const user = await axios.get(`${import.meta.env.VITE_API_BASE}/api/v1/users/profile`, { withCredentials: true });
+    const userdata = user.data?.data || user.data;
+    if (userdata.usertype === "free" && files.length >= 10) {
+      toast.info("You have reached the maximum file limit for free users. Please  upgrade your plan.");
+
+      return;
+    }
     if (!file) return;
+
 
     // Validate file type
     const allowedExtensions = [".xlsx", ".csv"];
@@ -153,6 +159,7 @@ function Files() {
       );
 
       fetchFiles();
+
     } catch (err) {
       console.log(err);
       alert("Failed to upload file");

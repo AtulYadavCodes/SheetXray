@@ -51,14 +51,14 @@ function Filesandfolder() {
         { withCredentials: true }
       );
 
-      if (res?.data?.message) setMessage(res.data.message);
+      if (res?.data?.message) toast.info(res.data.message);
       setShowCreate(false);
       setFile(null);
       setFolderName("");
       await fetchFolders();
     } catch (err) {
       console.error("Create folder error:", err);
-      setMessage(err?.response?.data?.message || "Failed to create folder. See console for details.");
+      toast.info(err?.response?.data?.message || "Failed to create folder.");
     } finally {
       setCreating(false);
     }
@@ -135,9 +135,7 @@ function Filesandfolder() {
             {creating ? "Creating..." : "Create Folder"}
           </button>
 
-          {message && (
-            <p className="mt-2 text-sm text-center text-red-600">{message}</p>
-          )}
+
 
         </div>
       )}
@@ -162,8 +160,8 @@ function Filesandfolder() {
           >
             <div
               className={`rounded-xl border bg-emerald transition p-4 flex flex-col items-center relative group shadow-sm ${f.disabled
-                  ? "cursor-not-allowed border-slate-200 opacity-50"
-                  : "cursor-pointer border-emerald-200 hover:border-emerald-500 hover:shadow-md"
+                ? "cursor-not-allowed border-slate-200 opacity-50"
+                : "cursor-pointer border-emerald-200 hover:border-emerald-500 hover:shadow-md"
                 }`}
             >
               <span className="text-3xl">📁</span>
