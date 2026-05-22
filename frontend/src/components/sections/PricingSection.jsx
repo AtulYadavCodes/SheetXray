@@ -1,40 +1,45 @@
 import { HashLink } from "react-router-hash-link";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../Context/LoginContext";
 
 function PricingSection() {
+    const navigate = useNavigate();
+    const { isAuth } = useAuth();
     const plans = [
         {
             name: "Free",
-            price: "0",
+
             description: "Get started with basic features",
             features: [
                 "Up to 3 folders",
                 "up to 10 files in each folder",
-
+                "daily upto 10 queries",
             ],
 
             highlight: false
         },
         {
             name: "Pro monthly",
-            price: "99",
-            period: "/month",
+
+
             description: "For growing teams",
             features: [
                 "Unlimited folders",
                 "Unlimited files in each folder",
-                "Priority support",
+                "unlimited queries",
             ],
 
             highlight: true
         },
         {
             name: "pro complete",
-            price: "1000",
-            period: "/lifetime",
+
+            description: "For users who want to pay once and use forever",
 
             features: [
-                "Unlimited everything",
-                "Dedicated support",
+                 "Unlimited folders",
+                "Unlimited files in each folder",
+                "unlimited queries",
             ],
 
             highlight: false
@@ -61,11 +66,7 @@ function PricingSection() {
                             : "border-emerald-200 bg-white hover:shadow-md"
                             } transition`}
                     >
-                        {plan.highlight && (
-                            <div className="mb-3 inline-block rounded-full bg-emerald-600 px-3 py-1 text-xs font-mono font-semibold text-white">
-                                Most Popular
-                            </div>
-                        )}
+                       
                         <h3 className="font-mono text-2xl font-semibold text-emerald-900 mb-2">
                             {plan.name}
                         </h3>
@@ -85,6 +86,21 @@ function PricingSection() {
                                 </li>
                             ))}
                         </ul>
+
+                        <div>
+                            <button
+                                onClick={() => {
+                                    if (isAuth) {
+                                        navigate("/dashboard/subs");
+                                    } else {
+                                        navigate("/auth");
+                                    }
+                                }}
+                                className="w-full rounded-md border border-emerald-600 bg-emerald-600 px-4 py-2 font-mono text-sm text-white transition hover:bg-emerald-700"
+                            >
+                                Get this Subscription
+                            </button>
+                        </div>
 
 
                     </div>
