@@ -169,7 +169,15 @@ function Filesandfolder() {
                 {f.foldername}
               </span>
               <span className="text-[10px] text-emerald-700 mt-1 font-mono ">
-                {f.sheetscount} {f.sheetscount === 1 ? "file" : "files"}
+                {(() => {
+                  const count = typeof f.sheetscount !== 'undefined' ? f.sheetscount : (f.fileCount ?? (f.files ? f.files.length : 0));
+                  const badgeClass = count > 0 ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-600';
+                  return (
+                    <span className={`inline-block px-2 py-1 rounded-full text-xs font-mono ${badgeClass}`}>
+                      {count} {count === 1 ? 'file' : 'files'}
+                    </span>
+                  );
+                })()}
               </span>
 
               <button
