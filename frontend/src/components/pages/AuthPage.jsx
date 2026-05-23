@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { HashLink } from "react-router-hash-link";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../../Context/LoginContext";
+import { toast } from "react-toastify";
 const API_BASE = import.meta.env.VITE_API_BASE;
 
 
@@ -65,6 +66,7 @@ function AuthPage({ mode = "login" }) {
       const data = await res.json();
       if (!isLogin && res.ok) {
         setIsLogin(true);
+        toast.success("Registration done");
       }
       if (isLogin && res.ok) {
         setIsAuth(true);

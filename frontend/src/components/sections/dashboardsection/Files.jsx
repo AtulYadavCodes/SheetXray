@@ -245,15 +245,15 @@ function Files() {
                 <div key={chat._id}>
                   {/* User Query */}
                   <div className="flex justify-end">
-                    <div className="max-w-2xl rounded-2xl bg-emerald-600 border border-emerald-600 px-4 py-3 text-sm text-white shadow-md">
+                    <div className="max-w-[88%] sm:max-w-2xl whitespace-pre-wrap break-words rounded-2xl bg-gray-50   px-4 py-3 text-sm text-emerald-900 shadow-md">
                       {chat.userquery}
                     </div>
                   </div>
 
                   {/* LLM Response */}
-                  <div className="flex justify-start mt-3">
-                    <div className="max-w-2xl rounded-2xl bg-emerald-50 border border-emerald-200 px-4 py-3 text-sm text-emerald-900">
-                      {chat.isLoading ? (
+                  <div className="flex justify-start mt-3 grid-cols-2">
+                    <div className="max-w-[88%] sm:max-w-2xl whitespace-pre-wrap break-words rounded-2xl bg-gray-50  px-4 py-3 text-sm text-emerald-900 w-100 shadow-md">
+                      {chat.isLoading ? ( 
                         <div className="flex items-center gap-2">
                           <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" />
                           <div
@@ -266,7 +266,9 @@ function Files() {
                           />
                         </div>
                       ) : (
-                        chat.llmresponse
+                        chat.llmresponse.response)}
+                      {chat.llmresponse.graphdata && (
+                        <img src={chat.llmresponse.graphdata} className="max-w-full rounded pt-6 w-100" />
                       )}
                     </div>
                   </div>
