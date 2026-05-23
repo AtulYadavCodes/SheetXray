@@ -17,8 +17,14 @@ const qachatSchema=new Schema({
         required:true
     },
     llmresponse:{
-        type:String,
-        required:true
+        response:{
+            type:String,
+            required:true
+        },
+        graphdata:{
+            type:String,
+            required:true
+        }
     }
 },{timestamps:true});
 

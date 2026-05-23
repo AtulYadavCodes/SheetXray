@@ -150,8 +150,11 @@ const queryfolder = asyncHandler(async (req, res) => {
     userid: req.user._id,
     folderid: req.params.folderid,
     userquery: req.body.query,
-    llmresponse: "llm response placeholder",
-  });
+    llmresponse:{
+        response:"This is a dummy response. Replace it with actual response from fastapi.",
+        graphdata:"https://imageflow.atulyadav.tech/images/path/69ebc3079eb919b4e9e88516/1_TMAo0Qpl4j9TaE3sDyBTLg.jpg"
+    }
+});
 
   return res
     .status(200)

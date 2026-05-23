@@ -8,7 +8,7 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
     allowedHosts: ['www.sheetxray.atulyadav.tech'
-      
+      ,"6454-49-37-37-183.ngrok-free.app"
     ]
   }
 })
