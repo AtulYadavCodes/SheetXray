@@ -308,7 +308,7 @@ function Subs() {
                         <button
                             onClick={handleDownloadInvoice}
                             disabled={downloadingInvoice}
-                            className="border-2 border-[#8a9a62] bg-[#8a9a62] text-[#1f2618] font-semibold py-3 rounded-lg hover:bg-[#c8d78e] transition disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="border-2 border-emerald-600 bg-emerald-600 text-white font-semibold py-3 rounded-lg hover:bg-emerald-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             {downloadingInvoice ? '⏳ Downloading...' : '📥 Download Invoice'}
                         </button>
@@ -316,7 +316,7 @@ function Subs() {
                         {user?.usertype === 'premiummonthly' && (
                             <button
                                 onClick={() => handlePayment('enterprise')}
-                                className="border-2 border-[#8a9a62] bg-[#8a9a62] text-[#1f2618] font-semibold py-3 rounded-lg hover:bg-[#c8d78e] transition"
+                                className="border-2 border-emerald-600 bg-emerald-600 text-white font-semibold py-3 rounded-lg hover:bg-emerald-700 transition"
                             >
                                 ⬆️ Upgrade to Lifetime
                             </button>
@@ -397,7 +397,7 @@ function Subs() {
                     <button
                         onClick={handlePayment}
                         disabled={!selectedPlan}
-                        className="w-full bg-[#8a9a62] hover:bg-[#c8d78e] disabled:opacity-40 text-[#1f2618] font-semibold py-3 rounded-lg transition mt-6"
+                        className="w-full bg-emerald-600 hover:bg-emerald-700 disabled:opacity-40 text-white font-semibold py-3 rounded-lg transition mt-6"
                     >
                         Proceed to Payment
                     </button>
