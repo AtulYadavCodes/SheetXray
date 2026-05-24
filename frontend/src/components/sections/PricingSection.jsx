@@ -49,7 +49,7 @@ function PricingSection() {
     return (
         <section id="pricing" className="mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:px-8 ">
             <div className="mb-12 text-center">
-                <h2 className="font-mono text-3xl font-semibold text-emerald-900 sm:text-4xl">
+                <h2 className="font-mono text-3xl text-emerald-900 sm:text-4xl">
                     Simple Pricing
                 </h2>
                 <p className="mt-4 text-lg text-emerald-700">
@@ -67,11 +67,11 @@ function PricingSection() {
                             } transition`}
                     >
 
-                        <h3 className="font-mono text-2xl font-semibold text-emerald-900 mb-2">
+                        <h3 className="font-mono text-2xl text-emerald-900 mb-2">
                             {plan.name}
                         </h3>
                         <div className="mb-4">
-                            <span className="text-4xl font-bold text-emerald-700">{plan.price}</span>
+                            <span className="text-4xl text-emerald-700">{plan.price}</span>
                             {plan.period && (
                                 <span className="text-sm text-emerald-600">{plan.period}</span>
                             )}

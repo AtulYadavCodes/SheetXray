@@ -5,7 +5,7 @@ function FooterSection() {
     <footer className="mx-auto w-full border-t border-emerald-200 bg-emerald-50 py-8 px-4 sm:px-6 lg:px-8">
       <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <p className="font-mono text-sm uppercase tracking-[0.16em] text-emerald-700 font-semibold">
+          <p className="font-mono text-sm uppercase tracking-[0.16em] text-emerald-700">
             📊 SheetXray
           </p>
           <p className="mt-1 text-sm text-emerald-700 max-w-md">

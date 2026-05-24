@@ -5,12 +5,12 @@ function HeroSection() {
     <>
       <section
         id="home"
-        className="mx-auto grid w-full max-w-7xl items-center gap-12 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:px-8 lg:py-24"
+        className="mx-auto grid w-full max-w-7xl items-center gap-12 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:px-8 lg:py-24 "
       >
         <div className="flex flex-col justify-center space-y-6 text-left">
 
 
-          <h1 className="font-mono text-4xl font-bold tracking-tight text-emerald-900 sm:text-5xl lg:text-6xl lg:leading-tight">
+          <h1 className="font-mono text-4xl tracking-tight text-emerald-900 sm:text-5xl lg:text-6xl lg:leading-tight">
             Organize sheets. <br />
             Upload files. <br />
             <span className="text-emerald-700">Chat with your data.</span>
@@ -23,14 +23,14 @@ function HeroSection() {
           <div className="flex flex-wrap gap-4 pt-2">
             <a
               href="/auth"
-              className="inline-flex items-center justify-center bg-emerald-600 px-5 py-3 font-mono text-sm font-semibold text-white transition-colors hover:bg-emerald-700"
+              className="inline-flex items-center justify-center bg-emerald-600 px-5 py-3 font-mono text-sm text-white transition-colors hover:bg-emerald-700"
             >
               Get Started →
             </a>
             <a
               href="https://www.youtube.com/@sheetxray"
               target="_blank"
-              className="inline-flex items-center justify-center border border-emerald-300 bg-emerald-50 px-5 py-3 font-mono text-sm font-semibold text-emerald-700 transition-colors hover:bg-emerald-100"
+              className="inline-flex items-center justify-center border border-emerald-300 bg-emerald-50 px-5 py-3 font-mono text-sm text-emerald-700 transition-colors hover:bg-emerald-100"
             >
               Watch Demo
             </a>

@@ -241,7 +241,7 @@ function Subs() {
                     <div className="bg-gradient-to-r from-white to-gray-200 rounded-lg p-8 mb-8 text-gray-900">
                         <div className="flex items-start justify-between">
                             <div>
-                                <h3 className="text-4xl font-bold mb-2">🎉 Premium Active</h3>
+                                <h3 className="text-4xl mb-2">🎉 Premium Active</h3>
                                 <p className="text-gray-800 text-lg">You're enjoying all premium benefits</p>
                             </div>
                             <div className="text-6xl">✨</div>
@@ -251,7 +251,7 @@ function Subs() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                         <div className="border-2 border-gray-200 rounded-lg p-6 bg-white hover:shadow transition">
                             <h4 className="text-sm text-emerald-700 mb-2 uppercase tracking-wide font-mono">Plan Type</h4>
-                            <p className="text-3xl font-bold text-emerald-900 mb-2">
+                            <p className="text-3xl text-emerald-900 mb-2">
                                 {user?.usertype === 'premiumlifetime' ? 'Lifetime' : 'Monthly'}
                             </p>
                             <p className="text-emerald-700 text-sm">
@@ -263,7 +263,7 @@ function Subs() {
 
                         <div className="border-2 border-gray-200 rounded-lg p-6 bg-white hover:shadow transition">
                             <h4 className="text-sm text-emerald-700 mb-2 uppercase tracking-wide font-mono">Member Since</h4>
-                            <p className="text-3xl font-bold text-emerald-900 mb-2">
+                            <p className="text-3xl text-emerald-900 mb-2">
                                 {user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A'}
                             </p>
                             <p className="text-emerald-700 text-sm">Keep enjoying premium features</p>
@@ -271,33 +271,33 @@ function Subs() {
                     </div>
 
                     <div className="border-2 border-gray-200 rounded-lg p-8 bg-white mb-8">
-                        <h3 className="text-2xl font-bold text-emerald-900 mb-6">Premium Features</h3>
+                        <h3 className="text-2xl text-emerald-900 mb-6">Premium Features</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="flex items-start gap-3">
                                 <span className="text-emerald-600 text-xl mt-1">✓</span>
                                 <div>
-                                    <p className="font-semibold text-emerald-900">Unlimited File Uploads</p>
+                                    <p className="text-emerald-900">Unlimited File Uploads</p>
                                     <p className="text-sm text-emerald-700">Upload & organize unlimited spreadsheets</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">
                                 <span className="text-emerald-600 text-xl mt-1">✓</span>
                                 <div>
-                                    <p className="font-semibold text-emerald-900">Advanced RAG Search</p>
+                                    <p className="text-emerald-900">Advanced RAG Search</p>
                                     <p className="text-sm text-emerald-700">Search across all your files instantly</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">
                                 <span className="text-emerald-600 text-xl mt-1">✓</span>
                                 <div>
-                                    <p className="font-semibold text-emerald-900">Priority Support</p>
+                                    <p className="text-emerald-900">Priority Support</p>
                                     <p className="text-sm text-emerald-700">Get help from our support team</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">
                                 <span className="text-emerald-600 text-xl mt-1">✓</span>
                                 <div>
-                                    <p className="font-semibold text-emerald-900">Advanced Analytics</p>
+                                    <p className="text-emerald-900">Advanced Analytics</p>
                                     <p className="text-sm text-emerald-700">Deep insights into your data</p>
                                 </div>
                             </div>
@@ -308,7 +308,7 @@ function Subs() {
                         <button
                             onClick={handleDownloadInvoice}
                             disabled={downloadingInvoice}
-                            className="border-2 border-emerald-600 bg-emerald-600 text-white font-semibold py-3 rounded-lg hover:bg-emerald-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="border-2 border-emerald-600 bg-emerald-600 text-white py-3 rounded-lg hover:bg-emerald-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             {downloadingInvoice ? '⏳ Downloading...' : '📥 Download Invoice'}
                         </button>
@@ -316,7 +316,7 @@ function Subs() {
                         {user?.usertype === 'premiummonthly' && (
                             <button
                                 onClick={() => handlePayment('enterprise')}
-                                className="border-2 border-emerald-600 bg-emerald-600 text-white font-semibold py-3 rounded-lg hover:bg-emerald-700 transition"
+                                className="border-2 border-emerald-600 bg-emerald-600 text-white py-3 rounded-lg hover:bg-emerald-700 transition"
                             >
                                 ⬆️ Upgrade to Lifetime
                             </button>
@@ -330,11 +330,11 @@ function Subs() {
                         onClick={() => setSelectedPlan('pro')}>
                         <div className="flex items-start justify-between mb-4">
                             <div>
-                                <h3 className="text-2xl font-semibold text-emerald-900">Pro monthly</h3>
+                                <h3 className="text-2xl text-emerald-900">Pro monthly</h3>
                                 <p className="text-emerald-700 text-sm mt-1">For power users</p>
                             </div>
                             <div className="text-right">
-                                <span className="text-4xl font-bold text-emerald-900">₹99</span>
+                                <span className="text-4xl text-emerald-900">₹99</span>
                                 <span className="text-emerald-700 text-sm">/month</span>
                             </div>
                         </div>
@@ -364,11 +364,11 @@ function Subs() {
                         onClick={() => setSelectedPlan('enterprise')}>
                         <div className="flex items-start justify-between mb-4">
                             <div>
-                                <h3 className="text-2xl font-semibold text-emerald-900">Pro lifetime</h3>
+                                <h3 className="text-2xl text-emerald-900">Pro lifetime</h3>
                                 <p className="text-emerald-700 text-sm mt-1">For teams & organizations</p>
                             </div>
                             <div className="text-right">
-                                <span className="text-4xl font-bold text-emerald-900">₹1000</span>
+                                <span className="text-4xl text-emerald-900">₹1000</span>
                                 <span className="text-emerald-700 text-sm">/life</span>
                             </div>
                         </div>
@@ -397,7 +397,7 @@ function Subs() {
                     <button
                         onClick={handlePayment}
                         disabled={!selectedPlan}
-                        className="w-full bg-emerald-600 hover:bg-emerald-700 disabled:opacity-40 text-white font-semibold py-3 rounded-lg transition mt-6"
+                        className="w-full bg-emerald-600 hover:bg-emerald-700 disabled:opacity-40 text-white py-3 rounded-lg transition mt-6"
                     >
                         Proceed to Payment
                     </button>

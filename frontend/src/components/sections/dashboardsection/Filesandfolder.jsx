@@ -86,16 +86,16 @@ function Filesandfolder() {
     <section className="mx-auto w-full max-w-6xl px-4 my-1 py-6 bg-white min-h-screen">
 
       <div className="flex justify-between items-center mb-6">
-        <h3 className="font-mono text-sm uppercase tracking-widest text-emerald-700 px-1 hidden sm:block font-semibold">
+        <h3 className="font-mono text-sm uppercase tracking-widest text-emerald-700 px-1 hidden sm:block">
           📁 Your Folders
         </h3>
-        <h3 className="font-mono text-sm uppercase tracking-widest text-emerald-700 px-9 sm:hidden font-semibold">
+        <h3 className="font-mono text-sm uppercase tracking-widest text-emerald-700 px-9 sm:hidden">
           📁 Your Folders
         </h3>
 
         <button
           onClick={() => setShowCreate(!showCreate)}
-          className="rounded-md border border-emerald-300 bg-emerald-100 px-3 py-2 text-xs font-mono text-emerald-700 hover:bg-emerald-200 transition font-semibold"
+          className="rounded-md border border-emerald-300 bg-emerald-100 px-3 py-2 text-xs font-mono text-emerald-700 hover:bg-emerald-200 transition"
         >
           + Create Folder
         </button>
@@ -105,14 +105,14 @@ function Filesandfolder() {
         <div className="mb-6 rounded-2xl border border-emerald-300 bg-emerald-50 backdrop-blur p-5 space-y-4 shadow-lg">
 
           <div className="space-y-1">
-            <h3 className="text-sm font-mono text-emerald-900 tracking-wide font-semibold">
+            <h3 className="text-sm font-mono text-emerald-900 tracking-wide">
               Create Folder
             </h3>
 
           </div>
 
           <div className="space-y-1">
-            <label className="text-[11px] text-emerald-700 font-mono font-semibold">
+            <label className="text-[11px] text-emerald-700 font-mono">
               Folder Name
             </label>
             <input
@@ -130,7 +130,7 @@ function Filesandfolder() {
           <button
             onClick={handleCreateFolder}
             disabled={creating || !folderName}
-            className="w-full rounded-lg bg-emerald-600 text-white py-2 text-xs font-mono font-semibold tracking-wide hover:bg-emerald-700 disabled:opacity-40 disabled:cursor-not-allowed transition"
+            className="w-full rounded-lg bg-emerald-600 text-white py-2 text-xs font-mono tracking-wide hover:bg-emerald-700 disabled:opacity-40 disabled:cursor-not-allowed transition"
           >
             {creating ? "Creating..." : "Create Folder"}
           </button>
@@ -165,7 +165,7 @@ function Filesandfolder() {
                 }`}
             >
               <span className="text-3xl">📁</span>
-              <span className="mt-2 text-xs text-emerald-900 font-mono text-center truncate w-full font-semibold">
+              <span className="mt-2 text-xs text-emerald-900 font-mono text-center truncate w-full">
                 {f.foldername}
               </span>
               <span className="text-[10px] text-emerald-700 mt-1 font-mono ">

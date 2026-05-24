@@ -68,7 +68,7 @@ function Sidebar() {
                 onClick={closeMobileMenu}
                 className={({ isActive }) =>
                   `block w-full rounded-md my-3 px-4 py-2.5 font-mono text-sm border transition duration-150 text-left ${isActive
-                    ? "bg-emerald-600 text-white border-emerald-600 font-semibold shadow-sm"
+                    ? "bg-emerald-600 text-white border-emerald-600 shadow-sm"
                     : "bg-white text-emerald-700 border-gray-200 hover:bg-emerald-50 hover:text-emerald-900"
                   }`
                 }
@@ -87,7 +87,7 @@ function Sidebar() {
             onClick={closeMobileMenu}
             className={({ isActive }) =>
               `block w-full rounded-md px-4 py-2.5 font-mono text-sm border transition duration-150 text-left ${isActive
-                ? "bg-emerald-600 text-white border-emerald-600 font-semibold"
+                ? "bg-emerald-600 text-white border-emerald-600"
                 : "bg-white text-emerald-700 border-gray-200 hover:bg-emerald-50"
               }`
             }

@@ -33,7 +33,7 @@ function Navbar() {
     <header className="sticky top-0 z-50 w-full border-b border-emerald-200 bg-white backdrop-blur-md bg-opacity-95">
       <div className="mx-auto flex  items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
 
-        <HashLink smooth to="/#" className="font-mono text-lg font-semibold tracking-[0.16em] text-emerald-700">
+        <HashLink smooth to="/#" className="font-mono text-lg tracking-[0.16em] text-emerald-700">
           📊 SheetXray
         </HashLink>
 
@@ -53,14 +53,14 @@ function Navbar() {
             <HashLink
               smooth
               to="/auth"
-              className="rounded-md bg-emerald-600 px-3 py-2 font-mono font-seold text-white transition hover:bg-emerald-700"
+              className="rounded-md bg-emerald-600 px-3 py-2 font-mono text-white transition hover:bg-emerald-700"
             >
               Sign Up / Login
             </HashLink>
           ) : (
             <button
               onClick={handleLogout}
-              className="rounded-md px-3 py-2 font-mono font-semibold text-emerald-900 transition hover:text-emerald-700"
+              className="rounded-md px-3 py-2 font-mono text-emerald-900 transition hover:text-emerald-700"
             >
               Logout
             </button>
@@ -100,14 +100,14 @@ function Navbar() {
                 smooth
                 to="/auth"
                 onClick={() => setOpen(false)}
-                className="mt-2 rounded-md bg-emerald-600 px-3 py-2 text-center font-mono font-semibold text-white transition hover:bg-emerald-700"
+                className="mt-2 rounded-md bg-emerald-600 px-3 py-2 text-center font-mono text-white transition hover:bg-emerald-700"
               >
                 Login
               </HashLink>
             ) : (
               <button
                 onClick={() => { handleLogout(); setOpen(false); }}
-                className="rounded-md px-3 py-2 text-left font-mono font-semibold text-emerald-900 transition hover:bg-emerald-50 hover:text-emerald-700"
+                className="rounded-md px-3 py-2 text-left font-mono text-emerald-900 transition hover:bg-emerald-50 hover:text-emerald-700"
               >
                 Logout
               </button>

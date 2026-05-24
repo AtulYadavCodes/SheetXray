@@ -2,7 +2,7 @@ function ChatSection() {
     return (
         <section id="features" className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
             <div className="mb-10">
-                <h2 className="font-mono text-3xl font-semibold text-emerald-900">
+                <h2 className="font-mono text-3xl text-emerald-900">
                     Chat with Your Data
                 </h2>
                 <p className="mt-2 text-emerald-800">
@@ -12,64 +12,64 @@ function ChatSection() {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
                 <div className="space-y-10">
-                    <h3 className="font-mono text-xl font-semibold text-emerald-900 mb-8">Key Features</h3>
+                    <h3 className="font-mono text-xl text-emerald-900 mb-8">Key Features</h3>
 
                     <div className="flex gap-4">
                         <div className="shrink-0 w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center">
-                            <span className="text-white font-mono font-bold">📊</span>
+                            <span className="text-white font-mono">📊</span>
                         </div>
                         <div>
-                            <h4 className="font-mono font-semibold text-emerald-900">Data Analysis</h4>
+                            <h4 className="font-mono text-emerald-900">Data Analysis</h4>
                             <p className="text-sm text-emerald-800">Get instant insights from your spreadsheet data with AI-powered analysis</p>
                         </div>
                     </div>
 
                     <div className="flex gap-4">
                         <div className="shrink-0 w-10 h-10 rounded-lg bg-emerald-100 flex items-center justify-center">
-                            <span className="text-emerald-900 font-mono font-bold">🔍</span>
+                            <span className="text-emerald-900 font-mono">🔍</span>
                         </div>
                         <div>
-                            <h4 className="font-mono font-semibold text-emerald-900">Smart Search</h4>
+                            <h4 className="font-mono text-emerald-900">Smart Search</h4>
                             <p className="text-sm text-emerald-800">Query your data naturally using conversational language</p>
                         </div>
                     </div>
 
                     <div className="flex gap-4">
                         <div className="shrink-0 w-10 h-10 rounded-lg bg-emerald-100 flex items-center justify-center">
-                            <span className="text-emerald-900 font-mono font-bold">📈</span>
+                            <span className="text-emerald-900 font-mono">📈</span>
                         </div>
                         <div>
-                            <h4 className="font-mono font-semibold text-emerald-900">Trend Detection</h4>
+                            <h4 className="font-mono text-emerald-900">Trend Detection</h4>
                             <p className="text-sm text-emerald-800">Automatically identify patterns and trends in your data</p>
                         </div>
                     </div>
 
                     <div className="flex gap-4">
                         <div className="shrink-0 w-10 h-10 rounded-lg bg-emerald-100 flex items-center justify-center">
-                            <span className="text-emerald-900 font-mono font-bold">⚡</span>
+                            <span className="text-emerald-900 font-mono">⚡</span>
                         </div>
                         <div>
-                            <h4 className="font-mono font-semibold text-emerald-900">Real-time Processing</h4>
+                            <h4 className="font-mono text-emerald-900">Real-time Processing</h4>
                             <p className="text-sm text-emerald-800">Get answers instantly without waiting for manual data processing</p>
                         </div>
                     </div>
 
                     <div className="flex gap-4">
                         <div className="shrink-0 w-10 h-10 rounded-lg bg-emerald-100 flex items-center justify-center">
-                            <span className="text-emerald-900 font-mono font-bold">🔐</span>
+                            <span className="text-emerald-900 font-mono">🔐</span>
                         </div>
                         <div>
-                            <h4 className="font-mono font-semibold text-emerald-900">Secure & Private</h4>
+                            <h4 className="font-mono text-emerald-900">Secure & Private</h4>
                             <p className="text-sm text-emerald-800">Your data stays private with end-to-end encryption</p>
                         </div>
                     </div>
 
                     <div className="flex gap-4">
                         <div className="shrink-0 w-10 h-10 rounded-lg bg-emerald-100 flex items-center justify-center">
-                            <span className="text-emerald-900 font-mono font-bold">📁</span>
+                            <span className="text-emerald-900 font-mono">📁</span>
                         </div>
                         <div>
-                            <h4 className="font-mono font-semibold text-emerald-900">Multi-Format Support</h4>
+                            <h4 className="font-mono text-emerald-900">Multi-Format Support</h4>
                             <p className="text-sm text-emerald-800">Works with Excel, CSV, Google Sheets, and more</p>
                         </div>
                     </div>
@@ -77,7 +77,7 @@ function ChatSection() {
 
                 <div className="border-2 border-gray-300 bg-white overflow-hidden flex flex-col h-full">
                     <div className="bg-gray-900 px-4 py-3 shrink-0">
-                        <h3 className="font-mono text-sm font-semibold text-white">SheetXray Chat</h3>
+                        <h3 className="font-mono text-sm text-white">SheetXray Chat</h3>
                         <p className="text-xs text-gray-300">Chat with your spreadsheet data</p>
                     </div>
 

@@ -84,7 +84,7 @@ function AuthPage({ mode = "login" }) {
       <div className="w-full max-w-md border-2 border-gray-200 bg-white p-6 rounded-lg">
 
         <div className="mb-6 text-center">
-          <h2 className="font-mono text-2xl font-semibold text-emerald-900">
+          <h2 className="font-mono text-2xl text-emerald-900">
             {isLogin ? "Welcome back" : "Create account"}
           </h2>
           <p className="mt-2 text-sm text-emerald-700">
@@ -159,7 +159,7 @@ function AuthPage({ mode = "login" }) {
 
           <button
             type="submit"
-            className="w-full rounded-md border border-emerald-600 bg-emerald-600 px-4 py-2 font-mono text-sm font-semibold text-white hover:bg-emerald-700 transition"
+            className="w-full rounded-md border border-emerald-600 bg-emerald-600 px-4 py-2 font-mono text-sm text-white hover:bg-emerald-700 transition"
           >
             {isLogin ? "Login" : "Sign Up"}
           </button>

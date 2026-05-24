@@ -302,7 +302,7 @@ function Files() {
               <button
                 onClick={handleSendMessage}
                 disabled={sendingMessage || !userQuery.trim()}
-                className="rounded-xl bg-emerald-600 px-4 py-2 text-sm font-mono text-white font-semibold hover:bg-emerald-700 disabled:opacity-40 disabled:cursor-not-allowed transition"
+                className="rounded-xl bg-emerald-600 px-4 py-2 text-sm font-mono text-white hover:bg-emerald-700 disabled:opacity-40 disabled:cursor-not-allowed transition"
               >
                 {sendingMessage ? "..." : "Send"}
               </button>
