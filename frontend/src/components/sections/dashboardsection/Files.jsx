@@ -253,7 +253,7 @@ function Files() {
                   {/* LLM Response */}
                   <div className="flex justify-start mt-3 grid-cols-2">
                     <div className="max-w-[88%] sm:max-w-2xl whitespace-pre-wrap break-words rounded-2xl bg-gray-50  px-4 py-3 text-sm text-emerald-900 w-100 shadow-md">
-                      {chat.isLoading ? ( 
+                      {chat.isLoading ? (
                         <div className="flex items-center gap-2">
                           <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" />
                           <div

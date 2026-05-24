@@ -37,7 +37,7 @@ function PricingSection() {
             description: "For users who want to pay once and use forever",
 
             features: [
-                 "Unlimited folders",
+                "Unlimited folders",
                 "Unlimited files in each folder",
                 "unlimited queries",
             ],
@@ -66,7 +66,7 @@ function PricingSection() {
                             : "border-emerald-200 bg-white hover:shadow-md"
                             } transition`}
                     >
-                       
+
                         <h3 className="font-mono text-2xl font-semibold text-emerald-900 mb-2">
                             {plan.name}
                         </h3>

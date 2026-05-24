@@ -8,7 +8,7 @@ function HeroSection() {
         className="mx-auto grid w-full max-w-7xl items-center gap-12 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:px-8 lg:py-24"
       >
         <div className="flex flex-col justify-center space-y-6 text-left">
-         
+
 
           <h1 className="font-mono text-4xl font-bold tracking-tight text-emerald-900 sm:text-5xl lg:text-6xl lg:leading-tight">
             Organize sheets. <br />

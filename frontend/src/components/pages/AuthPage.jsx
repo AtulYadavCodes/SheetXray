@@ -72,7 +72,7 @@ function AuthPage({ mode = "login" }) {
         setIsAuth(true);
       }
       if (!res.ok) {
-        throw new Error(data.message );
+        throw new Error(data.message);
       }
     } catch (err) {
       toast.error(err.message);
@@ -175,7 +175,7 @@ function AuthPage({ mode = "login" }) {
             {isLogin ? "Sign up" : "Login"}
           </button>
         </div>
-       
+
 
         <div className="mt-6 text-center">
           <HashLink

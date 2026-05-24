@@ -24,7 +24,7 @@ function Navbar() {
   // Centralized Navigation Configurations
   const navLinks = [
     { label: "Home", to: "/#", show: true },
-    {label: "Pricing", to: "/#pricing", show: !isAuth },
+    { label: "Pricing", to: "/#pricing", show: !isAuth },
     { label: "Features", to: "/#features", show: !isAuth },
     { label: isAuth ? "Dashboard" : "Go to dashboard", to: "/dashboard", show: isAuth },
   ];
@@ -53,7 +53,7 @@ function Navbar() {
             <HashLink
               smooth
               to="/auth"
-              className="rounded-md bg-emerald-600 px-3 py-2 font-mono font-semibold text-white transition hover:bg-emerald-700"
+              className="rounded-md bg-emerald-600 px-3 py-2 font-mono font-seold text-white transition hover:bg-emerald-700"
             >
               Sign Up / Login
             </HashLink>
@@ -102,7 +102,7 @@ function Navbar() {
                 onClick={() => setOpen(false)}
                 className="mt-2 rounded-md bg-emerald-600 px-3 py-2 text-center font-mono font-semibold text-white transition hover:bg-emerald-700"
               >
-                 Login
+                Login
               </HashLink>
             ) : (
               <button
