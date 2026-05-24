@@ -24,6 +24,8 @@ function Navbar() {
   // Centralized Navigation Configurations
   const navLinks = [
     { label: "Home", to: "/#", show: true },
+    {label: "Pricing", to: "/#pricing", show: !isAuth },
+    { label: "Features", to: "/#features", show: !isAuth },
     { label: isAuth ? "Dashboard" : "Go to dashboard", to: "/dashboard", show: isAuth },
   ];
 

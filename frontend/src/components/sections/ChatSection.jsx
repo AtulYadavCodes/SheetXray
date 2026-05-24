@@ -1,6 +1,6 @@
 function ChatSection() {
     return (
-        <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+        <section id="features" className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
             <div className="mb-10">
                 <h2 className="font-mono text-3xl font-semibold text-emerald-900">
                     Chat with Your Data

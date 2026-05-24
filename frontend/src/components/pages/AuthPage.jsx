@@ -19,7 +19,7 @@ function AuthPage({ mode = "login" }) {
 
   const handleSendOtp = async () => {
     if (!email) {
-      setApimessage("Enter email to send OTP");
+      toast.info("Enter email to send OTP");
       return;
     }
 
@@ -33,10 +33,10 @@ function AuthPage({ mode = "login" }) {
       });
 
       const data = await res.json();
-      setApimessage(data.message || "OTP sent successfully");
+      toast.success(data.message || "OTP sent successfully");
     } catch (error) {
       console.error("OTP send error:", error);
-      setApimessage("Failed to send OTP");
+      toast.error("Failed to send OTP");
     }
   };
 
@@ -71,11 +71,11 @@ function AuthPage({ mode = "login" }) {
       if (isLogin && res.ok) {
         setIsAuth(true);
       }
-      setApimessage(data.message);
-      console.log(isLogin ? "Login:" : "Signup:", data);
-
+      if (!res.ok) {
+        throw new Error(data.message );
+      }
     } catch (err) {
-      console.error("Auth error:", err);
+      toast.error(err.message);
     }
   };
 
@@ -175,10 +175,7 @@ function AuthPage({ mode = "login" }) {
             {isLogin ? "Sign up" : "Login"}
           </button>
         </div>
-        <div className="mt-6 font-light text-center text-red-600">
-
-          {apimessage}
-        </div>
+       
 
         <div className="mt-6 text-center">
           <HashLink
