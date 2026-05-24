@@ -7,6 +7,7 @@ import jwt from "jsonwebtoken";
 import redis from "../db/redis.js";
 import transporter from "../utils/mailtransport.js";
 import { welcomemailtemplate } from "../utils/emailtemplate.js";
+import imageflow from "../utils/imageflow.js";
 
 //welcome mail normal function
 
@@ -49,18 +50,18 @@ const registerUser = asyncHandler(async (req, res, next) => {
   if (userchecker) throw new errorhandler(400, "User already exists");
   const avatarlocalpath = req.file?.path;
   if (!avatarlocalpath) throw new errorhandler(400, "Avatar is required");
-  const cloudinaryresponse = await uploadoncloudinary(avatarlocalpath, {
-    folder: "avatars",
-  });
+  const imageflowresponse = await imageflow(avatarlocalpath,process.env.apikey,"avatars"
+  );
 
-  if (!cloudinaryresponse) throw new errorhandler(500, "Image not uploaded");
+  if (!imageflowresponse) throw new errorhandler(500, "Image not uploaded");
   const user = await User.create({
     fullname,
     // username,
     email,
     password,
-    avatar: cloudinaryresponse.secure_url,
+    avatar: imageflowresponse.data.filelink,
   });
+ console.log("User created:", imageflowresponse);
   const createduser = await User.findById(user._id).select(
     "-password -refreshtoken",
   );
