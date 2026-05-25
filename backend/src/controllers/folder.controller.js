@@ -7,6 +7,7 @@ import responseHandler from "../utils/responseHandler.js";
 import mongoose from "mongoose";
 import { Qachat } from "../models/qachat.model.js";
 import { User } from "../models/user.model.js";
+import axios from "axios";
 
 const createfolder = asyncHandler(async (req, res) => {
   if (req.user.usertype === "free") {
@@ -133,33 +134,78 @@ const getchathistory = asyncHandler(async (req, res) => {
     );
 });
 const queryfolder = asyncHandler(async (req, res) => {
-  //calls fastapi api to query the folder and return the response
-  //send the api req with body containing
-  //chathistory(last 3) Qachat.find({userid:req.user._id,folderid:req.params.folderid}).sort({createdAt:-1}).limit(3)
-  //userquery
-  /* 
-    
-    const body={
-        chathistory:chathistory||[],
-        userquery:req.body.query||"first query"
-        //if userquery is first quer....then fast api will return just pandas basic 
-        //if user query is some question then fast api will send it to llm and return the response
-    }
-    */
-  const newQachat = await Qachat.create({
+  const { folderid } = req.params;
+  let userQuery = req.body.query || "new file processing request";
+  const sheetid= req.body.sheetid || "";
+
+  const history = await Qachat.find({
     userid: req.user._id,
-    folderid: req.params.folderid,
-    userquery: req.body.query,
-    llmresponse:{
-        response:"This is a dummy response. Replace it with actual response from fastapi.",
-        graphdata:"https://imageflow.atulyadav.tech/images/path/69ebc3079eb919b4e9e88516/1_TMAo0Qpl4j9TaE3sDyBTLg.jpg"
-    }
+    folderid: folderid,
+  })
+    .sort({ createdAt: -1 })
+    .limit(3);
+
+  const formattedHistory = history
+    .map((chat) => ({
+      userquery: chat.userquery,
+      llmresponse: chat.llmresponse?.response || "",
+    }))
+    .reverse();
+
+  const fastapiPayload = {
+    userid: req.user._id,
+    folderid: folderid,
+    sheetid: sheetid || null,
+    chathistory: formattedHistory || null,
+    userquery: userQuery,
+  };
+
+  let fastapiResponseData;
+
+  try {
+    const fastapiUrl = process.env.FASTAPI_BACKEND_URL;
+
+    const response = await axios.post(fastapiUrl, fastapiPayload, {
+      headers: { "Content-Type": "application/json" },
+    });
+
+    fastapiResponseData = response.data;
+    console.log("Response from FastAPI:", fastapiResponseData);
+  } catch (error) {
+    console.error("Error communicating with FastAPI:", error.message);
+
+    throw new errorhandler(
+      500,
+      "Failed to get a response from the AI processing server.",
+    );
+  }
+
+  if (userQuery != "new file processing request") {
+    const newQachat = await Qachat.create({
+      userid: req.user._id,
+      folderid: folderid,
+      userquery: userQuery,
+      llmresponse: {
+        response:
+          "This is a dummy response. Replace it with actual response from fastapi.",
+        graphdata:
+          "https://imageflow.atulyadav.tech/images/path/69ebc3079eb919b4e9e88516/1_TMAo0Qpl4j9TaE3sDyBTLg.jpg",
+      },
+    });
+
+    return res
+      .status(200)
+      .json(new responseHandler(200, "folder queried successfully", newQachat));
+  } else {
+    await Sheet.findByIdAndUpdate(filid, {
+      processingStatus: "completed"
+    });
+    return res
+      .status(200)
+      .json(new responseHandler(200, "folder queried successfully", {}));
+  }
 });
 
-  return res
-    .status(200)
-    .json(new responseHandler(200, "folder queried successfully", newQachat));
-});
 export {
   createfolder,
   getalluserfolders,

@@ -10,9 +10,11 @@ import { User } from "../models/user.model.js";
 import errorhandler from "../utils/errorhandler.js";
 
 const getinvoice = asyncHandler(async (req, res) => {
-  const payment = await Payment.findOne({ user: req.user._id }).sort({
-    createdAt: -1,
-  }).limit(1);
+  const payment = await Payment.findOne({ user: req.user._id })
+    .sort({
+      createdAt: -1,
+    })
+    .limit(1);
 
   if (!payment) {
     return res.status(404).json(new responseHandler(404, "No payment found"));

@@ -27,7 +27,6 @@ function Files() {
 
       const data = Array.isArray(res.data) ? res.data : res.data.data;
       setFiles(data);
-
     } catch (err) {
       console.log(err);
     }
@@ -57,10 +56,15 @@ function Files() {
       toast.info("Please upload a file before sending a query.");
       return;
     }
-    const user = await axios.get(`${import.meta.env.VITE_API_BASE}/api/v1/users/profile`, { withCredentials: true });
+    const user = await axios.get(
+      `${import.meta.env.VITE_API_BASE}/api/v1/users/profile`,
+      { withCredentials: true },
+    );
     const userdata = user.data?.data || user.data;
     if (userdata.usertype === "free" && chats.length >= 10) {
-      toast.info("You have reached the maximum query limit for free users. Please  upgrade your plan.");
+      toast.info(
+        "You have reached the maximum query limit for free users. Please  upgrade your plan.",
+      );
 
       return;
     }
@@ -91,8 +95,8 @@ function Files() {
       );
 
       const newChat = res.data?.data || res.data;
-
       // Replace temp chat with actual response
+
       setChats((prev) =>
         prev.map((chat) =>
           chat._id === tempId ? { ...newChat, isLoading: false } : chat,
@@ -125,23 +129,24 @@ function Files() {
 
   // upload
   const handleUpload = async (file) => {
-
-    const user = await axios.get(`${import.meta.env.VITE_API_BASE}/api/v1/users/profile`, { withCredentials: true });
+    const user = await axios.get(
+      `${import.meta.env.VITE_API_BASE}/api/v1/users/profile`,
+      { withCredentials: true },
+    );
     const userdata = user.data?.data || user.data;
     if (userdata.usertype === "free" && files.length >= 10) {
-      toast.info("You have reached the maximum file limit for free users. Please  upgrade your plan.");
+      toast.info(
+        "You have reached the maximum file limit for free users. Please  upgrade your plan.",
+      );
 
       return;
     }
     if (!file) return;
 
-
     // Validate file type
     const allowedExtensions = [".xlsx", ".csv"];
     const fileName = file.name.toLowerCase();
-    const isValidFile = allowedExtensions.some((ext) =>
-      fileName.endsWith(ext)
-    );
+    const isValidFile = allowedExtensions.some((ext) => fileName.endsWith(ext));
 
     if (!isValidFile) {
       alert("Only .xlsx and .csv files are allowed");
@@ -157,9 +162,17 @@ function Files() {
         formData,
         { withCredentials: true },
       );
-
-      fetchFiles();
-
+      const process = await axios.post(
+        `${import.meta.env.VITE_API_BASE}/api/v1/folders/query/${folderid}`,
+        {
+          query: "",
+          sheetid: res.data?.data?._id
+        },
+        { withCredentials: true },
+      );
+      if (process.status === 200) {
+        fetchFiles();
+      }
     } catch (err) {
       console.log(err);
       alert("Failed to upload file");
@@ -183,7 +196,9 @@ function Files() {
 
             <div className="mt-3 flex items-center gap-3 overflow-x-auto hide-scrollbar">
               {files.length === 0 ? (
-                <span className="text-xs text-emerald-700">No files uploaded</span>
+                <span className="text-xs text-emerald-700">
+                  No files uploaded
+                </span>
               ) : (
                 files.map((f) => (
                   <div
@@ -266,9 +281,13 @@ function Files() {
                           />
                         </div>
                       ) : (
-                        chat.llmresponse.response)}
+                        chat.llmresponse.response
+                      )}
                       {chat.llmresponse.graphdata && (
-                        <img src={chat.llmresponse.graphdata} className="max-w-full rounded pt-6 w-100" />
+                        <img
+                          src={chat.llmresponse.graphdata}
+                          className="max-w-full rounded pt-6 w-100"
+                        />
                       )}
                     </div>
                   </div>

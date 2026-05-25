@@ -49,7 +49,10 @@ const registerUser = asyncHandler(async (req, res, next) => {
   if (userchecker) throw new errorhandler(400, "User already exists");
   const avatarlocalpath = req.file?.path;
   if (!avatarlocalpath) throw new errorhandler(400, "Avatar is required");
-  const imageflowresponse = await imageflow(avatarlocalpath,process.env.apikey,"avatars"
+  const imageflowresponse = await imageflow(
+    avatarlocalpath,
+    process.env.apikey,
+    "avatars",
   );
 
   if (!imageflowresponse) throw new errorhandler(500, "Image not uploaded");
@@ -60,7 +63,7 @@ const registerUser = asyncHandler(async (req, res, next) => {
     password,
     avatar: imageflowresponse.data.filelink,
   });
- 
+
   const createduser = await User.findById(user._id).select(
     "-password -refreshtoken",
   );
@@ -169,7 +172,11 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 
 const updateuseravatar = asyncHandler(async (req, res) => {
   const avatarlocalpath = req.file?.path;
-  const avatar = await imageflow(avatarlocalpath,process.env.apikey,"avatars");
+  const avatar = await imageflow(
+    avatarlocalpath,
+    process.env.apikey,
+    "avatars",
+  );
   if (!avatar.data.filelink) {
     throw new errorhandler(500, "error in uploading avatar");
   }
