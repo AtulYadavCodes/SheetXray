@@ -170,9 +170,9 @@ const queryfolder = asyncHandler(async (req, res) => {
     });
 
     fastapiResponseData = response.data;
-    console.log("Response from FastAPI:", fastapiResponseData);
+   
   } catch (error) {
-    console.error("Error communicating with FastAPI:", error.message);
+   
 
     throw new errorhandler(
       500,
