@@ -1,7 +1,6 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import errorhandler from "../utils/errorhandler.js";
 import { User } from "../models/user.model.js";
-import uploadoncloudinary from "../utils/uploadoncloudinary.js";
 import responseHandler from "../utils/responseHandler.js";
 import jwt from "jsonwebtoken";
 import redis from "../db/redis.js";
@@ -61,7 +60,7 @@ const registerUser = asyncHandler(async (req, res, next) => {
     password,
     avatar: imageflowresponse.data.filelink,
   });
- console.log("User created:", imageflowresponse);
+ 
   const createduser = await User.findById(user._id).select(
     "-password -refreshtoken",
   );
@@ -170,13 +169,13 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 
 const updateuseravatar = asyncHandler(async (req, res) => {
   const avatarlocalpath = req.file?.path;
-  const avatar = await uploadoncloudinary(avatarlocalpath);
-  if (!avatar.url) {
+  const avatar = await imageflow(avatarlocalpath,process.env.apikey,"avatars");
+  if (!avatar.data.filelink) {
     throw new errorhandler(500, "error in uploading avatar");
   }
   const updateduser = await User.findByIdAndUpdate(
     req.user._id,
-    { $set: { avatar: avatar.url } },
+    { $set: { avatar: avatar.data.filelink } },
     { new: true },
   ).select("-password -refreshtoken");
   return res

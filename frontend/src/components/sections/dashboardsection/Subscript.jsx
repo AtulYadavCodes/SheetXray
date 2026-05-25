@@ -226,14 +226,14 @@ function Subs() {
 
     if (loading) {
         return (
-            <div className="p-6 text-emerald-700 font-mono text-sm">
+            <div className="p-6 text-emerald-700 text-sm">
                 $ loading subscription...
             </div>
         );
     }
 
     return (
-        <section className="w-full px-6 sm:px-10 lg:px-16 font-mono py-8 min-h-screen">
+        <section className="w-full px-6 sm:px-10 lg:px-16 py-8 min-h-screen">
             <div className="w-100 h-9"></div>
 
             {user?.usertype === 'premiummonthly' || user?.usertype === 'premiumlifetime' ? (
@@ -241,7 +241,7 @@ function Subs() {
                     <div className="bg-gradient-to-r from-white to-gray-200 rounded-lg p-8 mb-8 text-gray-900">
                         <div className="flex items-start justify-between">
                             <div>
-                                <h3 className="text-4xl mb-2">🎉 Premium Active</h3>
+                                <h3 className="text-4xl mb-2 font-normal">🎉 Premium Active</h3>
                                 <p className="text-gray-800 text-lg">You're enjoying all premium benefits</p>
                             </div>
                             <div className="text-6xl">✨</div>
@@ -250,7 +250,7 @@ function Subs() {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                         <div className="border-2 border-gray-200 rounded-lg p-6 bg-white hover:shadow transition">
-                            <h4 className="text-sm text-emerald-700 mb-2 uppercase tracking-wide font-mono">Plan Type</h4>
+                            <h4 className="text-sm text-emerald-700 mb-2 uppercase tracking-wide font-normal">Plan Type</h4>
                             <p className="text-3xl text-emerald-900 mb-2">
                                 {user?.usertype === 'premiumlifetime' ? 'Lifetime' : 'Monthly'}
                             </p>
@@ -262,7 +262,7 @@ function Subs() {
                         </div>
 
                         <div className="border-2 border-gray-200 rounded-lg p-6 bg-white hover:shadow transition">
-                            <h4 className="text-sm text-emerald-700 mb-2 uppercase tracking-wide font-mono">Member Since</h4>
+                            <h4 className="text-sm text-emerald-700 mb-2 uppercase tracking-wide font-normal">Member Since</h4>
                             <p className="text-3xl text-emerald-900 mb-2">
                                 {user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A'}
                             </p>
@@ -271,7 +271,7 @@ function Subs() {
                     </div>
 
                     <div className="border-2 border-gray-200 rounded-lg p-8 bg-white mb-8">
-                        <h3 className="text-2xl text-emerald-900 mb-6">Premium Features</h3>
+                        <h3 className="text-2xl text-emerald-900 mb-6 font-normal">Premium Features</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="flex items-start gap-3">
                                 <span className="text-emerald-600 text-xl mt-1">✓</span>
@@ -330,7 +330,7 @@ function Subs() {
                         onClick={() => setSelectedPlan('pro')}>
                         <div className="flex items-start justify-between mb-4">
                             <div>
-                                <h3 className="text-2xl text-emerald-900">Pro monthly</h3>
+                                <h3 className="text-2xl text-emerald-900 font-normal">Pro monthly</h3>
                                 <p className="text-emerald-700 text-sm mt-1">For power users</p>
                             </div>
                             <div className="text-right">
@@ -364,7 +364,7 @@ function Subs() {
                         onClick={() => setSelectedPlan('enterprise')}>
                         <div className="flex items-start justify-between mb-4">
                             <div>
-                                <h3 className="text-2xl text-emerald-900">Pro lifetime</h3>
+                                <h3 className="text-2xl text-emerald-900 font-normal">Pro lifetime</h3>
                                 <p className="text-emerald-700 text-sm mt-1">For teams & organizations</p>
                             </div>
                             <div className="text-right">

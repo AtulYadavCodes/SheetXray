@@ -17,14 +17,14 @@ function UserProfile() {
 
   if (!user) {
     return (
-      <div className="p-6 text-emerald-700 font-mono text-sm">
+      <div className="p-6 text-emerald-700 text-sm">
         $ loading profile...
       </div>
     );
   }
 
   return (
-    <section className="w-full px-9 sm:px-10 lg:px-16 py-8 font-mono text-base text-emerald-900 min-h-screen">
+    <section className="w-full px-9 sm:px-10 lg:px-16 py-8 text-base text-emerald-900 min-h-screen">
 
       <h3 className="text-sm py-3 text-emerald-700 sm:hidden"></h3>
       <div className="flex items-center gap-6 mb-10 mx-4">
@@ -36,7 +36,7 @@ function UserProfile() {
 
         <div>
 
-          <h1 className="text-2xl text-emerald-900 tracking-wide">
+          <h1 className="text-2xl text-emerald-900 tracking-wide font-normal">
             {user.fullname}
           </h1>
           <p className="text-emerald-700 text-sm">{user.email}</p>
@@ -91,7 +91,7 @@ function Divider() {
 function Block({ title, children }) {
   return (
     <div className="mb-6 min-w-sm">
-      <p className="text-emerald-700 mb-3 text-sm tracking-widest">
+      <p className="text-emerald-700 mb-3 text-sm tracking-widest font-normal">
         ── {title.toUpperCase()}
       </p>
 
