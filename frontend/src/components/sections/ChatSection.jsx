@@ -2,85 +2,86 @@ function ChatSection() {
     return (
         <section id="features" className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
             <div className="mb-10">
-                <h2 className="font-mono text-3xl text-emerald-900">
+                <h2 className="font-bold text-3xl text-black ">
                     Chat with Your Data
                 </h2>
-                <p className="mt-2 text-emerald-800">
+                <p className="mt-2 text-black">
                     Interact with your spreadsheets in real-time
                 </p>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
                 <div className="space-y-10">
-                    <h3 className="font-mono text-xl text-emerald-900 mb-8">Key Features</h3>
+                    <h3 className="font-mono text-xl text-black mb-8">Key Features</h3>
 
                     <div className="flex gap-4">
                         <div className="shrink-0 w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center">
-                            <span className="text-white font-mono">📊</span>
+                            <span className="shrink-0 w-10 h-10 bg-[#c0c0c0] border-2 border-gray-700 border-b-white border-r-white flex items-center justify-center text-xl shadow-[inset_1px_1px_0px_rgba(0,0,0,1)]">📊</span>
                         </div>
                         <div>
-                            <h4 className="font-mono text-emerald-900">Data Analysis</h4>
-                            <p className="text-sm text-emerald-800">Get instant insights from your spreadsheet data with AI-powered analysis</p>
+                            <h4 className="font-mono text-black">Data Analysis</h4>
+                            <p className="text-sm text-black">Get instant insights from your spreadsheet data with AI-powered analysis</p>
                         </div>
                     </div>
 
                     <div className="flex gap-4">
                         <div className="shrink-0 w-10 h-10 rounded-lg bg-emerald-100 flex items-center justify-center">
-                            <span className="text-emerald-900 font-mono">🔍</span>
+                            <span className="shrink-0 w-10 h-10 bg-[#c0c0c0] border-2 border-gray-700 border-b-white border-r-white flex items-center justify-center text-xl shadow-[inset_1px_1px_0px_rgba(0,0,0,1)]">🔍</span>
                         </div>
                         <div>
-                            <h4 className="font-mono text-emerald-900">Smart Search</h4>
-                            <p className="text-sm text-emerald-800">Query your data naturally using conversational language</p>
+                            <h4 className="font-mono text-black">Smart Search</h4>
+                            <p className="text-sm text-black">Query your data naturally using conversational language</p>
                         </div>
                     </div>
 
                     <div className="flex gap-4">
                         <div className="shrink-0 w-10 h-10 rounded-lg bg-emerald-100 flex items-center justify-center">
-                            <span className="text-emerald-900 font-mono">📈</span>
+                            <span className="shrink-0 w-10 h-10 bg-[#c0c0c0] border-2 border-gray-700 border-b-white border-r-white flex items-center justify-center text-xl shadow-[inset_1px_1px_0px_rgba(0,0,0,1)]">📈</span>
                         </div>
                         <div>
-                            <h4 className="font-mono text-emerald-900">Trend Detection</h4>
-                            <p className="text-sm text-emerald-800">Automatically identify patterns and trends in your data</p>
+                            <h4 className="font-mono text-black">Trend Detection</h4>
+                            <p className="text-sm text-black">Automatically identify patterns and trends in your data</p>
                         </div>
                     </div>
 
                     <div className="flex gap-4">
                         <div className="shrink-0 w-10 h-10 rounded-lg bg-emerald-100 flex items-center justify-center">
-                            <span className="text-emerald-900 font-mono">⚡</span>
+                            <span className="shrink-0 w-10 h-10 bg-[#c0c0c0] border-2 border-gray-700 border-b-white border-r-white flex items-center justify-center text-xl shadow-[inset_1px_1px_0px_rgba(0,0,0,1)]">⚡</span>
                         </div>
                         <div>
-                            <h4 className="font-mono text-emerald-900">Real-time Processing</h4>
-                            <p className="text-sm text-emerald-800">Get answers instantly without waiting for manual data processing</p>
+                            <h4 className="font-mono text-black">Real-time Processing</h4>
+                            <p className="text-sm text-black">Get answers instantly without waiting for manual data processing</p>
                         </div>
                     </div>
 
                     <div className="flex gap-4">
                         <div className="shrink-0 w-10 h-10 rounded-lg bg-emerald-100 flex items-center justify-center">
-                            <span className="text-emerald-900 font-mono">🔐</span>
+                            <span className="shrink-0 w-10 h-10 bg-[#c0c0c0] border-2 border-gray-700 border-b-white border-r-white flex items-center justify-center text-xl shadow-[inset_1px_1px_0px_rgba(0,0,0,1)]">🔐</span>
                         </div>
                         <div>
-                            <h4 className="font-mono text-emerald-900">Secure & Private</h4>
-                            <p className="text-sm text-emerald-800">Your data stays private with end-to-end encryption</p>
+                            <h4 className="font-mono text-black">Secure & Private</h4>
+                            <p className="text-sm text-black">Your data stays private with end-to-end encryption</p>
                         </div>
                     </div>
 
                     <div className="flex gap-4">
                         <div className="shrink-0 w-10 h-10 rounded-lg bg-emerald-100 flex items-center justify-center">
-                            <span className="text-emerald-900 font-mono">📁</span>
+                            <span className="shrink-0 w-10 h-10 bg-[#c0c0c0] border-2 border-gray-700 border-b-white border-r-white flex items-center justify-center text-xl shadow-[inset_1px_1px_0px_rgba(0,0,0,1)]">📁</span>
                         </div>
                         <div>
-                            <h4 className="font-mono text-emerald-900">Multi-Format Support</h4>
-                            <p className="text-sm text-emerald-800">Works with Excel, CSV, Google Sheets, and more</p>
+                            <h4 className="font-mono text-black">Multi-Format Support</h4>
+                            <p className="text-sm text-black">Works with Excel, CSV, Google Sheets, and more</p>
                         </div>
                     </div>
                 </div>
 
-                <div className="border-2 border-gray-300 bg-white overflow-hidden flex flex-col h-full">
+          <div className="w-full bg-zinc-200 border-2 border-t-white border-l-white border-b-zinc-900 border-r-zinc-900 p-1 shadow-[4px_4px_10px_rgba(0,0,0,0.3)]">
                     <div className="bg-gray-900 px-4 py-3 shrink-0">
                         <h3 className="font-mono text-sm text-white">SheetXray Chat</h3>
                         <p className="text-xs text-gray-300">Chat with your spreadsheet data</p>
+                        
                     </div>
-
+                    
                     <div className="flex-1 overflow-y-auto space-y-3 p-4 bg-gray-50" style={{ minHeight: "500px" }}>
                         <div className="flex gap-3">
                             <div className="shrink-0 w-6 h-6 rounded-full bg-gray-900 flex items-center justify-center">
