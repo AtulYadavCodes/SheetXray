@@ -83,43 +83,43 @@ function Filesandfolder() {
   };
 
   return (
-    <section className="mx-auto w-full max-w-6xl px-4 my-1 py-6 bg-white min-h-screen">
+    <section className="mx-auto w-full p-2.5 sm:p-4 sm:my-1  min-h-screen select-none selection:bg-blue-800 selection:text-white border border-t-0 border-r-0 border-b-0 border-black">
 
-      <div className="flex justify-between items-center mb-6">
-        <h3 className="font-mono text-sm uppercase tracking-widest text-emerald-700 px-1 hidden sm:block">
+      <div className="flex justify-between items-center mb-6      ">
+        <h3 className="font-mono text-xs font-bold text-black px-1  hidden sm:block">
           📁 Your Folders
         </h3>
-        <h3 className="font-mono text-sm uppercase tracking-widest text-emerald-700 px-9 sm:hidden">
+        <h3 className="font-mono text-xs font-bold text-black px-9 sm:hidden">
           📁 Your Folders
         </h3>
 
         <button
           onClick={() => setShowCreate(!showCreate)}
-          className="rounded-md border border-emerald-300 bg-emerald-100 px-3 py-2 text-xs font-mono text-emerald-700 hover:bg-emerald-200 transition"
+          className="font-mono text-xs font-bold text-black bg-[#c0c0c0] px-3 py-1.5 border shadow-[inset_1px_1px_0px_#ffffff,inset_-1px_-1px_0px_#808080,1px_1px_0px_#0a0a0a] active:shadow-[inset_2px_2px_0px_#0a0a0a,0px_0px_0px_#ffffff] outline-none"
         >
           + Create Folder
         </button>
       </div>
 
       {showCreate && (
-        <div className="mb-6 rounded-2xl border border-emerald-300 bg-emerald-50 backdrop-blur p-5 space-y-4 shadow-lg">
+        <div className="mb-6 border border-[#808080] p-4 relative pt-5 shadow-[1px_1px_0px_#ffffff] ">
 
           <div className="space-y-1">
-            <h3 className="text-sm font-mono text-emerald-900 tracking-wide">
+            <h3 className="text-xs font-mono font-bold text-black">
               Create Folder
             </h3>
 
           </div>
 
           <div className="space-y-1">
-            <label className="text-[11px] text-emerald-700 font-mono">
+            <label className="text-xs text-black font-mono font-bold block mt-2">
               Folder Name
             </label>
             <input
               placeholder="e.g. avatars / invoices / assets"
               value={folderName}
               onChange={(e) => setFolderName(e.target.value)}
-              className="w-full rounded-lg border border-emerald-300 bg-white px-3 py-2 text-sm text-emerald-900 outline-none focus:border-emerald-600 transition placeholder-emerald-400"
+              className="w-full font-mono text-sm bg-white text-black p-1.5 outline-none border shadow-[inset_2px_2px_0px_#0a0a0a,1px_1px_0px_#ffffff] focus:bg-blue-50"
             />
           </div>
 
@@ -130,7 +130,7 @@ function Filesandfolder() {
           <button
             onClick={handleCreateFolder}
             disabled={creating || !folderName}
-            className="w-full rounded-lg bg-emerald-600 text-white py-2 text-xs font-mono tracking-wide hover:bg-emerald-700 disabled:opacity-40 disabled:cursor-not-allowed transition"
+            className="w-full font-mono text-xs font-bold text-black bg-[#c0c0c0] py-2 border shadow-[inset_1px_1px_0px_#ffffff,inset_-1px_-1px_0px_#808080,1px_1px_0px_#0a0a0a] active:shadow-[inset_2px_2px_0px_#0a0a0a,0px_0px_0px_#ffffff] disabled:opacity-40 disabled:cursor-not-allowed outline-none mt-4"
           >
             {creating ? "Creating..." : "Create Folder"}
           </button>
@@ -140,7 +140,7 @@ function Filesandfolder() {
         </div>
       )}
 
-      <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 ">
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 bg-white px-4 ">
         {folders.map((f) => (
           <Link
             key={f._id}
@@ -159,22 +159,21 @@ function Filesandfolder() {
             className={f.disabled ? "cursor-not-allowed" : ""}
           >
             <div
-              className={`rounded-xl border bg-emerald transition p-4 flex flex-col items-center relative group shadow-sm ${f.disabled
-                ? "cursor-not-allowed border-slate-200 opacity-50"
-                : "cursor-pointer border-emerald-200 hover:border-emerald-500 hover:shadow-md"
+              className={`p-2 flex flex-col items-center justify-between border-2 -transparent bg-blue-900/10 border-dashed border-blue-950 relative group ${f.disabled
+                ? "cursor-not-allowed opacity-40"
+                : "cursor-pointer"
                 }`}
             >
-              <span className="text-3xl">📁</span>
-              <span className="mt-2 text-xs text-emerald-900 font-mono text-center truncate w-full">
+              <span className="text-4xl filter drop-shadow-[1px_1px_0px_rgba(0,0,0,0.5)] select-none">📁</span>
+              <span className="mt-2 font-mono text-xs text-black font-medium text-center truncate w-full px-1 bg-blue-900 text-white">
                 {f.foldername}
               </span>
-              <span className="text-[10px] text-emerald-700 mt-1 font-mono ">
+              <span className="text-[10px] text-gray-700 mt-1 font-mono font-bold tracking-tighter">
                 {(() => {
                   const count = typeof f.sheetscount !== 'undefined' ? f.sheetscount : (f.fileCount ?? (f.files ? f.files.length : 0));
-                  const badgeClass = count > 0 ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-600';
                   return (
-                    <span className={`inline-block px-2 py-1 rounded-full text-xs font-mono ${badgeClass}`}>
-                      {count} {count === 1 ? 'file' : 'files'}
+                    <span className="inline-block px-1">
+                      [{count} {count === 1 ? 'file' : 'files'}]
                     </span>
                   );
                 })()}
@@ -182,7 +181,7 @@ function Filesandfolder() {
 
               <button
                 onClick={(e) => handleDeleteFolder(e, f._id, f.foldername)}
-                className="absolute top-1 right-1 sm:opacity-0 group-hover:opacity-100 bg-red-600  text-white rounded-tr-2xl p-1 transition text-xs"
+                className="absolute top-0 right-0 sm:opacity-0 group-hover:opacity-100 bg-[#c0c0c0] text-black font-bold border border-black px-1.5 text-[9px] hover:bg-red-600 hover:text-white shadow-[1px_1px_0px_#ffffff]"
                 title="Delete folder"
               >
                 x
