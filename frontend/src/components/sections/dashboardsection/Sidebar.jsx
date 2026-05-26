@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 
 const routes = [
-  { path: "", label: "Files & Folders" },
-  { path: "profile", label: "User Profile" }
+  { path: "", label: "Files & Folders", icon: "📁" },
+  { path: "profile", label: "User Profile", icon: "👤" }
 ];
 
 function Sidebar() {
@@ -32,69 +32,85 @@ function Sidebar() {
 
   return (
     <>
+     
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="absolute left-4 top-10 z-50 rounded-md  text-emerald-700  sm:hidden shadow-sm"
+        className="absolute left-2 top-4  px-3 py-1 font-mono text-xs font-bold text-black sm:hidden"
         aria-label="Toggle Navigation Sidebar"
       >
-        <svg className="h-4 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          {isOpen ? (
-            null
-          ) : (
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-          )}
-        </svg>
+       
+        <span>{isOpen ? "" : "☰"}</span>
       </button>
 
       {isOpen && (
         <div
           onClick={closeMobileMenu}
-          className="fixed inset-0 z-30 bg-black/60 backdrop-blur-sm sm:hidden"
+          className="fixed inset-0 z-30 bg-black/40 sm:hidden"
         />
       )}
 
+     
       <aside
-        className={`fixed inset-y-0 left-0 z-40 flex w-64 flex-col border-r border-gray-200 bg-white p-4 pt-16 transition-transform duration-300 sm:translate-x-0 sm:pt-4 ${isOpen ? "translate-x-0" : "-translate-x-full"
-          } sm:sticky sm:top-16.25 sm:h-[calc(100vh-65px)]`}>
+        className={`fixed inset-y-0 left-0 z-40 flex w-64 flex-col bg-white p-2 pt-16 sm:pt-2 transition-transform duration-300   sm:translate-x-0 ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        } sm:sticky sm:top-16.25 sm:h-[calc(100vh-65px)] select-none`}
+      >
+       
+       
+          
+        
 
-        <div className="space-y-1.5">
-          {routes.map((route) => {
-            const absolutePath = route.path ? `/dashboard/${route.path}` : "/dashboard";
-            return (
-              <NavLink
-                key={route.path}
-                to={absolutePath}
-                end={route.path === ""}
-                onClick={closeMobileMenu}
-                className={({ isActive }) =>
-                  `block w-full rounded-md my-3 px-4 py-2.5 font-mono text-sm border transition duration-150 text-left ${isActive
-                    ? "bg-emerald-600 text-white border-emerald-600 shadow-sm"
-                    : "bg-white text-emerald-700 border-gray-200 hover:bg-emerald-50 hover:text-emerald-900"
-                  }`
-                }
-              >
-                {route.label}
-              </NavLink>
-            );
-          })}
-        </div>
+          {/* Route Links */}
+          <div className="space-y-2">
+            {routes.map((route) => {
+              const absolutePath = route.path ? `/dashboard/${route.path}` : "/dashboard";
+              return (
+                <NavLink
+                  key={route.path}
+                  to={absolutePath}
+                  end={route.path === ""}
+                  onClick={closeMobileMenu}
+                  className={({ isActive }) =>
+                    `block w-full font-mono text-xs p-2 text-left border outline-none ${
+                      isActive
+                        ? "bg-blue-900 text-white border-black shadow-[inset_1px_1px_0px_#0a0a0a]"
+                        : "bg-[#c0c0c0] text-black border-transparent hover:bg-white/30"
+                    }`
+                  }
+                >
+                  <span className="inline-block mr-2 text-sm">{route.icon}</span>
+                  <span className={({ isActive }) => isActive ? "font-bold" : ""}>
+                    {route.label}
+                  </span>
+                </NavLink>
+              );
+            })}
+          </div>
 
-        <div className="flex-1" />
+          <div className="flex-1" />
 
-        <div className="mt-auto pt-4 border-t border-gray-200">
-          <NavLink
-            to="/dashboard/subs"
-            onClick={closeMobileMenu}
-            className={({ isActive }) =>
-              `block w-full rounded-md px-4 py-2.5 font-mono text-sm border transition duration-150 text-left ${isActive
-                ? "bg-emerald-600 text-white border-emerald-600"
-                : "bg-white text-emerald-700 border-gray-200 hover:bg-emerald-50"
-              }`
-            }
-          >
-            {user?.usertype === "pro" ? "✓ Pro Plan Active" : "🚀 Upgrade to Pro"}
-          </NavLink>
-        </div>
+         
+         
+            <NavLink
+              to="/dashboard/subs"
+              onClick={closeMobileMenu}
+             className={({ isActive }) =>
+                    `block w-full font-mono text-xs p-2 text-left border outline-none ${
+                      isActive
+                        ? "bg-blue-900 text-white border-black shadow-[inset_1px_1px_0px_#0a0a0a]"
+                        : "bg-[#c0c0c0] text-black border-transparent hover:bg-white/30"
+                    }`
+                  }
+            >
+            
+                <span className="font-bold flex items-center gap-1 ">
+                  ⚡ <span>UPGRADE WEBSITE</span>
+                </span>
+              
+            </NavLink>
+        
+
+        
       </aside>
     </>
   );
