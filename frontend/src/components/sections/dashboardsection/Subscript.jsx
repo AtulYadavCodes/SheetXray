@@ -124,7 +124,7 @@ function Subs() {
                     contact: user?.phone || "",
                 },
                 theme: {
-                    color: "#059669",
+                    color: "#000080",
                 },
                 modal: {
                     ondismiss: () => {
@@ -224,81 +224,85 @@ function Subs() {
         }
     };
 
+    // Clean inline styles for classical bevel depth
+    const winBorderOut = { boxShadow: "inset 1px 1px #fff, inset -1px -1px #0a0a0a, inset 2px 2px #dfdfdf, inset -2px -2px #808080" };
+    const winBorderIn = { boxShadow: "inset -1px -1px #fff, inset 1px 1px #0a0a0a, inset -2px -2px #dfdfdf, inset 2px 2px #808080" };
+
     if (loading) {
         return (
-            <div className="p-6 text-emerald-700 text-sm">
+            <div className="p-6 bg-[#c0c0c0] text-black text-sm font-mono" style={winBorderOut}>
                 $ loading subscription...
             </div>
         );
     }
 
     return (
-        <section className="w-full px-6 sm:px-10 lg:px-16 py-8 min-h-screen">
+        <section className="w-full sm:py-0 py-10 overflow-hidden px-6 sm:px-10 lg:px-16  min-h-screen  text-black font-mono border border-t-0 border-r-0 border-b-0 border-black">
             <div className="w-100 h-9"></div>
 
             {user?.usertype === 'premiummonthly' || user?.usertype === 'premiumlifetime' ? (
                 <div className="max-w-4xl">
-                    <div className="bg-gradient-to-r from-white to-gray-200 rounded-lg p-8 mb-8 text-gray-900">
+                    <div className="bg-[#000080] p-8 mb-8 text-white" style={winBorderOut}>
                         <div className="flex items-start justify-between">
                             <div>
-                                <h3 className="text-4xl mb-2 font-normal">🎉 Premium Active</h3>
-                                <p className="text-gray-800 text-lg">You're enjoying all premium benefits</p>
+                                <h3 className="text-4xl mb-2 font-bold">🎉 Premium Active</h3>
+                                <p className="text-gray-200 text-lg">You're enjoying all premium benefits</p>
                             </div>
                             <div className="text-6xl">✨</div>
                         </div>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                        <div className="border-2 border-gray-200 rounded-lg p-6 bg-white hover:shadow transition">
-                            <h4 className="text-sm text-emerald-700 mb-2 uppercase tracking-wide font-normal">Plan Type</h4>
-                            <p className="text-3xl text-emerald-900 mb-2">
+                        <div className="p-6 " style={winBorderOut}>
+                            <h4 className="text-sm text-blue-900 mb-2 uppercase font-bold">Plan Type</h4>
+                            <p className="text-3xl text-black mb-2 bg-white px-2 py-1 border" style={winBorderIn}>
                                 {user?.usertype === 'premiumlifetime' ? 'Lifetime' : 'Monthly'}
                             </p>
-                            <p className="text-emerald-700 text-sm">
+                            <p className="text-gray-700 text-sm">
                                 {user?.usertype === 'premiumlifetime'
                                     ? 'One-time payment for lifetime access'
                                     : 'Renews monthly'}
                             </p>
                         </div>
 
-                        <div className="border-2 border-gray-200 rounded-lg p-6 bg-white hover:shadow transition">
-                            <h4 className="text-sm text-emerald-700 mb-2 uppercase tracking-wide font-normal">Member Since</h4>
-                            <p className="text-3xl text-emerald-900 mb-2">
+                        <div className="p-6 " style={winBorderOut}>
+                            <h4 className="text-sm text-blue-900 mb-2 uppercase font-bold">Member Since</h4>
+                            <p className="text-3xl text-black mb-2 bg-white px-2 py-1 border" style={winBorderIn}>
                                 {user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A'}
                             </p>
-                            <p className="text-emerald-700 text-sm">Keep enjoying premium features</p>
+                            <p className="text-gray-700 text-sm">Keep enjoying premium features</p>
                         </div>
                     </div>
 
-                    <div className="border-2 border-gray-200 rounded-lg p-8 bg-white mb-8">
-                        <h3 className="text-2xl text-emerald-900 mb-6 font-normal">Premium Features</h3>
+                    <div className="p-8  mb-8" style={winBorderOut}>
+                        <h3 className="text-2xl text-black mb-6 font-bold">Premium Features</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="flex items-start gap-3">
-                                <span className="text-emerald-600 text-xl mt-1">✓</span>
+                                <span className="text-blue-950 font-bold text-xl mt-1">[✓]</span>
                                 <div>
-                                    <p className="text-emerald-900">Unlimited File Uploads</p>
-                                    <p className="text-sm text-emerald-700">Upload & organize unlimited spreadsheets</p>
+                                    <p className="text-black font-bold">Unlimited File Uploads</p>
+                                    <p className="text-sm text-gray-800">Upload & organize unlimited spreadsheets</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">
-                                <span className="text-emerald-600 text-xl mt-1">✓</span>
+                                <span className="text-blue-950 font-bold text-xl mt-1">[✓]</span>
                                 <div>
-                                    <p className="text-emerald-900">Advanced RAG Search</p>
-                                    <p className="text-sm text-emerald-700">Search across all your files instantly</p>
+                                    <p className="text-black font-bold">Advanced RAG Search</p>
+                                    <p className="text-sm text-gray-800">Search across all your files instantly</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">
-                                <span className="text-emerald-600 text-xl mt-1">✓</span>
+                                <span className="text-blue-950 font-bold text-xl mt-1">[✓]</span>
                                 <div>
-                                    <p className="text-emerald-900">Priority Support</p>
-                                    <p className="text-sm text-emerald-700">Get help from our support team</p>
+                                    <p className="text-black font-bold">Priority Support</p>
+                                    <p className="text-sm text-gray-800">Get help from our support team</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">
-                                <span className="text-emerald-600 text-xl mt-1">✓</span>
+                                <span className="text-blue-950 font-bold text-xl mt-1">[✓]</span>
                                 <div>
-                                    <p className="text-emerald-900">Advanced Analytics</p>
-                                    <p className="text-sm text-emerald-700">Deep insights into your data</p>
+                                    <p className="text-black font-bold">Advanced Analytics</p>
+                                    <p className="text-sm text-gray-800">Deep insights into your data</p>
                                 </div>
                             </div>
                         </div>
@@ -308,7 +312,8 @@ function Subs() {
                         <button
                             onClick={handleDownloadInvoice}
                             disabled={downloadingInvoice}
-                            className="border-2 border-emerald-600 bg-emerald-600 text-white py-3 rounded-lg hover:bg-emerald-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="bg-[#c0c0c0] text-black font-bold py-3 active:bg-[#dfdfdf] disabled:opacity-50"
+                            style={winBorderOut}
                         >
                             {downloadingInvoice ? '⏳ Downloading...' : '📥 Download Invoice'}
                         </button>
@@ -316,35 +321,34 @@ function Subs() {
                         {user?.usertype === 'premiummonthly' && (
                             <button
                                 onClick={() => handlePayment('enterprise')}
-                                className="border-2 border-emerald-600 bg-emerald-600 text-white py-3 rounded-lg hover:bg-emerald-700 transition"
+                                className="bg-[#c0c0c0] text-black font-bold py-3 active:bg-[#dfdfdf]"
+                                style={winBorderOut}
                             >
                                 ⬆️ Upgrade to Lifetime
                             </button>
                         )}
-
                     </div>
                 </div>
             ) : (
                 <div className="max-w-4xl space-y-6">
-                    <div className="border-2 border-gray-200 rounded-lg p-6 hover:border-emerald-300 transition cursor-pointer bg-white"
+                    <div className="p-6 cursor-pointer "
+                        style={winBorderOut}
                         onClick={() => setSelectedPlan('pro')}>
                         <div className="flex items-start justify-between mb-4">
                             <div>
-                                <h3 className="text-2xl text-emerald-900 font-normal">Pro monthly</h3>
-                                <p className="text-emerald-700 text-sm mt-1">For power users</p>
+                                <h3 className="text-2xl text-black font-bold">Pro monthly</h3>
+                                <p className="text-gray-700 text-sm mt-1">For power users</p>
                             </div>
-                            <div className="text-right">
-                                <span className="text-4xl text-emerald-900">₹99</span>
-                                <span className="text-emerald-700 text-sm">/month</span>
+                            <div className="text-right bg-white border px-3 py-1" style={winBorderIn}>
+                                <span className="text-4xl text-black font-bold">₹99</span>
+                                <span className="text-gray-700 text-sm">/month</span>
                             </div>
                         </div>
 
-                        <ul className="space-y-2 mb-6 text-sm text-emerald-700">
-                            <li>✓ Unlimited file uploads</li>
-                            <li>✓ Advanced RAG search</li>
-
-                            <li>✓ Priority support</li>
-
+                        <ul className="space-y-2 mb-6 text-sm text-gray-800 bg-white p-2 border" style={winBorderIn}>
+                            <li>• Unlimited file uploads</li>
+                            <li>• Advanced RAG search</li>
+                            <li>• Priority support</li>
                         </ul>
 
                         <div className="flex items-center gap-3">
@@ -354,31 +358,29 @@ function Subs() {
                                 value="pro"
                                 checked={selectedPlan === 'pro'}
                                 onChange={(e) => setSelectedPlan(e.target.value)}
-                                className="w-4 h-4 text-emerald-600"
+                                className="w-4 h-4 accent-[#000080]"
                             />
-                            <span className="text-emerald-700">Select Pro Plan</span>
+                            <span className="text-black font-bold">Select Pro Plan</span>
                         </div>
                     </div>
 
-                    <div className="border-2 border-gray-200 rounded-lg p-6 hover:border-emerald-300 transition cursor-pointer bg-white"
+                    <div className="p-6 cursor-pointer "
+                        style={winBorderOut}
                         onClick={() => setSelectedPlan('enterprise')}>
                         <div className="flex items-start justify-between mb-4">
                             <div>
-                                <h3 className="text-2xl text-emerald-900 font-normal">Pro lifetime</h3>
-                                <p className="text-emerald-700 text-sm mt-1">For teams & organizations</p>
+                                <h3 className="text-2xl text-black font-bold">Pro lifetime</h3>
+                                <p className="text-gray-700 text-sm mt-1">For teams & organizations</p>
                             </div>
-                            <div className="text-right">
-                                <span className="text-4xl text-emerald-900">₹1000</span>
-                                <span className="text-emerald-700 text-sm">/life</span>
+                            <div className="text-right bg-white border px-3 py-1" style={winBorderIn}>
+                                <span className="text-4xl text-black font-bold">₹1000</span>
+                                <span className="text-gray-700 text-sm">/life</span>
                             </div>
                         </div>
 
-                        <ul className="space-y-2 mb-6 text-sm text-emerald-700">
-                            <li>✓ Everything in Pro</li>
-
-
-                            <li>✓ Dedicated support</li>
-
+                        <ul className="space-y-2 mb-6 text-sm text-gray-800 bg-white p-2 border" style={winBorderIn}>
+                            <li>• Everything in Pro</li>
+                            <li>• Dedicated support</li>
                         </ul>
 
                         <div className="flex items-center gap-3">
@@ -388,21 +390,22 @@ function Subs() {
                                 value="enterprise"
                                 checked={selectedPlan === 'enterprise'}
                                 onChange={(e) => setSelectedPlan(e.target.value)}
-                                className="w-4 h-4 text-emerald-600"
+                                className="w-4 h-4 accent-[#000080]"
                             />
-                            <span className="text-emerald-700">Select lifetime Plan</span>
+                            <span className="text-black font-bold">Select lifetime Plan</span>
                         </div>
                     </div>
 
                     <button
                         onClick={handlePayment}
                         disabled={!selectedPlan}
-                        className="w-full bg-emerald-600 hover:bg-emerald-700 disabled:opacity-40 text-white py-3 rounded-lg transition mt-6"
+                        className="w-full  disabled:opacity-40 text-black font-bold py-3 mt-6 active:bg-[#dfdfdf]"
+                        style={winBorderOut}
                     >
                         Proceed to Payment
                     </button>
 
-                    <p className="text-xs text-emerald-700 text-center">
+                    <p className="text-xs text-gray-800 text-center">
                         Secure payment powered by Razorpay
                     </p>
                 </div>
