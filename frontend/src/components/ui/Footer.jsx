@@ -3,7 +3,7 @@ import { HashLink } from "react-router-hash-link";
 function FooterSection() {
   return (
     <footer className="mx-auto w-full border-t bg-white p-1 font-sans text-black select-none">
-      {/* Outer taskbar/status-strip container (Classic Win95 Raised Panel) */}
+    
       <div className="bg-white p-3  flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         
         {/* Left Side Info Panel */}
@@ -16,7 +16,7 @@ function FooterSection() {
           </p>
         </div>
 
-        {/* Right Side Controls Panel (Win95 Command Buttons) */}
+        
         <div className="flex flex-wrap items-center gap-2 text-xs font-bold">
           <HashLink
             smooth
