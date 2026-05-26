@@ -53,7 +53,7 @@ function Sidebar() {
       <aside
         className={`fixed inset-y-0 left-0 z-40 flex w-64 flex-col bg-white p-2 pt-16 sm:pt-2 transition-transform duration-300   sm:translate-x-0 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
-        } sm:sticky sm:top-16.25 sm:h-[calc(100vh-65px)] select-none`}
+        } sm:sticky sm:top-15.25 sm:h-[calc(100vh-65px)] select-none`}
       >
        
        

@@ -187,7 +187,7 @@ function Files() {
   const winBorderIn = { boxShadow: "inset -1px -1px #fff, inset 1px 1px #0a0a0a, inset -2px -2px #dfdfdf, inset 2px 2px #808080" };
 
   return (
-    <section className="mx-auto w-full h-[92dvh] flex flex-col  text-black font-mono">
+    <section className="mx-auto w-full h-[95dvh] flex flex-col  text-black font-mono">
       {/* Header */}
       <div className="border-b bg-white" >
         <div className="px-10 my-3 flex items-start justify-between gap-6">
