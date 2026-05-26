@@ -21,7 +21,6 @@ function Navbar() {
     }
   };
 
-  // Centralized Navigation Configurations
   const navLinks = [
     { label: "Home", to: "/#", show: true },
     { label: "Pricing", to: "/#pricing", show: !isAuth },
@@ -30,84 +29,91 @@ function Navbar() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-emerald-200 bg-white backdrop-blur-md bg-opacity-95">
-      <div className="mx-auto flex  items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-50 w-full bg-white p-1 font-sans text-black select-none border-b ">
+     
 
-        <HashLink smooth to="/#" className="font-mono text-lg tracking-[0.16em] text-emerald-700">
-          📊 SheetXray
-        </HashLink>
-
-        <nav className="hidden items-center gap-1 text-sm sm:flex sm:gap-3">
+     
+      <div className="  p-1   flex items-center justify-end relative">
+       
+       <div className="flex items-center gap-1 mr-auto">
+          <p className="font-bold text-xs uppercase tracking-wider text-black flex items-center gap-1.5">
+            <span>📊</span> SheetXray
+          </p>
+       </div>
+        {/* Desktop Navigation */}
+        <nav className="hidden items-end gap-1 text-xs font-medium sm:flex ">
           {navLinks.map((link) => link.show && (
             <HashLink
               key={link.label}
               smooth
               to={link.to}
-              className="rounded-md px-3 py-2 font-mono text-emerald-900 transition hover:text-emerald-700 hover:bg-emerald-50"
+              className="px-3 py-1 text-black hover:bg-[#000080] hover:text-white outline-none focus:outline-1 focus:outline-dotted focus:outline-black"
             >
-              {link.label}
+              <span className="underline">{link.label.charAt(0)}</span>{link.label.slice(1)}
             </HashLink>
           ))}
+
+          <div className="h-4 w-[1px] bg-[#808080] mx-1 border-r border-white" />
 
           {!isAuth ? (
             <HashLink
               smooth
               to="/auth"
-              className="rounded-md bg-emerald-600 px-3 py-2 font-mono text-white transition hover:bg-emerald-700"
+              className="px-3 py-1 text-black hover:bg-[#000080] hover:text-white font-bold outline-none focus:outline-1 focus:outline-dotted focus:outline-black"
             >
               Sign Up / Login
             </HashLink>
           ) : (
             <button
               onClick={handleLogout}
-              className="rounded-md px-3 py-2 font-mono text-emerald-900 transition hover:text-emerald-700 hover:bg-emerald-50 cursor-pointer"
+              className="px-3 py-1 text-black text-left hover:bg-[#000080] hover:text-white font-bold cursor-pointer outline-none focus:outline-1 focus:outline-dotted focus:outline-black"
             >
               Logout
             </button>
           )}
         </nav>
 
+        {/* Mobile Menu Dropdown Toggle Button */}
         <button
           onClick={() => setOpen(!open)}
-          className="block text-emerald-700 hover:text-emerald-900 sm:hidden focus:outline-none"
+          className="block sm:hidden bg-white p-1 border border-t-white border-l-white border-b-black border-r-black active:border-t-black active:border-l-black active:border-b-white active:border-r-white text-xs font-bold outline-none"
           aria-label={open ? "Close menu" : "Open menu"}
         >
-          <svg className="h-6 w-6 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            {open ? (
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            ) : (
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            )}
-          </svg>
+          <div className="flex items-center gap-1 px-1">
+            <span>💾</span> Menu {open ? "▲" : "▼"}
+          </div>
         </button>
 
+        {/* 3. Mobile Navigation Dropdown Box */}
         {open && (
-          <nav className="top-full flex flex-col gap-1  bg-white  pb -4 pt-2  sm:hidden">
+          <nav className="absolute top-full left-0 right-0 mt-1 z-50 bg-white border-2 border-t-white border-l-white border-b-black border-r-black p-1 flex flex-col gap-0.5 text-xs font-medium sm:hidden shadow-lg">
             {navLinks.map((link) => link.show && (
               <HashLink
                 key={link.label}
                 smooth
                 to={link.to}
                 onClick={() => setOpen(false)}
-                className="rounded-md px-3 py-2 font-mono text-emerald-900 transition hover:bg-emerald-50 hover:text-emerald-700"
+                className="px-3 py-1.5 text-black hover:bg-[#000080] hover:text-white"
               >
                 {link.label}
               </HashLink>
             ))}
+
+            <div className="h-[1px] bg-[#808080] my-1 border-b border-white" />
 
             {!isAuth ? (
               <HashLink
                 smooth
                 to="/auth"
                 onClick={() => setOpen(false)}
-                className="mt-2 rounded-md bg-emerald-600 px-3 py-2 text-center font-mono text-white transition hover:bg-emerald-700"
+                className="px-3 py-1.5 text-black font-bold hover:bg-[#000080] hover:text-white"
               >
-                Login
+                Login / Sign Up
               </HashLink>
             ) : (
               <button
                 onClick={() => { handleLogout(); setOpen(false); }}
-                className="rounded-md px-3 py-2 text-left font-mono text-emerald-900 transition hover:bg-emerald-50 hover:text-emerald-700"
+                className="px-3 py-1.5 text-left text-black font-bold hover:bg-[#000080] hover:text-white"
               >
                 Logout
               </button>
