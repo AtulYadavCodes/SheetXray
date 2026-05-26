@@ -81,10 +81,7 @@ function HeroSection() {
 </div>
             
            
-            <div className="mt-1 border border-t-zinc-700 border-l-zinc-700 border-b-white border-r-white bg-zinc-200 px-2 py-0.5 text-[11px] text-zinc-600 flex justify-between select-none">
-              <span>Status: Ready</span>
-              <span className="border-l border-zinc-400 pl-2">COM1</span>
-            </div>
+           
 
           </div>
         </div>
