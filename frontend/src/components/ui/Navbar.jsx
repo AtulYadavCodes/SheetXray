@@ -36,9 +36,9 @@ function Navbar() {
       <div className="  p-1   flex items-center justify-end relative">
        
        <div className="flex items-center gap-1 mr-auto">
-          <p className="font-bold text-xs uppercase tracking-wider text-black flex items-center gap-1.5">
+          <HashLink to="/#" className="font-bold text-xs uppercase tracking-wider text-black flex items-center gap-1.5">
             <span>📊</span> SheetXray
-          </p>
+          </HashLink>
        </div>
         {/* Desktop Navigation */}
         <nav className="hidden items-end gap-1 text-xs font-medium sm:flex ">
