@@ -1,21 +1,19 @@
 import { useEffect, useState } from "react";
 import { HashLink } from "react-router-hash-link";
-import { Navigate } from "react-router-dom";
 import { useAuth } from "../../Context/LoginContext";
 import { toast } from "react-toastify";
+
 const API_BASE = import.meta.env.VITE_API_BASE;
 
-
 function AuthPage({ mode = "login" }) {
-  const [isLogin, setIsLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState(mode === "login");
   const [avatar, setAvatar] = useState(null);
-  const [redirectToDashboard, setRedirectToDashboard] = useState(false);
+  const [email, setEmail] = useState("");
   const { setIsAuth } = useAuth();
 
-  const [email, setEmail] = useState("");
-
-
-  const [apimessage, setApimessage] = useState("");
+  useEffect(() => {
+    setIsLogin(mode === "login");
+  }, [mode]);
 
   const handleSendOtp = async () => {
     if (!email) {
@@ -27,31 +25,29 @@ function AuthPage({ mode = "login" }) {
       const formData = new FormData();
       formData.append("email", email);
 
-      const res = await fetch(`${import.meta.env.VITE_API_BASE}/api/v1/users/otpsender`, {
+      const res = await fetch(`${API_BASE}/api/v1/users/otpsender`, {
         method: "POST",
         body: formData,
       });
 
       const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Failed to send OTP");
       toast.success(data.message || "OTP sent successfully");
     } catch (error) {
       console.error("OTP send error:", error);
-      toast.error("Failed to send OTP");
+      toast.error(error.message || "Failed to send OTP");
     }
   };
-
-  useEffect(() => {
-    setApimessage("");
-  }, [isLogin])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       const formData = new FormData(e.target);
-
-
-
+      
+      if (!isLogin && avatar) {
+        formData.set("avatar", avatar);
+      }
 
       const url = isLogin
         ? `${API_BASE}/api/v1/users/login`
@@ -64,15 +60,18 @@ function AuthPage({ mode = "login" }) {
       });
 
       const data = await res.json();
-      if (!isLogin && res.ok) {
-        setIsLogin(true);
-        toast.success("Registration done");
-      }
-      if (isLogin && res.ok) {
-        setIsAuth(true);
-      }
+
       if (!res.ok) {
-        throw new Error(data.message);
+        throw new Error(data.message || "Authentication failed");
+      }
+
+      if (isLogin) {
+        setIsAuth(true);
+        toast.success("Logged in successfully");
+      } else {
+        setIsLogin(true);
+        setAvatar(null);
+        toast.success("Registration completed! Please log in.");
       }
     } catch (err) {
       toast.error(err.message);
@@ -80,112 +79,137 @@ function AuthPage({ mode = "login" }) {
   };
 
   return (
-    <div className="min-h-screen w-full bg-white flex items-center justify-center px-4">
-      <div className="w-full max-w-md border-2 border-gray-200 bg-white p-6 rounded-lg">
+    <div className="min-h-screen w-full bg-[#008080] flex items-center justify-center p-4 selection:bg-blue-800 selection:text-white select-none">
+      {/* Main Window Frame */}
+      <div className="w-full max-w-md bg-gray-100 p-1 shadow-[inset_1px_1px_0px_#ffffff,inset_-1px_-1px_0px_#0a0a0a,2px_2px_0px_#0a0a0a]">
+        
+       
 
-        <div className="mb-6 text-center">
-          <h2 className="font-mono text-2xl text-emerald-900">
-            {isLogin ? "Welcome back" : "Create account"}
-          </h2>
-          <p className="mt-2 text-sm text-emerald-700">
-            {isLogin
-              ? "Login to continue to SheetXray"
-              : "Start building with SheetXray"}
-          </p>
-        </div>
+      
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+       
+        <div className="p-4">
+          <div className="mb-6 b border-white ">
+            <h2 className="font-mono font-bold text-xl text-black">
+              {isLogin ? "Welcome Back" : "Create Account"}
+            </h2>
+           
+          </div>
 
-          {!isLogin && (
-            <>
-              <img src={avatar ? URL.createObjectURL(avatar) : "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png"} alt="avatar preview" className="w-24 h-24 rounded-full object-cover mx-auto" />
-              <input
-                type="text"
-                placeholder="Full Name"
-                name="fullname"
-                className="w-full border border-gray-300 bg-gray-50 px-3 py-2 text-sm text-gray-900 outline-none focus:border-emerald-600 placeholder-gray-400"
-              />
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {!isLogin && (
+              <div className="space-y-4">
+                <div className="flex justify-center">
+                  <div className="w-24 h-24 bg-white p-1 border-2 shadow-[inset_2px_2px_0px_#0a0a0a,inset_-2px_-2px_0px_#ffffff]">
+                    <img 
+                      src={avatar ? URL.createObjectURL(avatar) : "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png"} 
+                      alt="avatar preview" 
+                      className="w-full h-full object-cover pixelated" 
+                    />
+                  </div>
+                </div>
+                
+              
 
-              <div className="w-full border border-dashed border-gray-300 bg-gray-50 p-3 text-center text-xs text-gray-700">
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => setAvatar(e.target.files[0])}
-                  className="hidden"
-                  id="avatar"
-                  name="avatar"
-                />
-                <label htmlFor="avatar" className="cursor-pointer">
-                  {avatar ? avatar.name : "Upload avatar"}
-                </label>
+                <div className="flex flex-col gap-1">
+                  <label className="font-mono text-xs font-bold text-black">Full Name:</label>
+                  <input
+                    type="text"
+                    name="fullname"
+                    required
+                    className="w-full font-mono text-sm bg-white text-black p-1.5 outline-none border shadow-[inset_2px_2px_0px_#0a0a0a,1px_1px_0px_#ffffff] focus:bg-blue-50"
+                  />
+                </div> 
+                 <div className="bg-[#dcdcdc] p-2 border shadow-[inset_1px_1px_0px_#0a0a0a,1px_1px_0px_#ffffff] text-center">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => setAvatar(e.target.files[0] || null)}
+                    className="hidden"
+                    id="avatar"
+                    name="avatar"
+                  />
+                  <label htmlFor="avatar" className="cursor-pointer block font-mono text-xs font-bold text-black hover:underline">
+                    [{avatar ? avatar.name : "BROWSE AVATAR..."}]
+                  </label>
+                </div>
               </div>
-            </>
-          )}
+            )}
 
-          <input
-            type="email"
-            placeholder="Email"
-            name="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full border border-gray-300 bg-gray-50 px-3 py-2 text-sm text-gray-900 outline-none focus:border-emerald-600 placeholder-gray-400"
-          />
-
-          {!isLogin && (
-            <>
-              <button
-                type="button"
-                onClick={handleSendOtp}
-                className="w-full rounded-md border border-emerald-600 bg-emerald-600 px-4 py-2 font-mono text-xs text-white transition hover:bg-emerald-700"
-              >
-                Send OTP
-              </button>
-
+            <div className="flex flex-col gap-1">
+              <label className="font-mono text-xs font-bold text-black">Email Address:</label>
               <input
-                type="text"
-                name="otp"
-                placeholder="Enter OTP"
-                className="w-full border border-gray-300 bg-gray-50 px-3 py-2 text-sm text-gray-900 outline-none focus:border-emerald-600 placeholder-gray-400"
+                type="email"
+                name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="w-full font-mono text-sm bg-white text-black p-1.5 outline-none border shadow-[inset_2px_2px_0px_#0a0a0a,1px_1px_0px_#ffffff] focus:bg-blue-50"
               />
-            </>
-          )}
+            </div>
 
-          <input
-            type="password"
-            name="password"
-            placeholder="Password (min 6 chars)"
-            className="w-full border border-gray-300 bg-gray-50 px-3 py-2 text-sm text-gray-900 outline-none focus:border-emerald-600 placeholder-gray-400"
-          />
+            {!isLogin && (
+              <div className="space-y-2 bg-[#dcdcdc] p-2 border border-[#808080]">
+                <button
+                  type="button"
+                  onClick={handleSendOtp}
+                  className="w-full font-mono text-xs font-bold text-black bg-[#c0c0c0] px-4 py-1.5 border shadow-[inset_1px_1px_0px_#ffffff,inset_-1px_-1px_0px_#808080,1px_1px_0px_#0a0a0a] active:shadow-[inset_2px_2px_0px_#0a0a0a,0px_0px_0px_#ffffff] outline-none"
+                >
+                  REQUEST OTP TOKEN
+                </button>
 
-          <button
-            type="submit"
-            className="w-full rounded-md border border-emerald-600 bg-emerald-600 px-4 py-2 font-mono text-sm text-white hover:bg-emerald-700 transition"
-          >
-            {isLogin ? "Login" : "Sign Up"}
-          </button>
-        </form>
+                <div className="flex flex-col gap-1">
+                  <label className="font-mono text-xs font-bold text-black">Verification OTP:</label>
+                  <input
+                    type="text"
+                    name="otp"
+                    required
+                    className="w-full font-mono text-sm bg-white text-black p-1.5 outline-none border shadow-[inset_2px_2px_0px_#0a0a0a,1px_1px_0px_#ffffff]"
+                  />
+                </div>
+              </div>
+            )}
 
-        <div className="mt-5 text-center text-sm text-gray-700">
-          {isLogin ? "Don't have an account?" : "Already have an account?"}
+            <div className="flex flex-col gap-1">
+              <label className="font-mono text-xs font-bold text-black">Security Password:</label>
+              <input
+                type="password"
+                name="password"
+                required
+                minLength={6}
+                className="w-full font-mono text-sm bg-white text-black p-1.5 outline-none border shadow-[inset_2px_2px_0px_#0a0a0a,1px_1px_0px_#ffffff] focus:bg-blue-50"
+              />
+            </div>
 
-          <button
-            onClick={() => setIsLogin(!isLogin)}
-            className="ml-2 font-mono text-emerald-700 underline hover:text-emerald-900"
-          >
-            {isLogin ? "Sign up" : "Login"}
-          </button>
+            <button
+              type="submit"
+              className="w-full font-mono text-sm font-bold text-black bg-[#c0c0c0] py-2 border shadow-[inset_1px_1px_0px_#ffffff,inset_-1px_-1px_0px_#808080,1px_1px_0px_#0a0a0a] active:shadow-[inset_2px_2px_0px_#0a0a0a,0px_0px_0px_#ffffff] outline-none mt-4"
+            >
+              {isLogin ? "EXECUTE LOGIN" : "COMMIT REGISTRATION"}
+            </button>
+          </form>
+
+          <div className="mt-6 pt-4 border-t border-white text-center font-mono text-xs text-black">
+            <span>{isLogin ? "New user target?" : "Existing user profile found?"}</span>
+            <button
+              onClick={() => setIsLogin(!isLogin)}
+              className="ml-2 font-bold underline text-blue-900 hover:text-blue-700"
+            >
+              [{isLogin ? "Register" : "Login"}]
+            </button>
+          </div>
+
+          <div className="mt-4 text-center">
+            <HashLink
+              smooth
+              to="/#"
+              className="font-mono text-xs text-gray-800 hover:text-black underline"
+            >
+              📌 Abort System and Return Home
+            </HashLink>
+          </div>
         </div>
 
-
-        <div className="mt-6 text-center">
-          <HashLink
-            smooth
-            to="/#"
-            className="text-xs text-emerald-700 hover:text-emerald-900 font-mono"
-          >
-            ← Back to home
-          </HashLink>
-        </div>
       </div>
     </div>
   );
