@@ -17,6 +17,7 @@ function Files() {
   const fileInputRef = useRef(null);
   const chatEndRef = useRef(null);
   const chatContainerRef = useRef(null);
+
   // fetch files
   const fetchFiles = async () => {
     try {
@@ -84,7 +85,7 @@ function Files() {
 
     setChats((prev) => [...prev, tempChat]);
     setUserQuery("");
-    setLoadingChatId(tempId);
+    loadingChatId(tempId);
     setSendingMessage(true);
 
     try {
@@ -181,29 +182,34 @@ function Files() {
     }
   };
 
+  // Windows 95 Classic Bevel Styles
+  const winBorderOut = { boxShadow: "inset 1px 1px #fff, inset -1px -1px #0a0a0a, inset 2px 2px #dfdfdf, inset -2px -2px #808080" };
+  const winBorderIn = { boxShadow: "inset -1px -1px #fff, inset 1px 1px #0a0a0a, inset -2px -2px #dfdfdf, inset 2px 2px #808080" };
+
   return (
-    <section className="mx-auto w-full h-[92dvh] flex flex-col bg-white text-emerald-900">
+    <section className="mx-auto w-full h-[92dvh] flex flex-col  text-black font-mono">
       {/* Header */}
-      <div className="border-b border-gray-200 bg-white py-4 backdrop-blur">
+      <div className="border-b bg-white" >
         <div className="px-10 my-3 flex items-start justify-between gap-6">
           <div className="flex-1 min-w-0">
-            <h2 className="font-mono text-sm uppercase tracking-widest text-emerald-900 truncate">
+            <h2 className="font-mono text-sm uppercase tracking-widest text-black bg-[#000080] text-white px-2 py-0.5 truncate">
               📁 {folderid}
             </h2>
-            <p className="mt-1 text-xs text-emerald-700">
+            <p className="mt-1 text-xs text-gray-800 font-mono">
               {files.length} files · {chats.length} chats
             </p>
 
             <div className="mt-3 flex items-center gap-3 overflow-x-auto hide-scrollbar">
               {files.length === 0 ? (
-                <span className="text-xs text-emerald-700">
+                <span className="text-xs text-gray-700 font-mono">
                   No files uploaded
                 </span>
               ) : (
                 files.map((f) => (
                   <div
                     key={f._id}
-                    className="flex-none px-3 rounded bg-emerald-100 text-xs text-emerald-800 truncate max-w-[20rem] border border-emerald-200"
+                    className="flex-none px-3 rounded-none bg-white text-xs text-black truncate max-w-[20rem] border border-gray-400 font-mono"
+                   
                     title={f.sheetname}
                   >
                     {f.sheetname}
@@ -230,7 +236,8 @@ function Files() {
             <button
               onClick={() => fileInputRef.current.click()}
               disabled={isUploading}
-              className="bg-emerald-600 text-white py-2 px-4 text-xs font-mono rounded-lg hover:bg-emerald-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+              className="bg-[#c0c0c0] text-black py-2 px-4 text-xs font-mono rounded-none active:bg-[#dfdfdf] transition disabled:opacity-50 disabled:cursor-not-allowed font-bold"
+              style={winBorderOut}
             >
               {isUploading ? "Uploading..." : "+ Upload File"}
             </button>
@@ -240,17 +247,18 @@ function Files() {
 
       <div className="flex-1 overflow-hidden">
         {/* Chat Interface - Bottom Area */}
-        <div className="flex flex-col h-full bg-white">
+        <div className="flex flex-col h-full ">
           {/* Chat Messages */}
           <div
-            className="flex-1  overflow-y-auto p-6 space-y-4"
+            className="flex-1 overflow-y-auto p-6 space-y-4 bg-white m-2 "
+            
             ref={chatContainerRef}
           >
             {chats.length === 0 ? (
               <div className="h-full flex items-center justify-center">
                 <div className="text-center">
                   <div className="text-6xl mb-4">💭</div>
-                  <p className="text-emerald-700 font-mono text-sm">
+                  <p className="text-black font-mono text-sm">
                     Ask a question about your files
                   </p>
                 </div>
@@ -260,23 +268,23 @@ function Files() {
                 <div key={chat._id}>
                   {/* User Query */}
                   <div className="flex justify-end">
-                    <div className="max-w-[88%] sm:max-w-2xl whitespace-pre-wrap break-words rounded-2xl bg-gray-50   px-4 py-3 text-sm text-emerald-900 shadow-md">
+                    <div className="max-w-[88%] sm:max-w-2xl whitespace-pre-wrap break-words rounded-none border px-4 py-3 text-sm text-black shadow-none font-mono" style={winBorderOut}>
                       {chat.userquery}
                     </div>
                   </div>
 
                   {/* LLM Response */}
                   <div className="flex justify-start mt-3 grid-cols-2">
-                    <div className="max-w-[88%] sm:max-w-2xl whitespace-pre-wrap break-words rounded-2xl bg-gray-50  px-4 py-3 text-sm text-emerald-900 w-100 shadow-md">
+                    <div className="max-w-[88%] sm:max-w-2xl whitespace-pre-wrap break-words rounded-none  border px-4 py-3 text-sm text-black w-100 shadow-none font-mono" style={winBorderOut}>
                       {chat.isLoading ? (
                         <div className="flex items-center gap-2">
-                          <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" />
+                          <div className="w-2 h-2 bg-black rounded-full animate-bounce" />
                           <div
-                            className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                            className="w-2 h-2 bg-black rounded-full animate-bounce"
                             style={{ animationDelay: "0.1s" }}
                           />
                           <div
-                            className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                            className="w-2 h-2 bg-black rounded-full animate-bounce"
                             style={{ animationDelay: "0.2s" }}
                           />
                         </div>
@@ -286,13 +294,14 @@ function Files() {
                       {chat.llmresponse.graphdata && (
                         <img
                           src={chat.llmresponse.graphdata}
-                          className="max-w-full rounded pt-6 w-100"
+                          className="max-w-full rounded-none  w-100  mt-2"
+                         
                         />
                       )}
                     </div>
                   </div>
 
-                  <div className="mt-4 text-xs text-emerald-700 text-right">
+                  <div className="mt-4 text-xs text-gray-800 text-right font-mono">
                     {new Date(chat.createdAt).toLocaleTimeString()}
                   </div>
                 </div>
@@ -302,7 +311,7 @@ function Files() {
           </div>
 
           {/* Message Input */}
-          <div className=" p-4">
+          <div className="p-4 bg-white border-t">
             <div className="flex gap-3">
               <input
                 type="text"
@@ -316,12 +325,14 @@ function Files() {
                 }}
                 disabled={sendingMessage}
                 placeholder="Ask a question about your files..."
-                className="flex-1 rounded-xl border border-gray-300 bg-gray-50 px-4 py-2 text-sm text-emerald-900 outline-none placeholder-gray-400 focus:border-emerald-600 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 rounded-none border bg-white px-4 py-2 text-sm text-black outline-none placeholder-gray-500 transition disabled:opacity-50 disabled:cursor-not-allowed font-mono"
+                
               />
               <button
                 onClick={handleSendMessage}
                 disabled={sendingMessage || !userQuery.trim()}
-                className="rounded-xl bg-emerald-600 px-4 py-2 text-sm font-mono text-white hover:bg-emerald-700 disabled:opacity-40 disabled:cursor-not-allowed transition"
+                className="rounded-none bg-[#c0c0c0] text-black px-4 py-2 text-sm font-mono hover:bg-[#dfdfdf] disabled:opacity-40 disabled:cursor-not-allowed transition font-bold"
+                style={winBorderOut}
               >
                 {sendingMessage ? "..." : "Send"}
               </button>
