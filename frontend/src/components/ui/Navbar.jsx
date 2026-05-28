@@ -30,18 +30,18 @@ function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white p-1 font-sans text-black select-none border-b ">
-     
 
-     
+
+
       <div className="  p-1   flex items-center justify-end relative">
-       
-       <div className="flex items-center gap-1 mr-auto">
+
+        <div className="flex items-center gap-1 mr-auto">
           <HashLink to="/#" className="font-bold text-xs uppercase tracking-wider text-black flex items-center gap-1.5">
             <span>📊</span> SheetXray
           </HashLink>
-       </div>
+        </div>
         {/* Desktop Navigation */}
-        <nav className="hidden items-end gap-1 text-xs font-medium sm:flex ">
+        <nav className="hidden items-end  text-xs font-medium sm:flex ">
           {navLinks.map((link) => link.show && (
             <HashLink
               key={link.label}
@@ -53,20 +53,20 @@ function Navbar() {
             </HashLink>
           ))}
 
-          <div className="h-4 w-[1px] bg-[#808080] mx-1 border-r border-white" />
+          <div className="h-4 w-[1px] bg-[#808080]  border-r border-white" />
 
           {!isAuth ? (
             <HashLink
               smooth
               to="/auth"
-              className="px-3 py-1 text-black hover:bg-[#000080] hover:text-white font-bold outline-none focus:outline-1 focus:outline-dotted focus:outline-black"
+              className="px-3 py-1 text-black hover:bg-[#000080] hover:text-white  outline-none focus:outline-1 focus:outline-dotted focus:outline-black"
             >
               Sign Up / Login
             </HashLink>
           ) : (
             <button
               onClick={handleLogout}
-              className="px-3 py-1 text-black text-left hover:bg-[#000080] hover:text-white font-bold cursor-pointer outline-none focus:outline-1 focus:outline-dotted focus:outline-black"
+              className="px-3 py-1 text-black text-left hover:bg-[#000080] hover:text-white  cursor-pointer outline-none focus:outline-1 focus:outline-dotted focus:outline-black"
             >
               Logout
             </button>
@@ -99,21 +99,21 @@ function Navbar() {
               </HashLink>
             ))}
 
-            <div className="h-[1px] bg-[#808080] my-1 border-b border-white" />
+            <div className="h-[1px] bg-[#808080] my-0.5 border-b border-white" />
 
             {!isAuth ? (
               <HashLink
                 smooth
                 to="/auth"
                 onClick={() => setOpen(false)}
-                className="px-3 py-1.5 text-black font-bold hover:bg-[#000080] hover:text-white"
+                className="px-3 py-1.5 text-black  hover:bg-[#000080] hover:text-white"
               >
                 Login / Sign Up
               </HashLink>
             ) : (
               <button
                 onClick={() => { handleLogout(); setOpen(false); }}
-                className="px-3 py-1.5 text-left text-black font-bold hover:bg-[#000080] hover:text-white"
+                className="px-3 py-1.5 text-left text-black  hover:bg-[#000080] hover:text-white"
               >
                 Logout
               </button>
