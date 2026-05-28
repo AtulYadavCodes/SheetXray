@@ -116,7 +116,7 @@ function Filesandfolder() {
               Folder Name
             </label>
             <input
-              placeholder="e.g. avatars / invoices / assets"
+              placeholder="e.g. bills / invoices / attendance"
               value={folderName}
               onChange={(e) => setFolderName(e.target.value)}
               className="w-full font-mono text-sm bg-white text-black p-1.5 outline-none border shadow-[inset_2px_2px_0px_#0a0a0a,1px_1px_0px_#ffffff] focus:bg-blue-50"

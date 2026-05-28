@@ -70,13 +70,11 @@ function HeroSection() {
           
             <div className="relative mt-1 bg-zinc-400 border-2 border-t-zinc-700 border-l-zinc-700 border-b-white border-r-white p-1">
   <div className="relative w-full aspect-video">
-    <iframe
-      src="https://www.youtube.com/embed/OQDtZGXLuQ0"
-      title="SheetXray product video"
+    <img
+      src={image}
+      title="SheetXray product "
       className="absolute top-0 left-0 w-full h-full filtering-pixelated border-0"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-      allowFullScreen
-    ></iframe>
+    ></img>
   </div>
 </div>
             
