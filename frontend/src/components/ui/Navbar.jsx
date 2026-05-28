@@ -106,14 +106,14 @@ function Navbar() {
                 smooth
                 to="/auth"
                 onClick={() => setOpen(false)}
-                className="px-3 py-1.5 text-black font-bold hover:bg-[#000080] hover:text-white"
+                className="px-3 py-1.5 text-black  hover:bg-[#000080] hover:text-white"
               >
                 Login / Sign Up
               </HashLink>
             ) : (
               <button
                 onClick={() => { handleLogout(); setOpen(false); }}
-                className="px-3 py-1.5 text-left text-black font-bold hover:bg-[#000080] hover:text-white"
+                className="px-3 py-1.5 text-left text-black  hover:bg-[#000080] hover:text-white"
               >
                 Logout
               </button>

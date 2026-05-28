@@ -44,7 +44,7 @@ function AuthPage({ mode = "login" }) {
 
     try {
       const formData = new FormData(e.target);
-      
+
       if (!isLogin && avatar) {
         formData.set("avatar", avatar);
       }
@@ -82,34 +82,34 @@ function AuthPage({ mode = "login" }) {
     <div className="min-h-screen w-full bg-[#008080] flex items-center justify-center p-4 selection:bg-blue-800 selection:text-white select-none">
       {/* Main Window Frame */}
       <div className="w-full max-w-md bg-gray-100 p-1 shadow-[inset_1px_1px_0px_#ffffff,inset_-1px_-1px_0px_#0a0a0a,2px_2px_0px_#0a0a0a]">
-        
-       
 
-      
 
-       
-        <div className="p-4">
-          <div className="mb-6 b border-white ">
+
+
+
+
+        <div className="p-3">
+          <div className="mb-4 b border-white ">
             <h2 className="font-mono font-bold text-xl text-black">
               {isLogin ? "Welcome Back" : "Create Account"}
             </h2>
-           
+
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-3">
             {!isLogin && (
-              <div className="space-y-4">
+              <div className="space-y-3">
                 <div className="flex justify-center">
                   <div className="w-24 h-24 bg-white p-1 border-2 shadow-[inset_2px_2px_0px_#0a0a0a,inset_-2px_-2px_0px_#ffffff]">
-                    <img 
-                      src={avatar ? URL.createObjectURL(avatar) : "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png"} 
-                      alt="avatar preview" 
-                      className="w-full h-full object-cover pixelated" 
+                    <img
+                      src={avatar ? URL.createObjectURL(avatar) : "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png"}
+                      alt="avatar preview"
+                      className="w-full h-full object-cover pixelated"
                     />
                   </div>
                 </div>
-                
-              
+
+
 
                 <div className="flex flex-col gap-1">
                   <label className="font-mono text-xs font-bold text-black">Full Name:</label>
@@ -119,8 +119,8 @@ function AuthPage({ mode = "login" }) {
                     required
                     className="w-full font-mono text-sm bg-white text-black p-1.5 outline-none border shadow-[inset_2px_2px_0px_#0a0a0a,1px_1px_0px_#ffffff] focus:bg-blue-50"
                   />
-                </div> 
-                 <div className="bg-[#dcdcdc] p-2 border shadow-[inset_1px_1px_0px_#0a0a0a,1px_1px_0px_#ffffff] text-center">
+                </div>
+                <div className="bg-[#dcdcdc] p-2 border shadow-[inset_1px_1px_0px_#0a0a0a,1px_1px_0px_#ffffff] text-center">
                   <input
                     type="file"
                     accept="image/*"
@@ -183,13 +183,13 @@ function AuthPage({ mode = "login" }) {
 
             <button
               type="submit"
-              className="w-full font-mono text-sm font-bold text-black bg-[#c0c0c0] py-2 border shadow-[inset_1px_1px_0px_#ffffff,inset_-1px_-1px_0px_#808080,1px_1px_0px_#0a0a0a] active:shadow-[inset_2px_2px_0px_#0a0a0a,0px_0px_0px_#ffffff] outline-none mt-4"
+              className="w-full font-mono text-sm font-bold text-black bg-[#c0c0c0] py-2 border shadow-[inset_1px_1px_0px_#ffffff,inset_-1px_-1px_0px_#808080,1px_1px_0px_#0a0a0a] active:shadow-[inset_2px_2px_0px_#0a0a0a,0px_0px_0px_#ffffff] outline-none mt-2"
             >
               {isLogin ? "EXECUTE LOGIN" : "COMMIT REGISTRATION"}
             </button>
           </form>
 
-          <div className="mt-6 pt-4 border-t border-white text-center font-mono text-xs text-black">
+          <div className="mt-4 pt-3 border-t border-white text-center font-mono text-xs text-black">
             <span>{isLogin ? "New user target?" : "Existing user profile found?"}</span>
             <button
               onClick={() => setIsLogin(!isLogin)}
@@ -199,7 +199,7 @@ function AuthPage({ mode = "login" }) {
             </button>
           </div>
 
-          <div className="mt-4 text-center">
+          <div className="mt-3 text-center">
             <HashLink
               smooth
               to="/#"
