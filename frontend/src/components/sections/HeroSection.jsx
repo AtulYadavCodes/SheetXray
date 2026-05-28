@@ -73,7 +73,7 @@ function HeroSection() {
     <img
       src={image}
       title="SheetXray product "
-      className="absolute top-0 left-0 w-full h-full filtering-pixelated border-0"
+      className="absolute top-0 left-0 w-full h-full filtering-pixelated border-0 "
     ></img>
   </div>
 </div>
