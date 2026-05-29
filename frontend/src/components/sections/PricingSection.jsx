@@ -23,7 +23,7 @@ function PricingSection() {
             name: "Pro monthly",
             price: "Rs 99",
             period: " / mo",
-            description: "For growing teams",
+            description: "For users who want to pay monthly",
             features: [
                 "Unlimited folders",
                 "Unlimited files in each folder",
