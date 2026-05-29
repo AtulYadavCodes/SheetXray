@@ -86,10 +86,10 @@ function Filesandfolder() {
     <section className="mx-auto w-full p-2.5 sm:p-4 sm:my-1  min-h-screen select-none selection:bg-blue-800 selection:text-white border border-t-0 border-r-0 border-b-0 border-black">
 
       <div className="flex justify-between items-center mb-6      ">
-        <h3 className="font-mono text-xs font-bold text-black px-1  hidden sm:block">
+        <h3 className="font-mono text-sm font-bold text-black px-1  hidden sm:block">
           📁 Your Folders
         </h3>
-        <h3 className="font-mono text-xs font-bold text-black px-9 sm:hidden">
+        <h3 className="font-mono text-sm font-bold text-black px-9 sm:hidden">
           📁 Your Folders
         </h3>
 
