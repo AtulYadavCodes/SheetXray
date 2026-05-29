@@ -185,17 +185,17 @@ function AuthPage({ mode = "login" }) {
               type="submit"
               className="w-full font-mono text-sm font-bold text-black bg-[#c0c0c0] py-2 border shadow-[inset_1px_1px_0px_#ffffff,inset_-1px_-1px_0px_#808080,1px_1px_0px_#0a0a0a] active:shadow-[inset_2px_2px_0px_#0a0a0a,0px_0px_0px_#ffffff] outline-none mt-2"
             >
-              {isLogin ? "EXECUTE LOGIN" : "COMMIT REGISTRATION"}
+              {isLogin ? " LOGIN" : "COMMIT REGISTRATION"}
             </button>
           </form>
 
           <div className="mt-4 pt-3 border-t border-white text-center font-mono text-xs text-black">
-            <span>{isLogin ? "New user target?" : "Existing user profile found?"}</span>
+            <span>{isLogin ? "New user?" : "Existing user profile found?"}</span>
             <button
               onClick={() => setIsLogin(!isLogin)}
               className="ml-2 font-bold underline text-blue-900 hover:text-blue-700"
             >
-              [{isLogin ? "Register" : "Login"}]
+              {isLogin ? "Register" : "Login"}
             </button>
           </div>
 
@@ -205,7 +205,7 @@ function AuthPage({ mode = "login" }) {
               to="/#"
               className="font-mono text-xs text-gray-800 hover:text-black underline"
             >
-              📌 Abort System and Return Home
+              Return Home
             </HashLink>
           </div>
         </div>
