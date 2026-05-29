@@ -230,8 +230,10 @@ function Subs() {
 
     if (loading) {
         return (
-            <div className="p-6 bg-[#c0c0c0] text-black text-sm font-mono" style={winBorderOut}>
-                $ loading subscription...
+            <div className=" flex items-center justify-center min-h-screen">
+            <div className="p-6  text-black text-sm font-mono" >
+                 loading subscription...
+            </div>
             </div>
         );
     }
